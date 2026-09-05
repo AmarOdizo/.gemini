@@ -23,12 +23,4 @@
     color: var(--color-primary);
     font-weight: 700;
   }
-  
-  /* Loading spinner animation */
-  @keyframes spin {
-    100% { transform: rotate(360deg); }
-  }
-  .animate-spin {
-    animation: spin 1s linear infinite;
-  }
 }
