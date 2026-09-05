@@ -1,0 +1,14 @@
+[eval]:8
+    console.log('HAS APP SIDEBAR:', data.includes('id=" appSidebar\'));
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+
+SyntaxError: Invalid or unexpected token
+    at createScript (vm.js:56:10)
+    at Object.runInThisContext (vm.js:97:10)
+    at Object.<anonymous> ([eval]-wrapper:6:22)
+    at Module._compile (module.js:577:32)
+    at evalScript (bootstrap_node.js:351:27)
+    at run (bootstrap_node.js:126:11)
+    at run (bootstrap_node.js:387:7)
+    at startup (bootstrap_node.js:125:9)
+    at bootstrap_node.js:500:3

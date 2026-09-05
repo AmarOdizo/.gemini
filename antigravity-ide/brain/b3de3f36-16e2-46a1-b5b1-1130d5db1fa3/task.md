@@ -1,0 +1,4 @@
+- `[x]` Create `BookingConfirmation.jsx` page.
+- `[x]` Update routing in `App.jsx` to include the new page.
+- `[x]` Update `VetProfile.jsx` redirect logic to navigate to `/booking-confirmation` with data state.
+- `[x]` Update `Appointments.jsx` redirect logic to navigate to `/booking-confirmation` with data state.

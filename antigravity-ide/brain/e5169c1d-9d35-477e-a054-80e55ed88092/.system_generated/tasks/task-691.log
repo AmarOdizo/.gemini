@@ -1,0 +1,15 @@
+Mongoose loading notice: Unexpected token ?
+◇ injected env (5) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+Database Driver Notice: Running in standalone memory mode.
+==========================================
+  Gemini API Server Running Successfully  
+  Port: 5000
+  Health URL: http://localhost:5000/api/health
+  Auth Login: http://localhost:5000/api/auth/login
+  Auth Register: http://localhost:5000/api/auth/register
+  Vets API: http://localhost:5000/api/vets
+  Vet Register: http://localhost:5000/api/vets/register
+  Vet Login: http://localhost:5000/api/vets/login
+  Pets API: http://localhost:5000/api/pets
+==========================================

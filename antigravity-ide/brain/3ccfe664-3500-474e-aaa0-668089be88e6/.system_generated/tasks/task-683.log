@@ -1,0 +1,16 @@
+
+
+    Directory: C:\Users\VICTUS\.gemini\API\models
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+-a----        02-09-2026     16:56            939 Appointment.js                                                       
+-a----        03-09-2026     13:25            544 ChatMessage.js                                                       
+-a----        03-09-2026     13:25           1430 Consultation.js                                                      
+-a----        03-09-2026     14:16           1815 Pet.js                                                               
+-a----        02-09-2026     16:56            890 Prescription.js                                                      
+-a----        02-09-2026     12:18            972 User.js                                                              
+-a----        03-09-2026     14:13           3657 Vet.js                                                               
+
+

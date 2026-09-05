@@ -1,0 +1,39 @@
+
+>             // Fetch and Render Pets from Backend API (http://localhost:5000/api/pets)
+>             async function fetchPets() {
+                  if (!petsContainer) return;
+                  try {
+>                     const res = await fetch('http://localhost:5000/api/pets');
+                      const json = await res.json();
+                      if (json.success && json.data) {
+                          renderPets(json.data);
+                      }
+                  } catch (err) {
+>                     console.warn('API fetch error, using local state:', err);
+                      renderPets([
+                          {
+                              name: "Luna",
+                              type: "Dog",
+                              breed: "Golden Retriever",
+>             // Fetch Live Recommended Veterinarians from API
+>             async function fetchRecommendedVets() {
+                  const recContainer = document.getElementById('recommendedVetsContainer');
+                  if (!recContainer) return;
+  
+                  try {
+>                     const res = await fetch('http://localhost:5000/api/vets');
+                      const json = await res.json();
+                      
+                      if (res.ok && json.success && Array.isArray(json.data)) {
+                          if (json.data.length === 0) {
+                              recContainer.innerHTML = `
+>             // Initial Fetches
+>             fetchPets();
+>             fetchRecommendedVets();
+          });
+  
+          function logoutUser(e) {
+              if (e && e.preventDefault) e.preventDefault();
+              localStorage.removeItem('userToken');
+
+

@@ -1,0 +1,15 @@
+fs.js:1003
+  binding.lstat(pathModule._makeLong(path), statValues);
+          ^
+
+Error: EPERM: operation not permitted, lstat 'c:\Users\VICTUS\.gemini\antigravity-ide'
+    at Error (native)
+    at Object.fs.lstatSync (fs.js:1003:11)
+    at Object.realpathSync (fs.js:1684:21)
+    at toRealPath (module.js:140:13)
+    at Function.Module._findPath (module.js:188:22)
+    at Function.Module._resolveFilename (module.js:474:25)
+    at Function.Module._load (module.js:424:25)
+    at Module.runMain (module.js:611:10)
+    at run (bootstrap_node.js:387:7)
+    at startup (bootstrap_node.js:153:9)

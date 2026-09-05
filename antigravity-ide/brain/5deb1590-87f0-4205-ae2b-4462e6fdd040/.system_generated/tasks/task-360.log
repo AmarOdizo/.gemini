@@ -1,0 +1,9 @@
+Mongoose loading notice: Unexpected token ?
+◇ injected env (2) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+Database Driver Notice: Running in standalone memory mode.
+==========================================
+  Gemini API Server Running Successfully  
+  Port: 5000
+  Health URL: http://localhost:5000/api/health
+  Status URL: http://localhost:5000/api/status
+==========================================

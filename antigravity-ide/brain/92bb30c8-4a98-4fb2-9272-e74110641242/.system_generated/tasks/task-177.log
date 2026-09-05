@@ -1,0 +1,22 @@
+New-Object : Exception calling ".ctor" with "0" argument(s): "Operation is not supported on this platform."
+At C:\Users\VICTUS\.gemini\antigravity-ide\scratch\petcare-app\server.ps1:1 char:13
++ $listener = New-Object System.Net.HttpListener
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [New-Object], MethodInvocationException
+    + FullyQualifiedErrorId : ConstructorInvokedThrowException,Microsoft.PowerShell.Commands.NewObjectCommand
+ 
+You cannot call a method on a null-valued expression.
+At C:\Users\VICTUS\.gemini\antigravity-ide\scratch\petcare-app\server.ps1:2 char:1
++ $listener.Prefixes.Add("http://localhost:8080/")
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At C:\Users\VICTUS\.gemini\antigravity-ide\scratch\petcare-app\server.ps1:3 char:1
++ $listener.Start()
++ ~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+PetCare Web Server listening on http://localhost:8080/

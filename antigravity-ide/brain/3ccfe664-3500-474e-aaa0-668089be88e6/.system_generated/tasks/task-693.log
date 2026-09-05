@@ -1,0 +1,18 @@
+
+
+    Directory: C:\Users\VICTUS\.gemini\API\routes
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+-a----        01-09-2026     16:18           2420 apiRoutes.js                                                         
+-a----        02-09-2026     17:13           1701 appointments.js                                                      
+-a----        02-09-2026     12:36          15390 authRoutes.js                                                        
+-a----        03-09-2026     13:28           4795 chat.js                                                              
+-a----        03-09-2026     14:19           4428 consultations.js                                                     
+-a----        02-09-2026     12:19           2759 imagekitRoutes.js                                                    
+-a----        03-09-2026     14:16           8211 petRoutes.js                                                         
+-a----        02-09-2026     17:13           1601 prescriptions.js                                                     
+-a----        03-09-2026     14:20          20625 vets.js                                                              
+
+

@@ -1,0 +1,7 @@
+c:\Users\VICTUS\.gemini\API\routes\petRoutes.js:115
+async function seedPetsIfEmpty() {
+      ^^^^^^^^
+
+SyntaxError: Unexpected token function
+    at startup (bootstrap_node.js:148:11)
+    at bootstrap_node.js:500:3

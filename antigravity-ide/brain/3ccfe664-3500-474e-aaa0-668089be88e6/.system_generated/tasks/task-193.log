@@ -1,0 +1,7 @@
+dir : Cannot find path 'C:\B' because it does not exist.
+At line:1 char:179
++ ...  $env:TMP = $env:_TMP; $env:LOCALAPPDATA = $env:_LOCALAPPDATA; dir /B
++                                                                    ~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\B:String) [Get-ChildItem], ItemNotFoundException
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetChildItemCommand
+ 

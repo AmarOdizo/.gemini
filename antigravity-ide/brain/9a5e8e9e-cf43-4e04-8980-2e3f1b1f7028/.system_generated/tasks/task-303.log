@@ -1,0 +1,8 @@
+npx : The term 'npx' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the 
+spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:179
++ ... :TMP = $env:_TMP; $env:LOCALAPPDATA = $env:_LOCALAPPDATA; npx -y crea ...
++                                                               ~~~
+    + CategoryInfo          : ObjectNotFound: (npx:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 

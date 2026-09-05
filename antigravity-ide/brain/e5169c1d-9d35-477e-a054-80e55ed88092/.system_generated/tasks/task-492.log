@@ -1,0 +1,17 @@
+Mongoose loading notice: Unexpected token ?
+openssl config failed: error:02001002:system library:fopen:No such file or directory
+C:\Users\VICTUS\.gemini\API\routes\authRoutes.js:50
+router.post("/register", async function (req, res) {
+                         ^^^^^
+
+SyntaxError: missing ) after argument list
+    at createScript (vm.js:56:10)
+    at Object.runInThisContext (vm.js:97:10)
+    at Module._compile (module.js:549:28)
+    at Object.Module._extensions..js (module.js:586:10)
+    at Module.load (module.js:494:32)
+    at tryModuleLoad (module.js:453:12)
+    at Function.Module._load (module.js:445:3)
+    at Module.require (module.js:504:17)
+    at require (internal/module.js:20:19)
+    at Object.<anonymous> (C:\Users\VICTUS\.gemini\API\server.js:7:20)

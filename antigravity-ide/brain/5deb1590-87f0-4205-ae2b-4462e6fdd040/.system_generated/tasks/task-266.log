@@ -1,0 +1,9 @@
+Mongoose loading notice: Unexpected token ?
+◇ injected env (2) from .env // tip: ⌘ enable debugging { debug: true }
+Database Driver Notice: Running in standalone memory mode.
+==========================================
+  Gemini API Backend Running Successfully 
+  URL: http://localhost:5000
+  Health Check: http://localhost:5000/api/health
+  Status Check: http://localhost:5000/api/status
+==========================================

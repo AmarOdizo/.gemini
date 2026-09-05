@@ -1,0 +1,7 @@
+Get-WmiObject : Access is denied.
+At line:1 char:179
++ ... OCALAPPDATA = $env:_LOCALAPPDATA; Get-WmiObject Win32_Process | Where ...
++                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Get-WmiObject], UnauthorizedAccessException
+    + FullyQualifiedErrorId : System.UnauthorizedAccessException,Microsoft.PowerShell.Commands.GetWmiObjectCommand
+ 

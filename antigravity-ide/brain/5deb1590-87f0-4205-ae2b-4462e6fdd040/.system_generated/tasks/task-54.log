@@ -1,0 +1,32 @@
+Write-Progress : Win32 internal error "Access is denied" 0x5 occurred while reading the console output buffer. Contact 
+Microsoft Customer Support Services.
+At C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules\NetTCPIP\Test-NetConnection.psm1:262 char:13
++             Write-Progress -Activity $ProgressString -Status "Attempt ...
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ReadError: (:) [Write-Progress], HostException
+    + FullyQualifiedErrorId : ReadConsoleOutput,Microsoft.PowerShell.Commands.WriteProgressCommand
+ 
+WARNING: TCP connect to (::1 : 27017) failed
+WARNING: TCP connect to (127.0.0.1 : 27017) failed
+WARNING: Ping to ::1 failed
+WARNING: Ping to 127.0.0.1 failed
+Invoke-CimMethod : Access to a CIM resource was not available to the client.
+At C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules\NetTCPIP\Test-NetConnection.psm1:329 char:37
++ ... ationInfo = Invoke-CimMethod -Namespace root\standardcimv2 -ClassName ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Invoke-CimMethod], CimException
+    + FullyQualifiedErrorId : Microsoft.Management.Infrastructure.CimException,Microsoft.Management.Infrastructure.Cim 
+   Cmdlets.InvokeCimMethodCommand
+ 
+
+
+ComputerName     : localhost
+RemoteAddress    : ::1
+RemotePort       : 27017
+InterfaceAlias   : 
+SourceAddress    : 
+PingSucceeded    : False
+TcpTestSucceeded : False
+
+
+

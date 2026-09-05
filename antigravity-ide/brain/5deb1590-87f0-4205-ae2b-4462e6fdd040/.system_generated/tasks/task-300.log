@@ -1,0 +1,9 @@
+Mongoose loading notice: Unexpected token ?
+◇ injected env (2) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+Database Driver Notice: Running in standalone memory mode.
+==========================================
+  Gemini API Backend Running Successfully 
+  Host: 0.0.0.0 | Port: 5000
+  Health URL: http://localhost:5000/api/health
+  Health URL: http://127.0.0.1:5000/api/health
+==========================================

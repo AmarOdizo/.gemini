@@ -1,0 +1,8 @@
+npm.cmd : The term 'npm.cmd' is not recognized as the name of a cmdlet, function, script file, or operable program. 
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:179
++ ...  = $env:_TMP; $env:LOCALAPPDATA = $env:_LOCALAPPDATA; npm.cmd run dev
++                                                           ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (npm.cmd:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 

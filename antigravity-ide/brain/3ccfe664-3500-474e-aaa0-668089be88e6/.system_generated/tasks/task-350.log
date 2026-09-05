@@ -1,0 +1,15 @@
+C:\Users\VICTUS\.gemini\API\seed_live_chat.js:9
+async function seedDatabase() {
+      ^^^^^^^^
+
+SyntaxError: Unexpected token function
+    at createScript (vm.js:56:10)
+    at Object.runInThisContext (vm.js:97:10)
+    at Module._compile (module.js:549:28)
+    at Object.Module._extensions..js (module.js:586:10)
+    at Module.load (module.js:494:32)
+    at tryModuleLoad (module.js:453:12)
+    at Function.Module._load (module.js:445:3)
+    at Module.runMain (module.js:611:10)
+    at run (bootstrap_node.js:387:7)
+    at startup (bootstrap_node.js:153:9)

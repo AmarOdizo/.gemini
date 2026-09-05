@@ -1,0 +1,13 @@
+{
+  "name": "petcare-app",
+  "version": "1.0.0",
+  "description": "PetCare Integrated Healthcare Platform",
+  "main": "index.html",
+  "scripts": {
+    "dev": "cd ../petcare-react && npm run dev -- --host",
+    "start": "cd ../petcare-react && npm run dev -- --host"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
