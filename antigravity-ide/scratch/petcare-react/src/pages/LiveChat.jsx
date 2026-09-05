@@ -81,8 +81,6 @@ const LiveChat = () => {
     if (subscriptionRef.current) {
       supabase.removeChannel(subscriptionRef.current);
     }
-
-    console.log("[Chat Debug] Setting up realtime for conversationId:", consultationId);
     
     const channel = supabase.channel(`chat_messages_${consultationId}`);
     subscriptionRef.current = channel;
@@ -93,8 +91,6 @@ const LiveChat = () => {
       table: 'chat_messages',
       filter: `conversationId=eq.${consultationId}`
     }, (payload) => {
-      console.log("[Chat Debug] Realtime INSERT payload:", payload.new);
-      
       if (payload.new.conversationId !== consultationId) return;
 
       setMessages((prev) => {
@@ -107,21 +103,13 @@ const LiveChat = () => {
       });
     })
     .subscribe((status) => {
-      console.log("[Chat Debug] Realtime status:", status);
-      if (status === 'SUBSCRIBED') {
-        console.log("[Chat Debug] Successfully subscribed to realtime channel");
-      } else if (status === 'CHANNEL_ERROR') {
-        console.error("[Chat Debug] Realtime channel error");
-      } else if (status === 'TIMED_OUT') {
-        console.error("[Chat Debug] Realtime channel timed out");
-      } else if (status === 'CLOSED') {
-        console.log("[Chat Debug] Realtime channel closed");
+      if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+        console.error("Realtime channel subscription error/timeout:", status);
       }
     });
 
     return () => {
       if (subscriptionRef.current) {
-        console.log("[Chat Debug] Unsubscribing from realtime channel");
         supabase.removeChannel(subscriptionRef.current);
         subscriptionRef.current = null;
       }
@@ -160,8 +148,6 @@ const LiveChat = () => {
         .single();
         
       if (error) throw error;
-      
-      console.log("[Chat Debug] Message inserted, message id:", data.id, "senderId:", data.senderId);
       
       // Update UI with returned database row
       setMessages((prev) => {
