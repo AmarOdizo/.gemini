@@ -1,37 +1,25 @@
 const express = require("express");
 const router = express.Router();
 const Appointment = require("../models/Appointment");
-const connectDB = require("../config/db");
-
-// Helper to check DB
-function isDbAvailable() {
-  return connectDB.getStatus ? connectDB.getStatus() : false;
-}
+const Consultation = require("../models/Consultation");
+const supabase = require("../config/supabase");
 
 // GET /api/appointments
-// Supports filtering by vetId
 router.get("/", async function (req, res) {
   try {
     const vetId = req.query.vetId;
     const ownerId = req.query.ownerId;
-    if (isDbAvailable() && Appointment) {
-      const query = {};
-      if (vetId) query.vetId = vetId;
-      if (ownerId) query.ownerId = ownerId;
-      const dbAppointments = await Appointment.find(query).populate('vetId petId ownerId').sort({ createdAt: -1 });
-      return res.json({
-        success: true,
-        count: dbAppointments.length,
-        appointments: dbAppointments
-      });
-    }
     
-    // In-memory fallback if DB not connected (empty array for now, avoiding complex shared store)
+    let query = {};
+    if (vetId) query.vetId = vetId;
+    if (ownerId) query.ownerId = ownerId;
+
+    const appointments = await Appointment.find(query).sort({ createdAt: -1 });
+
     return res.json({
       success: true,
-      count: 0,
-      appointments: [],
-      message: "DB not available, returning empty list."
+      count: appointments.length,
+      appointments: appointments
     });
   } catch(err) {
     return res.status(500).json({ success: false, message: err.message });
@@ -43,14 +31,79 @@ router.post("/", async function (req, res) {
   try {
     const body = req.body;
     
-    if (isDbAvailable() && Appointment) {
-      const newAppt = await Appointment.create(body);
-      return res.status(201).json({ success: true, appointment: newAppt });
+    const newAppt = new Appointment(body);
+    await newAppt.save();
+    
+    // Also create the related Consultation record (mirroring the behavior)
+    const newConsultation = new Consultation({
+      vetId: newAppt.vetId,
+      vetName: newAppt.vetName,
+      appointmentId: newAppt._id.toString(),
+      petId: newAppt.petId,
+      ownerId: newAppt.ownerId,
+      ownerName: newAppt.ownerName,
+      petName: newAppt.petName,
+      date: newAppt.date,
+      time: newAppt.time,
+      consultationType: newAppt.consultationType,
+      status: newAppt.status,
+      petSpecies: newAppt.petSpecies,
+      petWeight: newAppt.petWeight,
+      reasonForVisit: newAppt.reason
+    });
+    
+    await newConsultation.save();
+    
+    // Send Realtime notification via Supabase
+    try {
+        await supabase
+          .from('chat_messages')
+          .insert([{
+            conversationId: newConsultation._id.toString(),
+            senderId: 'system',
+            senderRole: 'system',
+            receiverId: newAppt.vetId.toString(),
+            message: `New consultation request from ${newAppt.ownerName} for ${newAppt.petName} on ${newAppt.date} at ${newAppt.time}.`,
+            messageType: 'notification'
+          }]);
+    } catch (err) {
+        console.error("Failed to send Supabase notification", err);
+    }
+
+    return res.status(201).json({ success: true, appointment: newAppt });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PUT /api/appointments/:id/status
+router.put("/:id/status", async function (req, res) {
+  try {
+    const { id } = req.params;
+    const { status, meetLink } = req.body;
+    
+    const updateData = { status };
+    if (meetLink !== undefined) {
+      updateData.meetLink = meetLink;
     }
     
-    // In-memory fallback
-    const newAppt = { _id: "appt_" + Date.now(), ...body, createdAt: new Date() };
-    return res.status(201).json({ success: true, appointment: newAppt, message: "Created in memory only" });
+    const updatedAppointment = await Appointment.findByIdAndUpdate(
+        id,
+        { $set: updateData },
+        { new: true }
+    );
+
+    if (!updatedAppointment) {
+       return res.status(404).json({ success: false, message: "Appointment not found." });
+    }
+
+    // Also update the related Consultation if it exists
+    await Consultation.findOneAndUpdate(
+        { appointmentId: id },
+        { $set: updateData }
+    );
+
+    return res.json({ success: true, appointment: updatedAppointment });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
   }

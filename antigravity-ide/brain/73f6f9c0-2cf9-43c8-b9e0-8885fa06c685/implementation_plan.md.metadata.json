@@ -1,0 +1,6 @@
+{
+  "summary": "A detailed plan to revert the API back to MongoDB, establish Supabase only for chat/notifications, and implement the requested features.",
+  "updatedAt": "2026-09-05T08:35:05.209397400Z",
+  "requestFeedback": true,
+  "userFacing": true
+}

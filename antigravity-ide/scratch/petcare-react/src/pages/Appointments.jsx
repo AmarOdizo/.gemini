@@ -161,7 +161,7 @@ const Appointments = () => {
         reason: reason,
         reasonForVisit: reason,
         fee: selectedVet.consultationFee || 499,
-        status: 'upcoming'
+        status: 'pending'
       };
 
       // Navigate to confirmation page to review and save
@@ -241,15 +241,28 @@ const Appointments = () => {
                           </span>
                         </td>
                         <td className="p-4">
-                          <span className={`text-[10px] px-2.5 py-1 rounded-md font-bold uppercase border tracking-wider ${appt.status === 'upcoming' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-surface-container-high text-on-surface-variant border-outline-variant'}`}>
-                            {appt.status}
+                          <span className={`text-[10px] px-2.5 py-1 rounded-md font-bold uppercase border tracking-wider ${appt.status === 'upcoming' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : appt.status === 'pending' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-surface-container-high text-on-surface-variant border-outline-variant'}`}>
+                            {appt.status === 'pending' ? 'Awaiting Doctor' : appt.status}
                           </span>
                         </td>
                         <td className="p-4 text-right align-middle">
                           <div className="flex justify-end items-center gap-2">
+                            <button onClick={() => navigate(`/live-chat?consultationId=${appt._id}`)} className="bg-surface-container-high text-on-surface border border-outline-variant text-xs font-bold py-1.5 px-3 rounded-lg hover:bg-surface-container transition-colors flex items-center gap-1 shadow-sm">
+                              <span className="material-symbols-outlined text-[16px]">chat</span> Message
+                            </button>
                             {appt.consultationType === 'video' ? (
-                              <button onClick={() => handleJoin(appt)} className="bg-primary text-white text-xs font-bold py-1.5 px-3 rounded-lg hover:bg-surface-tint transition-colors flex items-center gap-1 shadow-sm">
-                                <span className="material-symbols-outlined text-[16px]">videocam</span> Join
+                              <button 
+                                onClick={() => {
+                                  if (appt.meetLink) {
+                                    window.open(appt.meetLink, '_blank');
+                                  } else {
+                                    handleJoin(appt);
+                                  }
+                                }} 
+                                disabled={appt.status === 'pending' || (new Date() < new Date(`${appt.date} ${appt.time}`))}
+                                className={`text-white text-xs font-bold py-1.5 px-3 rounded-lg flex items-center gap-1 shadow-sm transition-colors ${appt.status === 'pending' || (new Date() < new Date(`${appt.date} ${appt.time}`)) ? 'bg-outline-variant cursor-not-allowed' : 'bg-primary hover:bg-surface-tint'}`}
+                              >
+                                <span className="material-symbols-outlined text-[16px]">videocam</span> Join Meet
                               </button>
                             ) : (
                               <button className="bg-secondary text-white text-xs font-bold py-1.5 px-3 rounded-lg hover:bg-secondary-fixed-dim transition-colors flex items-center gap-1 shadow-sm">

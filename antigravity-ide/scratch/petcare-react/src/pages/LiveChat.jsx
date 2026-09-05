@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import OwnerSidebar from '../components/OwnerSidebar';
 import VetSidebar from '../components/VetSidebar';
+import supabase from '../supabaseClient';
 
 const LiveChat = () => {
   const [searchParams] = useSearchParams();
@@ -14,6 +15,7 @@ const LiveChat = () => {
   const [loading, setLoading] = useState(true);
   
   const messagesEndRef = useRef(null);
+  const subscriptionRef = useRef(null);
   const navigate = useNavigate();
 
   const isDoctor = user && (user.role === 'doctor' || user.vciNumber);
@@ -54,25 +56,76 @@ const LiveChat = () => {
       })
       .catch(err => console.error("Error fetching consultation", err));
 
-    // Fetch messages initially and set up polling
-    const fetchMessages = () => {
-      fetch(`http://localhost:5000/api/chat/${consultationId}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.success && data.data) {
-            setMessages(data.data);
-          }
-          setLoading(false);
-        })
-        .catch(err => {
-          console.error("Error fetching chat messages", err);
-          setLoading(false);
-        });
+    // 1. Fetch existing messages
+    const fetchMessages = async () => {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('chat_messages')
+          .select('*')
+          .eq('conversationId', consultationId)
+          .order('createdAt', { ascending: true });
+          
+        if (error) throw error;
+        setMessages(data || []);
+      } catch (err) {
+        console.error("Error fetching chat messages:", err);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchMessages();
-    const interval = setInterval(fetchMessages, 3000);
-    return () => clearInterval(interval);
+
+    // 2. Set up Supabase Realtime Subscription IMMEDIATELY
+    if (subscriptionRef.current) {
+      supabase.removeChannel(subscriptionRef.current);
+    }
+
+    console.log("[Chat Debug] Setting up realtime for conversationId:", consultationId);
+    
+    const channel = supabase.channel(`chat_messages_${consultationId}`);
+    subscriptionRef.current = channel;
+    
+    channel.on('postgres_changes', { 
+      event: 'INSERT', 
+      schema: 'public', 
+      table: 'chat_messages',
+      filter: `conversationId=eq.${consultationId}`
+    }, (payload) => {
+      console.log("[Chat Debug] Realtime INSERT payload:", payload.new);
+      
+      if (payload.new.conversationId !== consultationId) return;
+
+      setMessages((prev) => {
+         // Duplicate prevention using database message ID
+         const isDuplicate = prev.some(m => (m.id === payload.new.id) || (m._id && m._id === payload.new.id));
+         if (isDuplicate) {
+           return prev;
+         }
+         return [...prev, payload.new];
+      });
+    })
+    .subscribe((status) => {
+      console.log("[Chat Debug] Realtime status:", status);
+      if (status === 'SUBSCRIBED') {
+        console.log("[Chat Debug] Successfully subscribed to realtime channel");
+      } else if (status === 'CHANNEL_ERROR') {
+        console.error("[Chat Debug] Realtime channel error");
+      } else if (status === 'TIMED_OUT') {
+        console.error("[Chat Debug] Realtime channel timed out");
+      } else if (status === 'CLOSED') {
+        console.log("[Chat Debug] Realtime channel closed");
+      }
+    });
+
+    return () => {
+      if (subscriptionRef.current) {
+        console.log("[Chat Debug] Unsubscribing from realtime channel");
+        supabase.removeChannel(subscriptionRef.current);
+        subscriptionRef.current = null;
+      }
+    };
   }, [consultationId, navigate]);
 
   const handleSend = async (e) => {
@@ -87,24 +140,37 @@ const LiveChat = () => {
     const receiverId = typeof receiverIdObj === 'object' && receiverIdObj ? receiverIdObj._id || receiverIdObj.id : receiverIdObj;
 
     const newMsg = {
-      senderId: user._id || user.id,
-      receiverId: receiverId,
+      senderId: String(user._id || user.id),
+      receiverId: String(receiverId),
       senderName: user.name,
       senderRole: senderRole,
-      message: msgText
+      message: msgText,
+      conversationId: consultationId
     };
 
-    // Optimistic UI update
-    setMessages(prev => [...prev, { ...newMsg, _id: Date.now(), createdAt: new Date().toISOString() }]);
-
     try {
-      await fetch(`http://localhost:5000/api/chat/${consultationId}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newMsg)
+      // Prefer inserting into Supabase first
+      const { data, error } = await supabase
+        .from('chat_messages')
+        .insert([{
+           ...newMsg,
+           createdAt: new Date().toISOString()
+        }])
+        .select()
+        .single();
+        
+      if (error) throw error;
+      
+      console.log("[Chat Debug] Message inserted, message id:", data.id, "senderId:", data.senderId);
+      
+      // Update UI with returned database row
+      setMessages((prev) => {
+         const isDuplicate = prev.some(m => m.id === data.id);
+         if (isDuplicate) return prev;
+         return [...prev, data];
       });
     } catch (err) {
-      console.error("Error sending message", err);
+      console.error("Error sending message:", err);
     }
   };
 
@@ -171,13 +237,18 @@ const LiveChat = () => {
             </div>
           ) : (
             messages.map((msg) => {
-              const msgSenderId = typeof msg.senderId === 'object' && msg.senderId ? msg.senderId._id : msg.senderId;
-              const currentUserId = user._id || user.id;
-              const isMine = msgSenderId === currentUserId || msg.senderRole === (isDoctor ? 'vet' : 'owner');
+              const msgSenderId = typeof msg.senderId === 'object' && msg.senderId ? String(msg.senderId._id) : String(msg.senderId);
+              const currentUserId = String(user._id || user.id);
+              
+              // Normalize comparison to string and fix alignment logic
+              const isMine = msgSenderId === currentUserId || String(msg.senderRole) === (isDoctor ? 'vet' : 'owner');
               const timeStr = new Date(msg.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
               
+              // Use msg.id as key for Supabase messages
+              const messageKey = msg.id || msg._id;
+              
               return (
-                <div key={msg._id} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
+                <div key={messageKey} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[80%] md:max-w-[60%] flex flex-col ${isMine ? 'items-end' : 'items-start'}`}>
                     <div className={`px-4 py-2.5 rounded-2xl text-sm shadow-sm ${isMine ? 'bg-primary text-white rounded-br-sm' : 'bg-surface-container text-on-surface border border-outline-variant/20 rounded-bl-sm'}`}>
                       {msg.message}

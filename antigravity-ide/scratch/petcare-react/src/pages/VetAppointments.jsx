@@ -7,6 +7,8 @@ const VetAppointments = () => {
   const [user, setUser] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [acceptingId, setAcceptingId] = useState(null);
+  const [meetLink, setMeetLink] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,19 +39,24 @@ const VetAppointments = () => {
     }
   };
 
-  const handleUpdateStatus = async (id, status) => {
+  const handleUpdateStatus = async (id, status, meetLinkStr = undefined) => {
     try {
       const token = localStorage.getItem('vetToken') || localStorage.getItem('userToken') || '';
-      const res = await fetch(`http://localhost:5000/api/consultations/${id}/status`, {
+      const payload = { status };
+      if (meetLinkStr) payload.meetLink = meetLinkStr;
+      
+      const res = await fetch(`http://localhost:5000/api/appointments/${id}/status`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ status })
+        body: JSON.stringify(payload)
       });
       if (res.ok) {
-        setAppointments(appointments.map(a => a._id === id ? { ...a, status } : a));
+        setAppointments(appointments.map(a => a._id === id ? { ...a, status, meetLink: meetLinkStr || a.meetLink } : a));
+        setAcceptingId(null);
+        setMeetLink('');
       }
     } catch (err) {
       console.error("Error updating status", err);
@@ -114,7 +121,7 @@ const VetAppointments = () => {
                       <div className="flex-grow">
                         <div className="flex justify-between items-start mb-2">
                           <h4 className="font-headline-sm font-bold text-lg text-on-surface">{appt.petName} <span className="text-sm font-normal text-on-surface-variant">({appt.petSpecies})</span></h4>
-                          <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase border ${appt.status === 'upcoming' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-surface-container-high text-on-surface-variant border-outline-variant'}`}>
+                          <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase border ${appt.status === 'upcoming' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : appt.status === 'pending' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-surface-container-high text-on-surface-variant border-outline-variant'}`}>
                             {appt.status}
                           </span>
                         </div>
@@ -130,23 +137,70 @@ const VetAppointments = () => {
                         </div>
                       </div>
 
-                      <div className="flex md:flex-col gap-2 shrink-0 md:min-w-[150px]">
+                      <div className="flex flex-col gap-2 shrink-0 md:min-w-[200px]">
+                        {appt.status === 'pending' && acceptingId !== appt._id && (
+                          <button
+                            onClick={() => setAcceptingId(appt._id)}
+                            className="bg-primary text-white text-xs font-bold py-2 px-3 rounded-lg hover:bg-surface-tint transition-colors flex items-center justify-center gap-1"
+                          >
+                            <span className="material-symbols-outlined text-[16px]">check_circle</span> Accept
+                          </button>
+                        )}
+                        {acceptingId === appt._id && (
+                          <div className="flex flex-col gap-2">
+                            <input 
+                              type="url" 
+                              placeholder="Paste Google Meet Link" 
+                              value={meetLink}
+                              onChange={(e) => setMeetLink(e.target.value)}
+                              className="border border-outline-variant rounded-lg p-2 text-xs w-full focus:ring-1 focus:ring-primary outline-none"
+                            />
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => handleUpdateStatus(appt._id, 'upcoming', meetLink)}
+                                disabled={!meetLink.trim()}
+                                className="flex-1 bg-emerald-600 text-white text-xs font-bold py-2 px-2 rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                              >
+                                Done & Save
+                              </button>
+                              <button
+                                onClick={() => setAcceptingId(null)}
+                                className="flex-1 bg-surface-container-high border border-outline-variant text-on-surface text-xs font-bold py-2 px-2 rounded-lg hover:bg-surface-container transition-colors"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
+                        )}
                         {appt.status === 'upcoming' && (
                           <>
+                            <button onClick={() => navigate(`/live-chat?consultationId=${appt._id}`)} className="bg-surface-container-high border border-outline-variant text-on-surface text-xs font-bold py-2 px-3 rounded-lg hover:bg-surface-container transition-colors flex items-center justify-center gap-1">
+                              <span className="material-symbols-outlined text-[16px]">chat</span> Message
+                            </button>
                             {appt.consultationType === 'video' && (
-                              <button onClick={() => handleJoin(appt)} className="flex-1 bg-primary text-white text-xs font-bold py-2 px-3 rounded-lg hover:bg-surface-tint transition-colors flex items-center justify-center gap-1">
-                                <span className="material-symbols-outlined text-[16px]">videocam</span> Join Call
+                              <button 
+                                onClick={() => {
+                                  if (appt.meetLink) {
+                                    window.open(appt.meetLink, '_blank');
+                                  } else {
+                                    handleJoin(appt);
+                                  }
+                                }} 
+                                disabled={new Date() < new Date(`${appt.date} ${appt.time}`)}
+                                className={`text-white text-xs font-bold py-2 px-3 rounded-lg transition-colors flex items-center justify-center gap-1 ${new Date() < new Date(`${appt.date} ${appt.time}`) ? 'bg-outline-variant cursor-not-allowed' : 'bg-primary hover:bg-surface-tint'}`}
+                              >
+                                <span className="material-symbols-outlined text-[16px]">videocam</span> Join Meet
                               </button>
                             )}
                             <button
                               onClick={() => handleUpdateStatus(appt._id, 'completed')}
-                              className="flex-1 bg-surface-container-high border border-outline-variant text-on-surface text-xs font-bold py-2 px-3 rounded-lg hover:bg-surface-container transition-colors flex items-center justify-center gap-1"
+                              className="bg-surface-container-high border border-outline-variant text-on-surface text-xs font-bold py-2 px-3 rounded-lg hover:bg-surface-container transition-colors flex items-center justify-center gap-1"
                             >
                               <span className="material-symbols-outlined text-[16px]">check</span> Mark Done
                             </button>
                             <button
                               onClick={() => handleUpdateStatus(appt._id, 'cancelled')}
-                              className="flex-1 text-error text-xs font-bold py-2 px-3 hover:bg-error-container/20 rounded-lg transition-colors flex items-center justify-center gap-1"
+                              className="text-error text-xs font-bold py-2 px-3 hover:bg-error-container/20 rounded-lg transition-colors flex items-center justify-center gap-1"
                             >
                               Cancel
                             </button>

@@ -130,7 +130,7 @@ const VetProfile = () => {
         reason: reason,
         reasonForVisit: reason,
         fee: vet.consultationFee || 499,
-        status: 'upcoming'
+        status: 'pending'
       };
 
       // Navigate to confirmation page to review and save

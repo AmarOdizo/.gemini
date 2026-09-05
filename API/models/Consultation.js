@@ -13,7 +13,8 @@ const consultationSchema = new mongoose.Schema({
     time: { type: String, required: true }, // e.g., "10:00 AM"
     consultationType: { type: String, default: "Virtual Telehealth Call" },
     fee: { type: Number, default: 499 },
-    status: { type: String, enum: ['upcoming', 'completed', 'cancelled'], default: 'upcoming' },
+    status: { type: String, enum: ['pending', 'upcoming', 'completed', 'cancelled'], default: 'pending' },
+    meetLink: { type: String },
     
     // Clinical & Live Chat Details
     vetSpecialization: { type: String },

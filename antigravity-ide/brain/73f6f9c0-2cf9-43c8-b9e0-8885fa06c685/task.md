@@ -1,0 +1,14 @@
+- [x] Investigate backups of old routes or prepare to rewrite.
+- [x] Create Supabase messages table (`chat_messages`) using MCP tool (created SQL script for user).
+- [x] Update `c:\Users\VICTUS\.gemini\API\server.js` and `config/db.js` for MongoDB connection.
+- [x] Rewrite/Revert `c:\Users\VICTUS\.gemini\API\routes\appointments.js`.
+- [x] Rewrite/Revert `c:\Users\VICTUS\.gemini\API\routes\consultations.js`.
+- [x] Rewrite/Revert `c:\Users\VICTUS\.gemini\API\routes\pets.js`.
+- [x] Rewrite/Revert `c:\Users\VICTUS\.gemini\API\routes\vets.js`.
+- [x] Rewrite/Revert `c:\Users\VICTUS\.gemini\API\routes\prescriptions.js`.
+- [x] Rewrite/Revert `c:\Users\VICTUS\.gemini\API\routes\authRoutes.js`.
+- [x] Update frontend `c:\Users\VICTUS\.gemini\antigravity-ide\scratch\petcare-react\src\pages\LiveChat.jsx` to use Supabase Realtime.
+- [x] Implement notification/message insertion upon consultation creation.
+- [x] Implement Google Meet link saving to MongoDB upon doctor acceptance.
+- [x] Implement disabled state for "Join Google Meet" button on frontend until start time.
+- [x] Test the full end-to-end flow.

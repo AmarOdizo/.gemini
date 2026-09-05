@@ -15,7 +15,8 @@ const appointmentSchema = new mongoose.Schema({
     duration: { type: String, default: "30 Min Telehealth" },
     reason: { type: String, required: true },
     consultationType: { type: String, default: "Virtual Telehealth Call" },
-    status: { type: String, enum: ['upcoming', 'today', 'urgent', 'completed', 'cancelled'], default: 'upcoming' },
+    status: { type: String, enum: ['pending', 'upcoming', 'today', 'urgent', 'completed', 'cancelled'], default: 'pending' },
+    meetLink: { type: String },
     notes: { type: String },
     createdAt: { type: Date, default: Date.now }
 });

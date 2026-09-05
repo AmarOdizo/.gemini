@@ -1,15 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Pet = require("../models/Pet");
-const connectDB = require("../config/db");
-const imagekit = require("../config/imagekit");
-
-// Dynamic runtime storage collection for pets (starts empty, only user registered pets exist)
-let memoryPets = [];
-
-function isDbAvailable() {
-  return connectDB.getStatus ? connectDB.getStatus() : false;
-}
+const mongoose = require("mongoose");
 
 // Middleware: Verify Owner Authorization
 function verifyOwnerAuth(req, res, next) {
@@ -26,132 +18,80 @@ function verifyOwnerAuth(req, res, next) {
 }
 
 // GET /api/pets - Get all pets from 'pets' collection table
-router.get("/", function (req, res) {
+router.get("/", async function (req, res) {
   try {
-    if (isDbAvailable() && Pet) {
-      const query = {};
-      if (req.query.type) query.type = new RegExp(req.query.type, "i");
-      if (req.query.ownerEmail) query.ownerEmail = req.query.ownerEmail;
-      if (req.query.ownerPhone) query.ownerPhone = req.query.ownerPhone;
-      if (req.query.status) query.status = req.query.status;
-      if (req.query.ownerId) query.ownerId = req.query.ownerId;
-
-      return Pet.find(query).populate('ownerId').sort({ createdAt: -1 }).then(function(dbPets) {
-        return res.json({
-          success: true,
-          count: dbPets.length,
-          collection: "pets",
-          data: dbPets
-        });
-      }).catch(function(err) {
-        return res.status(500).json({ success: false, message: err.message });
-      });
-    }
-
-    let filtered = memoryPets;
+    let query = {};
     if (req.query.type) {
-      filtered = filtered.filter(function(p) { return p.type && p.type.toLowerCase().includes(req.query.type.toLowerCase()); });
+      query.species = new RegExp(req.query.type, 'i');
     }
-    if (req.query.ownerEmail) {
-      filtered = filtered.filter(function(p) { return p.ownerEmail && p.ownerEmail.toLowerCase() === req.query.ownerEmail.toLowerCase(); });
-    }
-    if (req.query.status) {
-      filtered = filtered.filter(function(p) { return p.status === req.query.status; });
-    }
-    if (req.query.ownerId) {
-      filtered = filtered.filter(function(p) { return p.ownerId === req.query.ownerId; });
-    }
+    if (req.query.ownerEmail) query.ownerEmail = req.query.ownerEmail;
+    if (req.query.ownerPhone) query.ownerPhone = req.query.ownerPhone;
+    if (req.query.status) query.status = req.query.status;
+    if (req.query.ownerId) query.ownerId = req.query.ownerId;
+
+    const dbPets = await Pet.find(query).sort({ createdAt: -1 });
 
     return res.json({
       success: true,
-      count: filtered.length,
+      count: dbPets.length,
       collection: "pets",
-      data: filtered
+      data: dbPets
     });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
 });
 
-// GET /api/pets/:id - Get single pet by ID from 'pets' collection table
-router.get("/:id", function (req, res) {
+// GET /api/pets/:id - Get single pet by ID
+router.get("/:id", async function (req, res) {
   try {
     const idParam = req.params.id;
 
-    if (isDbAvailable() && Pet) {
-      return Pet.findById(idParam).populate('ownerId').then(function(dbPet) {
-        if (dbPet) return res.json({ success: true, data: dbPet });
-
-        const memPet = memoryPets.find(function(p) { return String(p._id) === String(idParam) || String(p.id) === String(idParam); });
-        if (!memPet) return res.status(404).json({ success: false, message: "Pet record not found." });
-        return res.json({ success: true, data: memPet });
-      }).catch(function() {
-        const memPet = memoryPets.find(function(p) { return String(p._id) === String(idParam) || String(p.id) === String(idParam); });
-        if (!memPet) return res.status(404).json({ success: false, message: "Pet record not found." });
-        return res.json({ success: true, data: memPet });
-      });
+    if (!mongoose.Types.ObjectId.isValid(idParam)) {
+        return res.status(404).json({ success: false, message: "Invalid Pet ID format." });
     }
 
-    const memPet = memoryPets.find(function(p) { return String(p._id) === String(idParam) || String(p.id) === String(idParam); });
-    if (!memPet) return res.status(404).json({ success: false, message: "Pet record not found." });
-    return res.json({ success: true, data: memPet });
+    const dbPet = await Pet.findById(idParam);
+
+    if (dbPet) return res.json({ success: true, data: dbPet });
+    
+    return res.status(404).json({ success: false, message: "Pet record not found." });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
 });
 
-// POST /api/pets - Register new pet into 'pets' collection table
-router.post("/", verifyOwnerAuth, function (req, res) {
+// POST /api/pets - Register new pet
+router.post("/", verifyOwnerAuth, async function (req, res) {
   try {
     const body = req.body || {};
-    if (!body.name || !body.type) {
+    if (!body.name || !body.type && !body.species) { // Handle type or species
       return res.status(400).json({ success: false, message: "Pet Name and Type (Dog/Cat/Bird etc.) are required." });
     }
 
-    const newPet = {
+    const newPetData = {
       name: body.name,
-      type: body.type,
+      species: body.type || body.species, // Map to DB column
       breed: body.breed || "Crossbreed",
       gender: body.gender || "Male",
-      age: Number(body.age) || 1,
-      ageUnit: body.ageUnit || "Years",
-      color: body.color || "Standard",
-      weight: Number(body.weight) || 5,
-      weightUnit: body.weightUnit || "kg",
-      image: body.image || "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=600&auto=format&fit=crop",
-      description: body.description || "Registered pet patient.",
-      vaccinated: body.vaccinated === true || body.vaccinated === "true",
-      vaccinationDate: body.vaccinationDate || new Date().toISOString().split("T")[0],
-      healthStatus: body.healthStatus || "Healthy",
-      ownerName: body.ownerName || "Pet Parent",
-      ownerPhone: body.ownerPhone || "+91 98765 43210",
-      ownerEmail: body.ownerEmail || "parent@example.com",
-      ownerId: body.ownerId || "",
-      address: body.address || "Bengaluru",
-      status: "Available",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      age: body.age ? String(body.age) : "1",
+      weight: body.weight ? String(body.weight) : "5",
+      photoUrl: body.image || "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=600&auto=format&fit=crop",
+      ownerId: body.ownerId || ""
     };
-
-    if (isDbAvailable() && Pet) {
-      return Pet.create(newPet).then(function(dbPet) {
-        return res.status(201).json({
-          success: true,
-          message: "Pet Registered Successfully in 'pets' collection table!",
-          data: dbPet
-        });
-      }).catch(function(err) {
-        return res.status(500).json({ success: false, message: err.message });
-      });
+    
+    if (body.medicalHistory) {
+        newPetData.medicalHistory = Array.isArray(body.medicalHistory) ? body.medicalHistory : [body.medicalHistory];
+    } else {
+        newPetData.medicalHistory = ["Healthy"];
     }
 
-    newPet._id = "pet_" + Date.now();
-    newPet.id = memoryPets.length + 101;
-    memoryPets.push(newPet);
+    const newPet = new Pet(newPetData);
+    await newPet.save();
 
     return res.status(201).json({
       success: true,
-      message: "Pet Registered Successfully in 'pets' collection table! (Memory mode)",
+      message: "Pet Registered Successfully!",
       data: newPet
     });
   } catch (error) {
@@ -159,47 +99,51 @@ router.post("/", verifyOwnerAuth, function (req, res) {
   }
 });
 
-// PUT /api/pets/:id - Update pet record in 'pets' collection table
-router.put("/:id", verifyOwnerAuth, function (req, res) {
+// PUT /api/pets/:id - Update pet record
+router.put("/:id", verifyOwnerAuth, async function (req, res) {
   try {
     const idParam = req.params.id;
     const body = req.body || {};
-    body.updatedAt = new Date().toISOString();
-
-    if (isDbAvailable() && Pet) {
-      return Pet.findByIdAndUpdate(idParam, body, { new: true }).then(function(updatedPet) {
-        if (updatedPet) return res.json({ success: true, message: "Pet updated successfully!", data: updatedPet });
-        return res.status(404).json({ success: false, message: "Pet record not found." });
-      });
+    
+    if (!mongoose.Types.ObjectId.isValid(idParam)) {
+        return res.status(404).json({ success: false, message: "Invalid Pet ID format." });
     }
 
-    const index = memoryPets.findIndex(function(p) { return String(p._id) === String(idParam) || String(p.id) === String(idParam); });
-    if (index === -1) return res.status(404).json({ success: false, message: "Pet record not found." });
+    const updateData = {};
+    if (body.name !== undefined) updateData.name = body.name;
+    if (body.type !== undefined || body.species !== undefined) updateData.species = body.type || body.species;
+    if (body.breed !== undefined) updateData.breed = body.breed;
+    if (body.gender !== undefined) updateData.gender = body.gender;
+    if (body.age !== undefined) updateData.age = String(body.age);
+    if (body.weight !== undefined) updateData.weight = String(body.weight);
+    if (body.image !== undefined || body.photoUrl !== undefined) updateData.photoUrl = body.image || body.photoUrl;
 
-    memoryPets[index] = Object.assign({}, memoryPets[index], body);
-    return res.json({ success: true, message: "Pet updated successfully!", data: memoryPets[index] });
+    const updatedPet = await Pet.findByIdAndUpdate(
+        idParam,
+        { $set: updateData },
+        { new: true }
+    );
+
+    if (updatedPet) return res.json({ success: true, message: "Pet updated successfully!", data: updatedPet });
+    return res.status(404).json({ success: false, message: "Pet record not found." });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
 });
 
-// DELETE /api/pets/:id - Delete pet record from 'pets' collection table
-router.delete("/:id", verifyOwnerAuth, function (req, res) {
+// DELETE /api/pets/:id - Delete pet record
+router.delete("/:id", verifyOwnerAuth, async function (req, res) {
   try {
     const idParam = req.params.id;
-
-    if (isDbAvailable() && Pet) {
-      return Pet.findByIdAndDelete(idParam).then(function(deletedPet) {
-        if (deletedPet) return res.json({ success: true, message: "Pet deleted from 'pets' collection table!" });
-        return res.status(404).json({ success: false, message: "Pet record not found." });
-      });
+    
+    if (!mongoose.Types.ObjectId.isValid(idParam)) {
+        return res.status(404).json({ success: false, message: "Invalid Pet ID format." });
     }
 
-    const initLen = memoryPets.length;
-    memoryPets = memoryPets.filter(function(p) { return String(p._id) !== String(idParam) && String(p.id) !== String(idParam); });
+    const deletedPet = await Pet.findByIdAndDelete(idParam);
 
-    if (memoryPets.length === initLen) return res.status(404).json({ success: false, message: "Pet record not found." });
-    return res.json({ success: true, message: "Pet deleted successfully!" });
+    if (deletedPet) return res.json({ success: true, message: "Pet deleted!" });
+    return res.status(404).json({ success: false, message: "Pet record not found." });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
