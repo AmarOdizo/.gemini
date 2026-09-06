@@ -32,7 +32,7 @@ const VetProfile = () => {
 
     const fetchVet = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/vets/${vetId}`);
+        const res = await fetch(`https://odizopetcare.onrender.com/api/vets/${vetId}`);
         if (res.ok) {
           const data = await res.json();
           setVet(data.data);
@@ -50,7 +50,7 @@ const VetProfile = () => {
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       const token = localStorage.getItem('userToken') || '';
-      fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/pets?ownerId=${parsedUser.id || parsedUser._id}`, {
+      fetch(`https://odizopetcare.onrender.com/api/pets?ownerId=${parsedUser.id || parsedUser._id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -65,7 +65,7 @@ const VetProfile = () => {
         .catch(err => console.error("Error fetching pets", err));
 
       // Fetch favorites
-      fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/favorites?ownerId=${parsedUser.id || parsedUser._id}`)
+      fetch(`https://odizopetcare.onrender.com/api/favorites?ownerId=${parsedUser.id || parsedUser._id}`)
         .then(res => res.json())
         .then(data => {
           if (data.success && data.data) {
@@ -154,7 +154,7 @@ const VetProfile = () => {
     try {
       if (isFavorite) {
         // Remove favorite
-        await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/favorites`, {
+        await fetch(`https://odizopetcare.onrender.com/api/favorites`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ownerId, vetId: vet._id || vet.id })
@@ -163,7 +163,7 @@ const VetProfile = () => {
         setFavoriteImage('');
       } else {
         // Add favorite
-        const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/favorites`, {
+        const res = await fetch(`https://odizopetcare.onrender.com/api/favorites`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ownerId, vetId: vet._id || vet.id, favoriteProfileImage: favoriteImage })
@@ -186,7 +186,7 @@ const VetProfile = () => {
     reader.readAsDataURL(file);
     reader.onload = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/imagekit/upload`, {
+        const res = await fetch(`https://odizopetcare.onrender.com/api/imagekit/upload`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ file: reader.result, fileName: file.name, folder: '/favorites' })
@@ -198,7 +198,7 @@ const VetProfile = () => {
           if (isFavorite) {
             const storedUser = localStorage.getItem('currentUser');
             const user = JSON.parse(storedUser);
-            await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/favorites`, {
+            await fetch(`https://odizopetcare.onrender.com/api/favorites`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ ownerId: user.id || user._id, vetId: vet._id || vet.id, favoriteProfileImage: data.url })

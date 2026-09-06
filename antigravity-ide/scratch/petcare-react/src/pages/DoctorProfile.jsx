@@ -37,7 +37,7 @@ const DoctorProfile = () => {
   const handleSave = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/vets/${user._id}`, {
+      const res = await fetch(`https://odizopetcare.onrender.com/api/vets/${user._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

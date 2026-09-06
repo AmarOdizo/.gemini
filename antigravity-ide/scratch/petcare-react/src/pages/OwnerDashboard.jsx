@@ -32,9 +32,9 @@ const OwnerDashboard = () => {
   const fetchData = async (currentUser) => {
     try {
       const [apptsRes, vetsRes, petsRes] = await Promise.all([
-        fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/consultations?ownerId=${currentUser._id || currentUser.id}`),
-        fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/vets`),
-        fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/pets?ownerId=${currentUser._id || currentUser.id}`)
+        fetch(`https://odizopetcare.onrender.com/api/consultations?ownerId=${currentUser._id || currentUser.id}`),
+        fetch(`https://odizopetcare.onrender.com/api/vets`),
+        fetch(`https://odizopetcare.onrender.com/api/pets?ownerId=${currentUser._id || currentUser.id}`)
       ]);
 
       if (apptsRes.ok) {
@@ -92,7 +92,7 @@ const OwnerDashboard = () => {
       };
 
       const token = localStorage.getItem('userToken') || '';
-      const apptRes = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/appointments`, {
+      const apptRes = await fetch(`https://odizopetcare.onrender.com/api/appointments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(payload)
@@ -102,7 +102,7 @@ const OwnerDashboard = () => {
       if (!apptRes.ok || !apptJson.success) throw new Error(apptJson.message);
 
       const consultPayload = { ...payload, appointmentId: apptJson.appointment._id };
-      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/consultations`, {
+      const res = await fetch(`https://odizopetcare.onrender.com/api/consultations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(consultPayload)
