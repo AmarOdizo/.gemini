@@ -1,0 +1,20 @@
+- `[x]` 1. **Mobile Navigation**
+  - `[x]` Update `OwnerSidebar.jsx` with mobile bottom nav
+  - `[x]` Update `VetSidebar.jsx` with mobile bottom nav
+- `[x]` 2. **Global & Public Pages Layout Fixes**
+  - `[x]` `App.jsx` check / CSS checks
+  - `[x]` `Home.jsx` responsive adjustments
+  - `[x]` `Login.jsx` & `Register.jsx` responsive adjustments
+  - `[x]` `VetRegister.jsx` responsive adjustments
+- `[x]` 3. **Owner Portal Layout Fixes**
+  - `[x]` `OwnerDashboard.jsx` (padding, grid, quick book)
+  - `[x]` `FindVets.jsx` (grid stacking)
+  - `[x]` `MyPets.jsx` (cards, add pet form)
+  - `[x]` `Appointments.jsx` (table/list stacking)
+  - `[x]` `Prescription.jsx` (table overflow)
+- `[x]` 4. **Vet Portal Layout Fixes**
+  - `[x]` `DoctorDashboard.jsx` (padding, queue layout)
+  - `[x]` `VetAppointments.jsx` (table/list stacking)
+  - `[x]` `Prescribe.jsx` (form layout)
+  - `[x]` `VetEarnings.jsx` (chart/stats layout)
+  - `[x]` `DoctorProfile.jsx` & `VetAvailability.jsx`

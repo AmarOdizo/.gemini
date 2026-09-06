@@ -169,7 +169,7 @@ const MyPets = () => {
     <div className="bg-background text-on-background font-body-md min-h-screen flex relative">
       <OwnerSidebar />
       
-      <main className="flex-grow ml-0 md:ml-[280px] p-4 md:p-8 pb-12 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
+      <main className="flex-grow ml-0 md:ml-[280px] p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
         <TopNav title="My Pets" subtitle="Manage your pet profiles and health records." />
 
         <div className="flex justify-between items-center bg-surface-container-low p-4 rounded-xl border border-outline-variant/50">
@@ -271,7 +271,7 @@ const MyPets = () => {
       {/* Add Pet Modal (Redesigned) */}
       <div id="addPetModal" className="fixed inset-0 z-[100] hidden">
         <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => document.getElementById('addPetModal').classList.add('hidden')}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-surface-container-lowest rounded-2xl shadow-2xl overflow-hidden z-10 border border-outline-variant/30 max-h-[90vh] flex flex-col">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[95%] md:w-full max-w-2xl bg-surface-container-lowest rounded-2xl shadow-2xl overflow-hidden z-10 border border-outline-variant/30 max-h-[90vh] flex flex-col">
           
           <div className="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-primary text-on-primary">
             <h3 className="font-headline-sm font-bold text-lg flex items-center gap-2">

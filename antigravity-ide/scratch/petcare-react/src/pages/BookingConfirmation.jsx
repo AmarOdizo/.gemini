@@ -73,7 +73,7 @@ const BookingConfirmation = () => {
     <div className="bg-background text-on-background font-body-md min-h-screen flex">
       <OwnerSidebar />
       
-      <main className="flex-grow ml-0 md:ml-[280px] p-4 md:p-8 pb-12 md:pb-8 flex flex-col items-center justify-center min-h-screen max-w-[1280px] mx-auto w-full">
+      <main className="flex-grow ml-0 md:ml-[280px] p-4 md:p-8 pb-24 md:pb-8 flex flex-col items-center justify-center min-h-screen max-w-[1280px] mx-auto w-full">
         <div className="w-full max-w-3xl">
           {/* Header Section */}
           <div className="text-center mb-8 animate-fade-in-up">

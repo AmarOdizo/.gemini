@@ -40,7 +40,7 @@ const TopNav = ({ title, subtitle, backLink }) => {
           </Link>
         ) : null}
         
-        <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
+        <h2 className="font-headline-lg text-xl md:text-2xl font-bold text-on-surface">
           {title || `Welcome back, ${firstName}! 👋`}
         </h2>
         {subtitle && (

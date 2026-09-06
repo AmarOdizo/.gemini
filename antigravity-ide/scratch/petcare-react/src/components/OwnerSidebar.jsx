@@ -1,8 +1,9 @@
 import React from 'react';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
 
 const OwnerSidebar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -19,59 +20,86 @@ const OwnerSidebar = () => {
     }`;
 
   return (
-    <nav className="bg-surface/80 backdrop-blur-md border-r border-outline-variant/30 hidden md:flex flex-col h-screen w-[280px] p-6 gap-6 fixed left-0 top-0 z-40 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
-      {/* Header Brand */}
-      <Link to="/" className="flex items-center gap-3 mb-4 px-2 group">
-        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:scale-105 transition-transform">
-          <span className="material-symbols-outlined text-primary text-2xl filled-icon">pets</span>
-        </div>
-        <div>
-          <h1 className="font-headline-sm text-xl font-black text-primary tracking-tight">
-            Paws<span className="text-[#FF9933]">India</span> 🇮🇳
-          </h1>
-          <p className="font-label-md text-[10px] uppercase tracking-wider text-on-surface-variant font-bold">Veterinary Portal</p>
-        </div>
-      </Link>
-      
-      {/* Main Nav Links */}
-      <div className="flex flex-col gap-2 flex-grow">
-        <NavLink to="/owner-dashboard" className={navLinkClass}>
-          <span className="material-symbols-outlined filled-icon text-[22px]">dashboard</span>
-          <span className="font-label-md text-sm">Dashboard</span>
-        </NavLink>
-        <NavLink to="/find-vets" className={navLinkClass}>
-          <span className="material-symbols-outlined text-[22px]">search</span>
-          <span className="font-label-md text-sm">Find Vets</span>
-        </NavLink>
-        <NavLink to="/my-pets" className={navLinkClass}>
-          <span className="material-symbols-outlined text-[22px]">pets</span>
-          <span className="font-label-md text-sm">My Pets</span>
-        </NavLink>
-        <NavLink to="/appointments" className={navLinkClass}>
-          <span className="material-symbols-outlined text-[22px]">calendar_today</span>
-          <span className="font-label-md text-sm">Appointments</span>
-        </NavLink>
-        <NavLink to="/prescription" className={navLinkClass}>
-          <span className="material-symbols-outlined text-[22px]">medical_services</span>
-          <span className="font-label-md text-sm">Prescriptions</span>
-        </NavLink>
-      </div>
-
-      {/* Footer Actions */}
-      <div className="flex flex-col gap-3 mt-auto">
-        <Link to="/find-vets" className="w-full bg-gradient-to-r from-[#FF7F50] to-[#FF9933] text-white font-label-md text-sm py-3 rounded-xl font-bold mb-2 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all text-center block">
-          Book Appointment
+    <>
+      {/* Desktop Sidebar */}
+      <nav className="bg-surface/80 backdrop-blur-md border-r border-outline-variant/30 hidden md:flex flex-col h-screen w-[280px] p-6 gap-6 fixed left-0 top-0 z-40 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+        {/* Header Brand */}
+        <Link to="/" className="flex items-center gap-3 mb-4 px-2 group">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:scale-105 transition-transform">
+            <span className="material-symbols-outlined text-primary text-2xl filled-icon">pets</span>
+          </div>
+          <div>
+            <h1 className="font-headline-sm text-xl font-black text-primary tracking-tight">
+              Paws<span className="text-[#FF9933]">India</span> 🇮🇳
+            </h1>
+            <p className="font-label-md text-[10px] uppercase tracking-wider text-on-surface-variant font-bold">Veterinary Portal</p>
+          </div>
         </Link>
-        <button className="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all rounded-xl w-full text-left font-bold text-sm">
-          <span className="material-symbols-outlined text-[20px]">help</span>
-          Help & Support
-        </button>
-        <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-2.5 text-error hover:bg-error-container/30 transition-all rounded-xl cursor-pointer w-full text-left font-bold text-sm group">
-          <span className="material-symbols-outlined text-[20px] group-hover:-translate-x-1 transition-transform">logout</span>
-          Logout
+        
+        {/* Main Nav Links */}
+        <div className="flex flex-col gap-2 flex-grow">
+          <NavLink to="/owner-dashboard" className={navLinkClass}>
+            <span className="material-symbols-outlined filled-icon text-[22px]">dashboard</span>
+            <span className="font-label-md text-sm">Dashboard</span>
+          </NavLink>
+          <NavLink to="/find-vets" className={navLinkClass}>
+            <span className="material-symbols-outlined text-[22px]">search</span>
+            <span className="font-label-md text-sm">Find Vets</span>
+          </NavLink>
+          <NavLink to="/my-pets" className={navLinkClass}>
+            <span className="material-symbols-outlined text-[22px]">pets</span>
+            <span className="font-label-md text-sm">My Pets</span>
+          </NavLink>
+          <NavLink to="/appointments" className={navLinkClass}>
+            <span className="material-symbols-outlined text-[22px]">calendar_today</span>
+            <span className="font-label-md text-sm">Appointments</span>
+          </NavLink>
+          <NavLink to="/prescription" className={navLinkClass}>
+            <span className="material-symbols-outlined text-[22px]">medical_services</span>
+            <span className="font-label-md text-sm">Prescriptions</span>
+          </NavLink>
+        </div>
+
+        {/* Footer Actions */}
+        <div className="flex flex-col gap-3 mt-auto">
+          <Link to="/find-vets" className="w-full bg-gradient-to-r from-[#FF7F50] to-[#FF9933] text-white font-label-md text-sm py-3 rounded-xl font-bold mb-2 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all text-center block">
+            Book Appointment
+          </Link>
+          <button className="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all rounded-xl w-full text-left font-bold text-sm">
+            <span className="material-symbols-outlined text-[20px]">help</span>
+            Help & Support
+          </button>
+          <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-2.5 text-error hover:bg-error-container/30 transition-all rounded-xl cursor-pointer w-full text-left font-bold text-sm group">
+            <span className="material-symbols-outlined text-[20px] group-hover:-translate-x-1 transition-transform">logout</span>
+            Logout
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile Bottom Navigation */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant z-50 px-2 flex justify-between items-center shadow-[0_-4px_24px_rgba(0,0,0,0.05)] pb-safe">
+        <NavLink to="/owner-dashboard" className={({ isActive }) => `flex flex-col items-center py-2 px-3 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+          <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/owner-dashboard' ? 'filled-icon' : ''}`}>dashboard</span>
+          <span className="text-[10px] font-bold mt-1">Home</span>
+        </NavLink>
+        <NavLink to="/find-vets" className={({ isActive }) => `flex flex-col items-center py-2 px-3 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+          <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/find-vets' ? 'filled-icon' : ''}`}>search</span>
+          <span className="text-[10px] font-bold mt-1">Search</span>
+        </NavLink>
+        <NavLink to="/my-pets" className={({ isActive }) => `flex flex-col items-center py-2 px-3 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+          <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/my-pets' ? 'filled-icon' : ''}`}>pets</span>
+          <span className="text-[10px] font-bold mt-1">Pets</span>
+        </NavLink>
+        <NavLink to="/appointments" className={({ isActive }) => `flex flex-col items-center py-2 px-3 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+          <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/appointments' ? 'filled-icon' : ''}`}>calendar_today</span>
+          <span className="text-[10px] font-bold mt-1">Visits</span>
+        </NavLink>
+        <button onClick={handleLogout} className="flex flex-col items-center py-2 px-3 rounded-lg text-error hover:bg-error-container/20 transition-colors">
+          <span className="material-symbols-outlined text-[22px]">logout</span>
+          <span className="text-[10px] font-bold mt-1">Logout</span>
         </button>
       </div>
-    </nav>
+    </>
   );
 };
 

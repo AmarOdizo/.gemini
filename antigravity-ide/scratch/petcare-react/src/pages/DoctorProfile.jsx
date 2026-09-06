@@ -65,7 +65,7 @@ const DoctorProfile = () => {
     <div className="bg-background text-on-background font-body-md min-h-screen flex">
       <VetSidebar />
       
-      <main className="flex-grow ml-0 md:ml-[280px] p-4 md:p-8 pb-12 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
+      <main className="flex-grow ml-0 md:ml-[280px] p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
         <TopNav title="Doctor Profile" subtitle="Manage your professional details and clinic information." />
 
         <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl shadow-sm ambient-shadow overflow-hidden">

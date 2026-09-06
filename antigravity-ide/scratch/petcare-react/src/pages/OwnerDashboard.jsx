@@ -127,7 +127,7 @@ const OwnerDashboard = () => {
     <div className="bg-background text-on-background font-body-md min-h-screen flex">
       <OwnerSidebar />
       
-      <main className="flex-grow ml-0 md:ml-[280px] p-4 md:p-8 pb-12 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
+      <main className="flex-grow ml-0 md:ml-[280px] p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
         <TopNav title={`Welcome back, ${user.name.split(' ')[0]}! 👋`} subtitle="Here's what's happening with your furry friends today." />
 
         <div className="flex flex-col gap-6 w-full">

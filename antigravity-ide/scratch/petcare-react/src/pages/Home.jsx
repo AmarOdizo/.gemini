@@ -33,11 +33,11 @@ const Home = () => {
         <div className="flex items-center gap-4">
           {!user ? (
             <div className="flex items-center gap-2">
-              <Link to="/login" className="font-label-md text-sm font-semibold text-primary border border-primary px-4 py-1.5 rounded-lg hover:bg-primary/10 transition-colors">
-                Login / Sign In
+              <Link to="/login" className="font-label-md text-sm font-semibold text-primary border border-primary px-3 md:px-4 py-1.5 rounded-lg hover:bg-primary/10 transition-colors">
+                <span className="md:hidden">Login</span><span className="hidden md:inline">Login / Sign In</span>
               </Link>
-              <Link to="/register" className="font-label-md text-sm font-semibold bg-primary text-on-primary px-4 py-1.5 rounded-lg hover:bg-surface-tint transition-colors shadow-sm">
-                Create Account
+              <Link to="/register" className="font-label-md text-sm font-semibold bg-primary text-on-primary px-3 md:px-4 py-1.5 rounded-lg hover:bg-surface-tint transition-colors shadow-sm">
+                <span className="md:hidden">Register</span><span className="hidden md:inline">Create Account</span>
               </Link>
             </div>
           ) : (
