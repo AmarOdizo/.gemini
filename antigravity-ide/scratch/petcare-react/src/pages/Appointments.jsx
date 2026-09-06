@@ -39,7 +39,7 @@ const Appointments = () => {
   const fetchAppointments = async (userId) => {
     try {
       const token = localStorage.getItem('userToken') || '';
-      const res = await fetch(`http://localhost:5000/api/appointments?ownerId=${userId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/appointments?ownerId=${userId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -58,7 +58,7 @@ const Appointments = () => {
   const fetchPets = async (userId) => {
     try {
       const token = localStorage.getItem('userToken') || '';
-      const res = await fetch(`http://localhost:5000/api/pets?ownerId=${userId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/pets?ownerId=${userId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -73,7 +73,7 @@ const Appointments = () => {
 
   const fetchVets = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/auth/vets');
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/vets`);
       const data = await res.json();
       if (data.success && data.data) {
         setVets(data.data);
@@ -88,7 +88,7 @@ const Appointments = () => {
     if (!window.confirm("Are you sure you want to cancel this appointment?")) return;
     try {
       const token = localStorage.getItem('userToken') || '';
-      const res = await fetch(`http://localhost:5000/api/consultations/${id}`, { 
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/consultations/${id}`, { 
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

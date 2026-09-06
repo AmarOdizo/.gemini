@@ -10,7 +10,7 @@ const FindVets = () => {
   useEffect(() => {
     const fetchVets = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/vets');
+        const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/vets`);
         if (res.ok) {
           const data = await res.json();
           setVets(data.data || []);

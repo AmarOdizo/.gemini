@@ -41,7 +41,7 @@ const MyPets = () => {
   const fetchPets = async (userId) => {
     try {
       const token = localStorage.getItem('userToken') || '';
-      const res = await fetch(`http://localhost:5000/api/pets?ownerId=${userId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/pets?ownerId=${userId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -67,7 +67,7 @@ const MyPets = () => {
     reader.readAsDataURL(file);
     reader.onloadend = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/imagekit/upload', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/imagekit/upload`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ file: reader.result, fileName: file.name, folder: '/pets' })
@@ -102,7 +102,7 @@ const MyPets = () => {
       
       const token = localStorage.getItem('userToken') || '';
       
-      const res = await fetch('http://localhost:5000/api/pets', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/pets`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -134,7 +134,7 @@ const MyPets = () => {
     if (!window.confirm("Are you sure you want to remove this pet profile?")) return;
     try {
       const token = localStorage.getItem('userToken') || '';
-      const res = await fetch(`http://localhost:5000/api/pets/${petId}`, { 
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/pets/${petId}`, { 
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

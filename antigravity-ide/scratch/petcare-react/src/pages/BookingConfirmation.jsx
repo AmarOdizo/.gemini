@@ -28,7 +28,7 @@ const BookingConfirmation = () => {
       const finalData = { ...data, reason: data.reason || data.reasonForVisit || 'Routine Checkup' };
       
       // 1. Create Appointment first
-      const apptRes = await fetch('http://localhost:5000/api/appointments', {
+      const apptRes = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/appointments`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ const BookingConfirmation = () => {
 
       // 2. Create Consultation linked to the Appointment
       const consultPayload = { ...finalData, appointmentId: apptJson.appointment._id || apptJson.appointment.id };
-      const res = await fetch('http://localhost:5000/api/consultations', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/consultations`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
