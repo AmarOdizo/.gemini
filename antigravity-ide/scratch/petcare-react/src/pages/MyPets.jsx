@@ -522,14 +522,16 @@ const MyPets = () => {
             </div>
 
             {/* Modal Form */}
-            <form onSubmit={isEditModalOpen ? handleEditPetSubmit : handleAddPetSubmit} className="p-6 space-y-4">
+            <form onSubmit={isEditModalOpen ? handleEditPetSubmit : handleAddPetSubmit} className="p-6 space-y-8">
+              
               {/* Photo Upload Section */}
-              <div className="space-y-2">
-                <label className="block text-xs font-bold uppercase text-on-surface-variant">
-                  Pet Profile Photo
-                </label>
-                <div className="flex items-center gap-4">
-                  <div className="w-20 h-20 rounded-2xl bg-surface-container overflow-hidden border border-outline-variant/50 relative shrink-0">
+              <div className="space-y-3">
+                <h3 className="text-sm font-black text-on-surface flex items-center gap-2 border-b border-outline-variant/30 pb-2">
+                  <span className="material-symbols-outlined text-primary text-[18px]">add_a_photo</span>
+                  Pet Photo
+                </h3>
+                <div className="flex flex-col sm:flex-row items-center gap-6 bg-surface-container-low p-4 rounded-2xl border border-outline-variant/30">
+                  <div className="w-24 h-24 rounded-full bg-surface-container overflow-hidden border-4 border-surface shadow-md relative shrink-0 group">
                     <img
                       src={
                         formData.image ||
@@ -537,18 +539,18 @@ const MyPets = () => {
                         DEFAULT_PET_IMAGES.Other
                       }
                       alt="Preview"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover group-hover:opacity-75 transition-opacity"
                     />
                     {uploadingImage && (
-                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white">
-                        <span className="material-symbols-outlined animate-spin text-xl">sync</span>
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white rounded-full">
+                        <span className="material-symbols-outlined animate-spin text-2xl">sync</span>
                       </div>
                     )}
                   </div>
-                  <div className="space-y-1.5 flex-1">
-                    <label className="cursor-pointer bg-surface-container hover:bg-surface-container-high border border-outline-variant text-on-surface text-xs font-bold px-4 py-2 rounded-xl inline-flex items-center gap-2 transition-all">
-                      <span className="material-symbols-outlined text-[18px]">cloud_upload</span>
-                      {uploadingImage ? 'Uploading to ImageKit...' : 'Upload Photo via ImageKit'}
+                  <div className="space-y-3 flex-1 w-full text-center sm:text-left">
+                    <label className="cursor-pointer bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold px-5 py-2.5 rounded-xl inline-flex items-center justify-center sm:justify-start gap-2 transition-all border border-primary/20 w-full sm:w-auto">
+                      <span className="material-symbols-outlined text-[20px]">cloud_upload</span>
+                      {uploadingImage ? 'Uploading...' : 'Upload Photo'}
                       <input
                         type="file"
                         accept="image/*"
@@ -557,226 +559,273 @@ const MyPets = () => {
                         disabled={uploadingImage}
                       />
                     </label>
+                    <div className="relative">
+                       <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-[16px]">link</span>
+                       <input
+                        type="url"
+                        placeholder="Or paste Image URL directly..."
+                        value={formData.image}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, image: e.target.value }))}
+                        className="w-full pl-9 pr-3 py-2 bg-surface-container border border-outline-variant/40 rounded-xl text-xs focus:outline-none focus:border-primary text-on-surface transition-colors"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Basic Information */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-black text-on-surface flex items-center gap-2 border-b border-outline-variant/30 pb-2">
+                  <span className="material-symbols-outlined text-primary text-[18px]">info</span>
+                  Basic Information
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Name */}
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-bold text-on-surface-variant">
+                      Pet Name <span className="text-error">*</span>
+                    </label>
+                    <div className="relative">
+                      <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-[18px]">pets</span>
+                      <input
+                        type="text"
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
+                        placeholder="e.g. Max, Bella"
+                        className="w-full pl-10 pr-3 py-2.5 bg-surface-container border border-outline-variant/40 rounded-xl text-sm focus:outline-none focus:border-primary text-on-surface font-semibold transition-all hover:bg-surface-container-high"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Species */}
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-bold text-on-surface-variant">
+                      Species <span className="text-error">*</span>
+                    </label>
+                    <div className="relative">
+                      <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-[18px]">category</span>
+                      <select
+                        value={formData.species}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, species: e.target.value }))}
+                        className="w-full pl-10 pr-3 py-2.5 bg-surface-container border border-outline-variant/40 rounded-xl text-sm focus:outline-none focus:border-primary text-on-surface font-semibold appearance-none cursor-pointer transition-all hover:bg-surface-container-high"
+                      >
+                        <option value="Dog">Dog</option>
+                        <option value="Cat">Cat</option>
+                        <option value="Bird">Bird</option>
+                        <option value="Rabbit">Rabbit</option>
+                        <option value="Other">Other</option>
+                      </select>
+                      <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline-variant pointer-events-none">expand_more</span>
+                    </div>
+                  </div>
+
+                  {/* Breed */}
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-bold text-on-surface-variant">Breed</label>
                     <input
-                      type="url"
-                      placeholder="Or paste Image URL directly..."
-                      value={formData.image}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, image: e.target.value }))}
-                      className="w-full px-3 py-2 bg-surface-container border border-outline-variant/40 rounded-xl text-xs focus:outline-none focus:border-primary text-on-surface"
+                      type="text"
+                      value={formData.breed}
+                      onChange={(e) => setFormData((prev) => ({ ...prev, breed: e.target.value }))}
+                      placeholder="e.g. Golden Retriever"
+                      className="w-full px-4 py-2.5 bg-surface-container border border-outline-variant/40 rounded-xl text-sm focus:outline-none focus:border-primary text-on-surface font-semibold transition-all hover:bg-surface-container-high"
+                    />
+                  </div>
+
+                  {/* Gender */}
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-bold text-on-surface-variant">Gender</label>
+                    <div className="relative">
+                      <select
+                        value={formData.gender}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, gender: e.target.value }))}
+                        className="w-full px-4 py-2.5 bg-surface-container border border-outline-variant/40 rounded-xl text-sm focus:outline-none focus:border-primary text-on-surface font-semibold appearance-none cursor-pointer transition-all hover:bg-surface-container-high"
+                      >
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                      <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline-variant pointer-events-none">expand_more</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Physical Traits */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-black text-on-surface flex items-center gap-2 border-b border-outline-variant/30 pb-2">
+                  <span className="material-symbols-outlined text-primary text-[18px]">straighten</span>
+                  Physical Traits
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {/* Age */}
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-bold text-on-surface-variant">Age</label>
+                    <div className="flex bg-surface-container border border-outline-variant/40 rounded-xl overflow-hidden focus-within:border-primary transition-all">
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.1"
+                        value={formData.age}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, age: e.target.value }))}
+                        className="w-1/2 px-3 py-2.5 bg-transparent text-sm focus:outline-none text-on-surface font-semibold"
+                      />
+                      <select
+                        value={formData.ageUnit}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, ageUnit: e.target.value }))}
+                        className="w-1/2 px-2 py-2.5 bg-surface-container-high border-l border-outline-variant/40 text-xs focus:outline-none text-on-surface font-semibold cursor-pointer"
+                      >
+                        <option value="Years">Years</option>
+                        <option value="Months">Months</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Weight */}
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-bold text-on-surface-variant">Weight</label>
+                    <div className="flex bg-surface-container border border-outline-variant/40 rounded-xl overflow-hidden focus-within:border-primary transition-all">
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.1"
+                        value={formData.weight}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, weight: e.target.value }))}
+                        className="w-1/2 px-3 py-2.5 bg-transparent text-sm focus:outline-none text-on-surface font-semibold"
+                      />
+                      <select
+                        value={formData.weightUnit}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, weightUnit: e.target.value }))}
+                        className="w-1/2 px-2 py-2.5 bg-surface-container-high border-l border-outline-variant/40 text-xs focus:outline-none text-on-surface font-semibold cursor-pointer"
+                      >
+                        <option value="kg">kg</option>
+                        <option value="lb">lb</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Color */}
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-bold text-on-surface-variant">Color / Markings</label>
+                    <input
+                      type="text"
+                      value={formData.color}
+                      onChange={(e) => setFormData((prev) => ({ ...prev, color: e.target.value }))}
+                      placeholder="e.g. Brown & White"
+                      className="w-full px-4 py-2.5 bg-surface-container border border-outline-variant/40 rounded-xl text-sm focus:outline-none focus:border-primary text-on-surface font-semibold transition-all hover:bg-surface-container-high"
                     />
                   </div>
                 </div>
               </div>
 
-              {/* Grid Fields */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Name */}
-                <div className="space-y-1">
-                  <label className="block text-xs font-bold text-on-surface">
-                    Pet Name <span className="text-error">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
-                    placeholder="e.g. Max, Bella, Bruno"
-                    className="w-full px-3 py-2 bg-surface-container border border-outline-variant/40 rounded-xl text-xs focus:outline-none focus:border-primary text-on-surface font-semibold"
-                  />
-                </div>
-
-                {/* Species */}
-                <div className="space-y-1">
-                  <label className="block text-xs font-bold text-on-surface">
-                    Species / Type <span className="text-error">*</span>
-                  </label>
-                  <select
-                    value={formData.species}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, species: e.target.value }))}
-                    className="w-full px-3 py-2 bg-surface-container border border-outline-variant/40 rounded-xl text-xs focus:outline-none focus:border-primary text-on-surface font-semibold"
-                  >
-                    <option value="Dog">Dog</option>
-                    <option value="Cat">Cat</option>
-                    <option value="Bird">Bird</option>
-                    <option value="Rabbit">Rabbit</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-
-                {/* Breed */}
-                <div className="space-y-1">
-                  <label className="block text-xs font-bold text-on-surface">Breed</label>
-                  <input
-                    type="text"
-                    value={formData.breed}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, breed: e.target.value }))}
-                    placeholder="e.g. Golden Retriever, Persian"
-                    className="w-full px-3 py-2 bg-surface-container border border-outline-variant/40 rounded-xl text-xs focus:outline-none focus:border-primary text-on-surface font-semibold"
-                  />
-                </div>
-
-                {/* Gender */}
-                <div className="space-y-1">
-                  <label className="block text-xs font-bold text-on-surface">Gender</label>
-                  <select
-                    value={formData.gender}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, gender: e.target.value }))}
-                    className="w-full px-3 py-2 bg-surface-container border border-outline-variant/40 rounded-xl text-xs focus:outline-none focus:border-primary text-on-surface font-semibold"
-                  >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </select>
-                </div>
-
-                {/* Age & Unit */}
-                <div className="space-y-1">
-                  <label className="block text-xs font-bold text-on-surface">Age</label>
-                  <div className="flex gap-2">
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.1"
-                      value={formData.age}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, age: e.target.value }))}
-                      className="w-1/2 px-3 py-2 bg-surface-container border border-outline-variant/40 rounded-xl text-xs focus:outline-none focus:border-primary text-on-surface font-semibold"
-                    />
-                    <select
-                      value={formData.ageUnit}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, ageUnit: e.target.value }))}
-                      className="w-1/2 px-3 py-2 bg-surface-container border border-outline-variant/40 rounded-xl text-xs focus:outline-none focus:border-primary text-on-surface font-semibold"
-                    >
-                      <option value="Years">Years</option>
-                      <option value="Months">Months</option>
-                    </select>
+              {/* Health & Status */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-black text-on-surface flex items-center gap-2 border-b border-outline-variant/30 pb-2">
+                  <span className="material-symbols-outlined text-primary text-[18px]">medical_services</span>
+                  Health & Status
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Health Status */}
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-bold text-on-surface-variant">Health Status</label>
+                    <div className="relative">
+                       <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-[18px]">monitor_heart</span>
+                      <select
+                        value={formData.healthStatus}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, healthStatus: e.target.value }))}
+                        className="w-full pl-10 pr-3 py-2.5 bg-surface-container border border-outline-variant/40 rounded-xl text-sm focus:outline-none focus:border-primary text-on-surface font-semibold appearance-none cursor-pointer transition-all hover:bg-surface-container-high"
+                      >
+                        <option value="Healthy">Healthy</option>
+                        <option value="Sick">Sick</option>
+                        <option value="Under Treatment">Under Treatment</option>
+                      </select>
+                       <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline-variant pointer-events-none">expand_more</span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Weight & Unit */}
-                <div className="space-y-1">
-                  <label className="block text-xs font-bold text-on-surface">Weight</label>
-                  <div className="flex gap-2">
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.1"
-                      value={formData.weight}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, weight: e.target.value }))}
-                      className="w-1/2 px-3 py-2 bg-surface-container border border-outline-variant/40 rounded-xl text-xs focus:outline-none focus:border-primary text-on-surface font-semibold"
-                    />
-                    <select
-                      value={formData.weightUnit}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, weightUnit: e.target.value }))}
-                      className="w-1/2 px-3 py-2 bg-surface-container border border-outline-variant/40 rounded-xl text-xs focus:outline-none focus:border-primary text-on-surface font-semibold"
-                    >
-                      <option value="kg">kg</option>
-                      <option value="lb">lb</option>
-                    </select>
+                  {/* General Status */}
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-bold text-on-surface-variant">Pet Status</label>
+                    <div className="relative">
+                      <select
+                        value={formData.status}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, status: e.target.value }))}
+                        className="w-full px-4 py-2.5 bg-surface-container border border-outline-variant/40 rounded-xl text-sm focus:outline-none focus:border-primary text-on-surface font-semibold appearance-none cursor-pointer transition-all hover:bg-surface-container-high"
+                      >
+                        <option value="Available">Available / Active</option>
+                        <option value="Adopted">Adopted</option>
+                        <option value="Sold">Sold</option>
+                        <option value="Inactive">Inactive</option>
+                      </select>
+                      <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline-variant pointer-events-none">expand_more</span>
+                    </div>
                   </div>
-                </div>
-
-                {/* Color */}
-                <div className="space-y-1">
-                  <label className="block text-xs font-bold text-on-surface">Color / Markings</label>
-                  <input
-                    type="text"
-                    value={formData.color}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, color: e.target.value }))}
-                    placeholder="e.g. Brown & White"
-                    className="w-full px-3 py-2 bg-surface-container border border-outline-variant/40 rounded-xl text-xs focus:outline-none focus:border-primary text-on-surface font-semibold"
-                  />
-                </div>
-
-                {/* Health Status */}
-                <div className="space-y-1">
-                  <label className="block text-xs font-bold text-on-surface">Health Status</label>
-                  <select
-                    value={formData.healthStatus}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, healthStatus: e.target.value }))}
-                    className="w-full px-3 py-2 bg-surface-container border border-outline-variant/40 rounded-xl text-xs focus:outline-none focus:border-primary text-on-surface font-semibold"
-                  >
-                    <option value="Healthy">Healthy</option>
-                    <option value="Sick">Sick</option>
-                    <option value="Under Treatment">Under Treatment</option>
-                  </select>
                 </div>
 
                 {/* Vaccination Status & Date */}
-                <div className="space-y-1 sm:col-span-2 bg-surface-container-low p-3 rounded-xl border border-outline-variant/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                  <label className="flex items-center gap-2 text-xs font-bold text-on-surface cursor-pointer">
+                <div className="bg-primary/5 p-4 rounded-xl border border-primary/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all">
+                  <label className="flex items-center gap-3 text-sm font-bold text-on-surface cursor-pointer group">
+                    <div className={`w-5 h-5 rounded flex items-center justify-center transition-colors border ${formData.vaccinated ? 'bg-primary border-primary' : 'bg-surface-container border-outline-variant group-hover:border-primary'}`}>
+                      {formData.vaccinated && <span className="material-symbols-outlined text-white text-[16px]">check</span>}
+                    </div>
                     <input
                       type="checkbox"
                       checked={formData.vaccinated}
                       onChange={(e) => setFormData((prev) => ({ ...prev, vaccinated: e.target.checked }))}
-                      className="w-4 h-4 rounded text-primary focus:ring-primary"
+                      className="hidden"
                     />
                     Is Pet Vaccinated?
                   </label>
 
                   {formData.vaccinated && (
-                    <div className="flex items-center gap-2 text-xs w-full sm:w-auto">
-                      <span className="text-on-surface-variant font-bold shrink-0">Last Vaccination Date:</span>
+                    <div className="flex items-center gap-2 text-sm w-full sm:w-auto animate-fade-in">
+                      <span className="text-on-surface-variant font-semibold shrink-0">Date:</span>
                       <input
                         type="date"
                         value={formData.vaccinationDate}
                         onChange={(e) => setFormData((prev) => ({ ...prev, vaccinationDate: e.target.value }))}
-                        className="px-2.5 py-1 bg-surface-container border border-outline-variant/40 rounded-lg text-xs font-semibold text-on-surface"
+                        className="px-3 py-1.5 bg-surface-container border border-outline-variant/40 rounded-lg text-sm font-semibold text-on-surface focus:outline-none focus:border-primary"
                       />
                     </div>
                   )}
                 </div>
 
-                {/* Status */}
-                <div className="space-y-1 sm:col-span-2">
-                  <label className="block text-xs font-bold text-on-surface">Pet Status</label>
-                  <select
-                    value={formData.status}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, status: e.target.value }))}
-                    className="w-full px-3 py-2 bg-surface-container border border-outline-variant/40 rounded-xl text-xs focus:outline-none focus:border-primary text-on-surface font-semibold"
-                  >
-                    <option value="Available">Available / Active</option>
-                    <option value="Adopted">Adopted</option>
-                    <option value="Sold">Sold</option>
-                    <option value="Inactive">Inactive</option>
-                  </select>
-                </div>
-
                 {/* Description */}
-                <div className="space-y-1 sm:col-span-2">
-                  <label className="block text-xs font-bold text-on-surface">Medical History & Notes</label>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold text-on-surface-variant">Medical History & Notes (Optional)</label>
                   <textarea
                     rows="3"
                     value={formData.description}
                     onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
                     placeholder="Enter any allergies, medical notes, or special care instructions..."
-                    className="w-full px-3 py-2 bg-surface-container border border-outline-variant/40 rounded-xl text-xs focus:outline-none focus:border-primary text-on-surface"
+                    className="w-full px-4 py-3 bg-surface-container border border-outline-variant/40 rounded-xl text-sm focus:outline-none focus:border-primary text-on-surface transition-all hover:bg-surface-container-high resize-none"
                   ></textarea>
                 </div>
               </div>
 
               {/* Form Action Buttons */}
-              <div className="pt-4 border-t border-outline-variant/30 flex justify-end gap-3">
+              <div className="pt-6 mt-6 border-t border-outline-variant/30 flex justify-end gap-4">
                 <button
                   type="button"
                   onClick={() => {
                     setIsAddModalOpen(false);
                     setIsEditModalOpen(false);
                   }}
-                  className="px-4 py-2.5 bg-surface-container text-on-surface-variant font-bold text-xs rounded-xl hover:bg-surface-container-high transition-all"
+                  className="px-6 py-2.5 bg-surface-container text-on-surface font-bold text-sm rounded-xl hover:bg-surface-container-high transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={formSubmitting || uploadingImage}
-                  className="px-6 py-2.5 bg-primary text-white font-bold text-xs rounded-xl shadow-md hover:bg-surface-tint transition-all flex items-center gap-2"
+                  className="px-8 py-2.5 bg-primary text-white font-bold text-sm rounded-xl shadow-[0_4px_14px_0_rgba(var(--color-primary-rgb),0.39)] hover:shadow-[0_6px_20px_rgba(var(--color-primary-rgb),0.23)] hover:-translate-y-0.5 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 >
                   {formSubmitting ? (
                     <>
-                      <span className="material-symbols-outlined animate-spin text-[16px]">sync</span> Saving...
+                      <span className="material-symbols-outlined animate-spin text-[18px]">sync</span> Saving...
                     </>
                   ) : (
                     <>
-                      <span className="material-symbols-outlined text-[16px]">check</span>
+                      <span className="material-symbols-outlined text-[18px]">check_circle</span>
                       {isEditModalOpen ? 'Save Changes' : 'Register Pet'}
                     </>
                   )}
