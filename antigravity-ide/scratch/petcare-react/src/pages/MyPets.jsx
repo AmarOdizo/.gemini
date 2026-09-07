@@ -498,10 +498,10 @@ const MyPets = () => {
       {/* ADD / EDIT PET MODAL FORM */}
       {/* ========================================================================= */}
       {(isAddModalOpen || isEditModalOpen) && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
-          <div className="bg-surface-container-lowest rounded-2xl max-w-2xl w-full border border-outline-variant/40 shadow-2xl overflow-hidden my-8">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-surface-container-lowest rounded-2xl max-w-2xl w-full max-h-[95vh] flex flex-col border border-outline-variant/40 shadow-2xl overflow-hidden">
             {/* Modal Header */}
-            <div className="p-5 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
+            <div className="p-5 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low shrink-0">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-2xl">
                   {isEditModalOpen ? 'edit_note' : 'add_circle'}
@@ -522,7 +522,7 @@ const MyPets = () => {
             </div>
 
             {/* Modal Form */}
-            <form onSubmit={isEditModalOpen ? handleEditPetSubmit : handleAddPetSubmit} className="p-6 space-y-8">
+            <form onSubmit={isEditModalOpen ? handleEditPetSubmit : handleAddPetSubmit} className="p-6 space-y-8 overflow-y-auto">
               
               {/* Photo Upload Section */}
               <div className="space-y-3">
@@ -841,8 +841,8 @@ const MyPets = () => {
       {/* ========================================================================= */}
       {isViewModalOpen && selectedPet && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-surface-container-lowest rounded-2xl max-w-lg w-full border border-outline-variant/40 shadow-2xl overflow-hidden">
-            <div className="relative h-56 bg-surface-container">
+          <div className="bg-surface-container-lowest rounded-2xl max-w-lg w-full max-h-[95vh] flex flex-col border border-outline-variant/40 shadow-2xl overflow-hidden">
+            <div className="relative h-56 bg-surface-container shrink-0">
               <img
                 src={selectedPet.image || DEFAULT_PET_IMAGES[selectedPet.species || selectedPet.type] || DEFAULT_PET_IMAGES.Other}
                 alt={selectedPet.name}
@@ -856,7 +856,7 @@ const MyPets = () => {
               </button>
             </div>
 
-            <div className="p-6 space-y-4">
+            <div className="p-6 space-y-4 overflow-y-auto">
               <div>
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-black text-on-surface">{selectedPet.name}</h2>
