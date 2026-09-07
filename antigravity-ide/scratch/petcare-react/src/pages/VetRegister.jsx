@@ -55,7 +55,7 @@ const VetRegister = () => {
     reader.readAsDataURL(file);
     reader.onload = async () => {
       try {
-        const res = await fetch(`https://odizopetcare.onrender.com/api/imagekit/upload`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/imagekit/upload`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ file: reader.result, fileName: file.name, folder: '/vets' })
@@ -81,7 +81,7 @@ const VetRegister = () => {
     const specs = Object.keys(specializations).filter(k => specializations[k]);
 
     try {
-      const res = await fetch(`https://odizopetcare.onrender.com/api/vets/register`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/vets/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

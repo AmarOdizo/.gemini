@@ -31,6 +31,8 @@ function getAuthenticationParameters(token, expire) {
 
 /**
  * Upload image (Base64 data string, binary buffer, or remote image URL) directly to ImageKit REST API
+ * IMPORTANT: If fileData is a data URI (data:image/...;base64,...), the prefix is automatically stripped.
+ * ImageKit's REST API requires raw base64 string or binary — NOT the full data URI.
  */
 function uploadImage(fileData, fileName, folder = "/pets") {
   return new Promise((resolve, reject) => {
@@ -38,33 +40,51 @@ function uploadImage(fileData, fileName, folder = "/pets") {
       return reject(new Error("File data or image URL is required."));
     }
 
+    // Strip the data URI prefix if present (e.g. "data:image/jpeg;base64,...")
+    // ImageKit requires raw base64 string, not the full data URI
+    let cleanFileData = fileData;
+    if (typeof fileData === "string" && fileData.startsWith("data:")) {
+      const commaIndex = fileData.indexOf(",");
+      if (commaIndex !== -1) {
+        cleanFileData = fileData.substring(commaIndex + 1);
+      }
+    }
+
     const name = fileName || "image_" + Date.now() + ".jpg";
     const authHeader = "Basic " + Buffer.from(PRIVATE_KEY + ":").toString("base64");
 
     const boundary = "----ImageKitBoundary" + Math.random().toString(36).substring(2);
-    let postData = "";
 
-    // file field
-    postData += "--" + boundary + "\r\n";
-    postData += 'Content-Disposition: form-data; name="file"\r\n\r\n';
-    postData += fileData + "\r\n";
+    // Build multipart body as a Buffer for correct binary-safe byte length
+    const parts = [];
 
-    // fileName field
-    postData += "--" + boundary + "\r\n";
-    postData += 'Content-Disposition: form-data; name="fileName"\r\n\r\n';
-    postData += name + "\r\n";
+    parts.push(Buffer.from(
+      "--" + boundary + "\r\n" +
+      'Content-Disposition: form-data; name="file"\r\n\r\n' +
+      cleanFileData + "\r\n", "utf8"
+    ));
 
-    // folder field
-    postData += "--" + boundary + "\r\n";
-    postData += 'Content-Disposition: form-data; name="folder"\r\n\r\n';
-    postData += folder + "\r\n";
+    parts.push(Buffer.from(
+      "--" + boundary + "\r\n" +
+      'Content-Disposition: form-data; name="fileName"\r\n\r\n' +
+      name + "\r\n", "utf8"
+    ));
 
-    // useUniqueFileName field
-    postData += "--" + boundary + "\r\n";
-    postData += 'Content-Disposition: form-data; name="useUniqueFileName"\r\n\r\n';
-    postData += "true\r\n";
+    parts.push(Buffer.from(
+      "--" + boundary + "\r\n" +
+      'Content-Disposition: form-data; name="folder"\r\n\r\n' +
+      folder + "\r\n", "utf8"
+    ));
 
-    postData += "--" + boundary + "--\r\n";
+    parts.push(Buffer.from(
+      "--" + boundary + "\r\n" +
+      'Content-Disposition: form-data; name="useUniqueFileName"\r\n\r\n' +
+      "true\r\n", "utf8"
+    ));
+
+    parts.push(Buffer.from("--" + boundary + "--\r\n", "utf8"));
+
+    const bodyBuffer = Buffer.concat(parts);
 
     const options = {
       hostname: "upload.imagekit.io",
@@ -74,7 +94,7 @@ function uploadImage(fileData, fileName, folder = "/pets") {
       headers: {
         "Authorization": authHeader,
         "Content-Type": "multipart/form-data; boundary=" + boundary,
-        "Content-Length": Buffer.byteLength(postData)
+        "Content-Length": bodyBuffer.length
       }
     };
 
@@ -84,7 +104,11 @@ function uploadImage(fileData, fileName, folder = "/pets") {
       res.on("end", () => {
         try {
           const json = JSON.parse(responseBody);
+          console.log("[ImageKit Upload] Status:", res.statusCode, "| URL:", json.url || "(none)");
           if (res.statusCode >= 200 && res.statusCode < 300) {
+            if (!json.url) {
+              return reject(new Error("ImageKit returned success but no CDN URL in response. Raw: " + responseBody));
+            }
             resolve(json);
           } else {
             reject(new Error(json.message || "ImageKit upload failed with status " + res.statusCode));
@@ -99,7 +123,7 @@ function uploadImage(fileData, fileName, folder = "/pets") {
       reject(err);
     });
 
-    req.write(postData);
+    req.write(bodyBuffer);
     req.end();
   });
 }

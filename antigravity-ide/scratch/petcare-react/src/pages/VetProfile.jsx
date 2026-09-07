@@ -31,7 +31,7 @@ const VetProfile = () => {
 
     const fetchVet = async () => {
       try {
-        const res = await fetch(`https://odizopetcare.onrender.com/api/vets/${vetId}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/vets/${vetId}`);
         if (res.ok) {
           const data = await res.json();
           setVet(data.data);
@@ -49,7 +49,7 @@ const VetProfile = () => {
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       const token = localStorage.getItem('userToken') || '';
-      fetch(`https://odizopetcare.onrender.com/api/pets?ownerId=${parsedUser.id || parsedUser._id}`, {
+      fetch(`${import.meta.env.VITE_API_URL}/api/pets?ownerId=${parsedUser.id || parsedUser._id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -64,7 +64,7 @@ const VetProfile = () => {
         .catch(err => console.error("Error fetching pets", err));
 
       // Fetch favorites
-      fetch(`https://odizopetcare.onrender.com/api/favorites?ownerId=${parsedUser.id || parsedUser._id}`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/favorites?ownerId=${parsedUser.id || parsedUser._id}`)
         .then(res => res.json())
         .then(data => {
           if (data.success && data.data) {
@@ -118,7 +118,7 @@ const VetProfile = () => {
         ownerPhone: user.phone || "+91 00000 00000",
         petId: selectedPet._id || selectedPet.id,
         petName: selectedPet.name,
-        petSpecies: selectedPet.type || selectedPet.species || 'Unknown',
+        petSpecies: selectedPet.species || 'Unknown',
         petBreed: selectedPet.breed,
         petAge: selectedPet.age ? `${selectedPet.age} ${selectedPet.ageUnit || ''}`.trim() : 'Unknown',
         petWeight: selectedPet.weight ? `${selectedPet.weight} ${selectedPet.weightUnit || ''}`.trim() : 'Unknown',
@@ -153,7 +153,7 @@ const VetProfile = () => {
     try {
       if (isFavorite) {
         // Remove favorite
-        await fetch(`https://odizopetcare.onrender.com/api/favorites`, {
+        await fetch(`${import.meta.env.VITE_API_URL}/api/favorites`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ownerId, vetId: vet._id || vet.id })
@@ -162,7 +162,7 @@ const VetProfile = () => {
         setFavoriteImage('');
       } else {
         // Add favorite
-        const res = await fetch(`https://odizopetcare.onrender.com/api/favorites`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/favorites`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ownerId, vetId: vet._id || vet.id, favoriteProfileImage: favoriteImage })
@@ -185,7 +185,7 @@ const VetProfile = () => {
     reader.readAsDataURL(file);
     reader.onload = async () => {
       try {
-        const res = await fetch(`https://odizopetcare.onrender.com/api/imagekit/upload`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/imagekit/upload`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ file: reader.result, fileName: file.name, folder: '/favorites' })
@@ -197,7 +197,7 @@ const VetProfile = () => {
           if (isFavorite) {
             const storedUser = localStorage.getItem('currentUser');
             const user = JSON.parse(storedUser);
-            await fetch(`https://odizopetcare.onrender.com/api/favorites`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/api/favorites`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ ownerId: user.id || user._id, vetId: vet._id || vet.id, favoriteProfileImage: data.url })
@@ -328,12 +328,16 @@ const VetProfile = () => {
                           return (
                           <label key={petId} className={`shrink-0 cursor-pointer border rounded-xl p-2 flex items-center gap-3 transition-all min-w-[150px] ${selectedPetId === petId ? 'bg-primary/5 border-primary text-primary shadow-md transform -translate-y-0.5' : 'border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container-low'}`}>
                             <input type="radio" name="selectedPet" value={petId} checked={selectedPetId === petId} onChange={() => setSelectedPetId(petId)} className="hidden" />
-                            <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-outline-variant/30">
-                              <img src={p.image || ((p.type || p.species)?.toLowerCase() === 'cat' ? 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=100&auto=format&fit=crop' : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=100&auto=format&fit=crop')} alt={p.name} className="w-full h-full object-cover" />
+                            <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-outline-variant/30 flex items-center justify-center bg-surface-container">
+                              {p.image ? (
+                                <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+                              ) : (
+                                <span className="material-symbols-outlined text-[20px] text-on-surface-variant">pets</span>
+                              )}
                             </div>
                             <div className="flex flex-col">
                               <span className="font-bold text-sm leading-tight">{p.name}</span>
-                              <span className="text-[10px] opacity-80 uppercase tracking-wider font-bold">{p.type || p.species || 'Pet'}</span>
+                              <span className="text-[10px] opacity-80 uppercase tracking-wider font-bold">{p.species || 'Pet'}</span>
                             </div>
                           </label>
                         )})}

@@ -21,7 +21,7 @@ const Prescription = () => {
 
   const fetchPrescriptions = async (ownerId) => {
     try {
-      const res = await fetch(`https://odizopetcare.onrender.com/api/prescriptions?ownerId=${ownerId}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/prescriptions?ownerId=${ownerId}`);
       if (res.ok) {
         const data = await res.json();
         setPrescriptions(data.data || []);

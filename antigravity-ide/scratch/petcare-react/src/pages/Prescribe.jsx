@@ -28,7 +28,7 @@ const Prescribe = () => {
 
   const fetchAppointments = async (vetId) => {
     try {
-      const res = await fetch(`https://odizopetcare.onrender.com/api/consultations?vetId=${vetId}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/consultations?vetId=${vetId}`);
       if (res.ok) {
         const data = await res.json();
         // Only completed appointments need prescriptions usually, or we can just list all
@@ -90,7 +90,7 @@ const Prescribe = () => {
         date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
       };
 
-      const res = await fetch(`https://odizopetcare.onrender.com/api/prescriptions`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/prescriptions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

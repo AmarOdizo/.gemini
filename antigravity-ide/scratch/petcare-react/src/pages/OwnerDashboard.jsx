@@ -31,9 +31,9 @@ const OwnerDashboard = () => {
   const fetchData = async (currentUser) => {
     try {
       const [apptsRes, vetsRes, petsRes] = await Promise.all([
-        fetch(`https://odizopetcare.onrender.com/api/consultations?ownerId=${currentUser._id || currentUser.id}`),
-        fetch(`https://odizopetcare.onrender.com/api/vets`),
-        fetch(`https://odizopetcare.onrender.com/api/pets?ownerId=${currentUser._id || currentUser.id}`)
+        fetch(`${import.meta.env.VITE_API_URL}/api/consultations?ownerId=${currentUser._id || currentUser.id}`),
+        fetch(`${import.meta.env.VITE_API_URL}/api/vets`),
+        fetch(`${import.meta.env.VITE_API_URL}/api/pets?ownerId=${currentUser._id || currentUser.id}`)
       ]);
 
       if (apptsRes.ok) {
@@ -80,7 +80,7 @@ const OwnerDashboard = () => {
         ownerPhone: user.phone || "+91 00000 00000",
         petId: selectedPet._id,
         petName: selectedPet.name,
-        petSpecies: selectedPet.type || selectedPet.species || 'Unknown',
+        petSpecies: selectedPet.species || 'Unknown',
         date: date,
         time: time,
         consultationType: 'video',
@@ -91,7 +91,7 @@ const OwnerDashboard = () => {
       };
 
       const token = localStorage.getItem('userToken') || '';
-      const apptRes = await fetch(`https://odizopetcare.onrender.com/api/appointments`, {
+      const apptRes = await fetch(`${import.meta.env.VITE_API_URL}/api/appointments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(payload)
@@ -101,7 +101,7 @@ const OwnerDashboard = () => {
       if (!apptRes.ok || !apptJson.success) throw new Error(apptJson.message);
 
       const consultPayload = { ...payload, appointmentId: apptJson.appointment._id };
-      const res = await fetch(`https://odizopetcare.onrender.com/api/consultations`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/consultations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(consultPayload)
@@ -207,8 +207,12 @@ const OwnerDashboard = () => {
                           {pets.map(p => (
                             <label key={p._id} className={`shrink-0 cursor-pointer border rounded-lg p-1.5 flex items-center gap-2 transition-all min-w-[120px] ${selectedPetId === p._id ? 'bg-primary/5 border-primary text-primary shadow-sm' : 'border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container-low'}`}>
                               <input type="radio" name="quick_pet" value={p._id} checked={selectedPetId === p._id} onChange={() => setSelectedPetId(p._id)} className="hidden" />
-                              <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 border border-outline-variant/30">
-                                <img src={p.image || ((p.type || p.species)?.toLowerCase() === 'cat' ? 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=100&auto=format&fit=crop' : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=100&auto=format&fit=crop')} alt={p.name} className="w-full h-full object-cover" />
+                              <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 border border-outline-variant/30 flex items-center justify-center bg-surface-container">
+                                {p.image ? (
+                                  <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+                                ) : (
+                                  <span className="material-symbols-outlined text-[16px] text-on-surface-variant">pets</span>
+                                )}
                               </div>
                               <div className="flex flex-col">
                                 <span className="font-bold text-xs leading-tight">{p.name}</span>

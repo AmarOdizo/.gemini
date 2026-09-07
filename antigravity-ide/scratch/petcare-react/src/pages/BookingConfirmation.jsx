@@ -27,7 +27,7 @@ const BookingConfirmation = () => {
       const finalData = { ...data, reason: data.reason || data.reasonForVisit || 'Routine Checkup' };
       
       // 1. Create Appointment first
-      const apptRes = await fetch(`https://odizopetcare.onrender.com/api/appointments`, {
+      const apptRes = await fetch(`${import.meta.env.VITE_API_URL}/api/appointments`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ const BookingConfirmation = () => {
 
       // 2. Create Consultation linked to the Appointment
       const consultPayload = { ...finalData, appointmentId: apptJson.appointment._id || apptJson.appointment.id };
-      const res = await fetch(`https://odizopetcare.onrender.com/api/consultations`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/consultations`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

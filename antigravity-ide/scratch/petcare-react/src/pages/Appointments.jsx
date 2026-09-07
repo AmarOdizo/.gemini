@@ -38,7 +38,7 @@ const Appointments = () => {
   const fetchAppointments = async (userId) => {
     try {
       const token = localStorage.getItem('userToken') || '';
-      const res = await fetch(`https://odizopetcare.onrender.com/api/appointments?ownerId=${userId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/appointments?ownerId=${userId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -57,7 +57,7 @@ const Appointments = () => {
   const fetchPets = async (userId) => {
     try {
       const token = localStorage.getItem('userToken') || '';
-      const res = await fetch(`https://odizopetcare.onrender.com/api/pets?ownerId=${userId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/pets?ownerId=${userId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -72,7 +72,7 @@ const Appointments = () => {
 
   const fetchVets = async () => {
     try {
-      const res = await fetch(`https://odizopetcare.onrender.com/api/auth/vets`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/vets`);
       const data = await res.json();
       if (data.success && data.data) {
         setVets(data.data);
@@ -87,7 +87,7 @@ const Appointments = () => {
     if (!window.confirm("Are you sure you want to cancel this appointment?")) return;
     try {
       const token = localStorage.getItem('userToken') || '';
-      const res = await fetch(`https://odizopetcare.onrender.com/api/consultations/${id}`, { 
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/consultations/${id}`, { 
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -149,7 +149,7 @@ const Appointments = () => {
         ownerPhone: user.phone || "+91 00000 00000",
         petId: selectedPet._id || selectedPet.id,
         petName: selectedPet.name,
-        petSpecies: selectedPet.type || selectedPet.species || 'Unknown',
+        petSpecies: selectedPet.species || 'Unknown',
         petBreed: selectedPet.breed,
         petAge: selectedPet.age ? `${selectedPet.age} ${selectedPet.ageUnit || ''}`.trim() : 'Unknown',
         petWeight: selectedPet.weight ? `${selectedPet.weight} ${selectedPet.weightUnit || ''}`.trim() : 'Unknown',
@@ -331,7 +331,7 @@ const Appointments = () => {
                     >
                       <option value="" disabled>Choose a pet</option>
                       {pets.map(p => (
-                        <option key={p._id || p.id} value={p._id || p.id}>{p.name} ({p.type || p.species})</option>
+                        <option key={p._id || p.id} value={p._id || p.id}>{p.name} ({p.species})</option>
                       ))}
                     </select>
                   ) : (
