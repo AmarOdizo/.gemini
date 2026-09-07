@@ -105,7 +105,15 @@ const MyPets = () => {
             folder: '/pets'
           })
         });
-        const data = await res.json();
+        
+        const textResponse = await res.text();
+        let data;
+        try {
+          data = JSON.parse(textResponse);
+        } catch (e) {
+          throw new Error(`Invalid server response (Status ${res.status}): ${textResponse ? textResponse.substring(0, 100) : 'Empty body'}`);
+        }
+
         if (res.ok && data.success && data.url) {
           setFormData((prev) => ({ ...prev, image: data.url }));
           showToast('Image uploaded successfully to ImageKit!');
