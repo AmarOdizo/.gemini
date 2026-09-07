@@ -72,7 +72,7 @@ const MyPets = () => {
     setLoading(true);
     try {
       const ownerId = currentUser._id || currentUser.id;
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/pets?ownerId=${ownerId}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/pets?ownerId=${ownerId}`);
       if (res.ok) {
         const data = await res.json();
         setPets(data.data || []);
@@ -96,7 +96,7 @@ const MyPets = () => {
     reader.readAsDataURL(file);
     reader.onload = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/imagekit/upload`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/imagekit/upload`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -172,7 +172,7 @@ const MyPets = () => {
         ownerPhone: user.phone || ''
       };
 
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/pets`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/pets`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -211,7 +211,7 @@ const MyPets = () => {
         type: formData.species
       };
 
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/pets/${petId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/pets/${petId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -242,7 +242,7 @@ const MyPets = () => {
     if (!window.confirm(`Are you sure you want to delete ${pet.name}?`)) return;
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/pets/${petId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/pets/${petId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`
