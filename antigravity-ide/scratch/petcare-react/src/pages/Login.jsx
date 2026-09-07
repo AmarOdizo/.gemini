@@ -18,12 +18,19 @@ const Login = () => {
 
     try {
       const endpoint = role === 'owner' ? '/api/auth/login' : '/api/auth/vets/login';
-      const res = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
       });
-      const data = await res.json();
+      
+      let data;
+      const textResponse = await res.text();
+      try {
+        data = JSON.parse(textResponse);
+      } catch (parseError) {
+        throw new Error("Server returned an empty or invalid response. Please ensure VITE_API_URL is configured in your production hosting settings.");
+      }
       
       if (res.ok && data.success) {
         const userData = data.user || data.vet;
