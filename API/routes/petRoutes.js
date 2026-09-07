@@ -65,26 +65,32 @@ router.get("/:id", async function (req, res) {
 router.post("/", verifyOwnerAuth, async function (req, res) {
   try {
     const body = req.body || {};
-    if (!body.name || !body.type && !body.species) { // Handle type or species
-      return res.status(400).json({ success: false, message: "Pet Name and Type (Dog/Cat/Bird etc.) are required." });
+    if (!body.name || (!body.species && !body.type)) {
+      return res.status(400).json({ success: false, message: "Pet Name and Species (Dog/Cat/Bird etc.) are required." });
     }
 
     const newPetData = {
       name: body.name,
-      species: body.type || body.species, // Map to DB column
-      breed: body.breed || "Crossbreed",
+      species: body.species || body.type,
+      breed: body.breed || "Mixed",
       gender: body.gender || "Male",
-      age: body.age ? String(body.age) : "1",
-      weight: body.weight ? String(body.weight) : "5",
-      photoUrl: body.image || "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=600&auto=format&fit=crop",
-      ownerId: body.ownerId || ""
+      age: body.age !== undefined ? Number(body.age) : 1,
+      ageUnit: body.ageUnit || "Years",
+      weight: body.weight !== undefined ? Number(body.weight) : 5,
+      weightUnit: body.weightUnit || "kg",
+      color: body.color || "",
+      image: body.image || "",
+      description: body.description || "",
+      vaccinated: body.vaccinated !== undefined ? Boolean(body.vaccinated) : true,
+      vaccinationDate: body.vaccinationDate || new Date(),
+      healthStatus: body.healthStatus || "Healthy",
+      ownerId: body.ownerId || "",
+      ownerName: body.ownerName || "",
+      ownerPhone: body.ownerPhone || "",
+      ownerEmail: body.ownerEmail || "",
+      address: body.address || "",
+      status: body.status || "Available"
     };
-    
-    if (body.medicalHistory) {
-        newPetData.medicalHistory = Array.isArray(body.medicalHistory) ? body.medicalHistory : [body.medicalHistory];
-    } else {
-        newPetData.medicalHistory = ["Healthy"];
-    }
 
     const newPet = new Pet(newPetData);
     await newPet.save();
@@ -111,12 +117,24 @@ router.put("/:id", verifyOwnerAuth, async function (req, res) {
 
     const updateData = {};
     if (body.name !== undefined) updateData.name = body.name;
-    if (body.type !== undefined || body.species !== undefined) updateData.species = body.type || body.species;
+    if (body.species !== undefined || body.type !== undefined) updateData.species = body.species || body.type;
     if (body.breed !== undefined) updateData.breed = body.breed;
     if (body.gender !== undefined) updateData.gender = body.gender;
-    if (body.age !== undefined) updateData.age = String(body.age);
-    if (body.weight !== undefined) updateData.weight = String(body.weight);
-    if (body.image !== undefined || body.photoUrl !== undefined) updateData.photoUrl = body.image || body.photoUrl;
+    if (body.age !== undefined) updateData.age = Number(body.age);
+    if (body.ageUnit !== undefined) updateData.ageUnit = body.ageUnit;
+    if (body.weight !== undefined) updateData.weight = Number(body.weight);
+    if (body.weightUnit !== undefined) updateData.weightUnit = body.weightUnit;
+    if (body.color !== undefined) updateData.color = body.color;
+    if (body.image !== undefined) updateData.image = body.image;
+    if (body.description !== undefined) updateData.description = body.description;
+    if (body.vaccinated !== undefined) updateData.vaccinated = Boolean(body.vaccinated);
+    if (body.vaccinationDate !== undefined) updateData.vaccinationDate = body.vaccinationDate;
+    if (body.healthStatus !== undefined) updateData.healthStatus = body.healthStatus;
+    if (body.ownerName !== undefined) updateData.ownerName = body.ownerName;
+    if (body.ownerPhone !== undefined) updateData.ownerPhone = body.ownerPhone;
+    if (body.ownerEmail !== undefined) updateData.ownerEmail = body.ownerEmail;
+    if (body.address !== undefined) updateData.address = body.address;
+    if (body.status !== undefined) updateData.status = body.status;
 
     const updatedPet = await Pet.findByIdAndUpdate(
         idParam,
