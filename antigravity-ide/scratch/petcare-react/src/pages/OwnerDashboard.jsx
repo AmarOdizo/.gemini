@@ -208,7 +208,7 @@ const OwnerDashboard = () => {
                             <label key={p._id} className={`shrink-0 cursor-pointer border rounded-lg p-1.5 flex items-center gap-2 transition-all min-w-[120px] ${selectedPetId === p._id ? 'bg-primary/5 border-primary text-primary shadow-sm' : 'border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container-low'}`}>
                               <input type="radio" name="quick_pet" value={p._id} checked={selectedPetId === p._id} onChange={() => setSelectedPetId(p._id)} className="hidden" />
                               <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 border border-outline-variant/30">
-                                <img src={p.image || (p.type?.toLowerCase() === 'cat' ? 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=100&auto=format&fit=crop' : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=100&auto=format&fit=crop')} alt={p.name} className="w-full h-full object-cover" />
+                                <img src={p.image || ((p.type || p.species)?.toLowerCase() === 'cat' ? 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=100&auto=format&fit=crop' : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=100&auto=format&fit=crop')} alt={p.name} className="w-full h-full object-cover" />
                               </div>
                               <div className="flex flex-col">
                                 <span className="font-bold text-xs leading-tight">{p.name}</span>

@@ -329,7 +329,7 @@ const VetProfile = () => {
                           <label key={petId} className={`shrink-0 cursor-pointer border rounded-xl p-2 flex items-center gap-3 transition-all min-w-[150px] ${selectedPetId === petId ? 'bg-primary/5 border-primary text-primary shadow-md transform -translate-y-0.5' : 'border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container-low'}`}>
                             <input type="radio" name="selectedPet" value={petId} checked={selectedPetId === petId} onChange={() => setSelectedPetId(petId)} className="hidden" />
                             <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-outline-variant/30">
-                              <img src={p.image || (p.type?.toLowerCase() === 'cat' ? 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=100&auto=format&fit=crop' : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=100&auto=format&fit=crop')} alt={p.name} className="w-full h-full object-cover" />
+                              <img src={p.image || ((p.type || p.species)?.toLowerCase() === 'cat' ? 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=100&auto=format&fit=crop' : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=100&auto=format&fit=crop')} alt={p.name} className="w-full h-full object-cover" />
                             </div>
                             <div className="flex flex-col">
                               <span className="font-bold text-sm leading-tight">{p.name}</span>

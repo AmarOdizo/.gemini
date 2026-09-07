@@ -73,10 +73,12 @@ const MyPets = () => {
         });
         const data = await res.json();
         
-        if (res.ok && data.success) {
-          setNewPet(prev => ({ ...prev, image: data.url }));
+        const imageUrl = data.url || (data.data && data.data.url) || data.fileUrl || data.imageUrl;
+        
+        if (res.ok && data.success && imageUrl) {
+          setNewPet(prev => ({ ...prev, image: imageUrl }));
         } else {
-          alert(data.message || 'Failed to upload image');
+          alert(data.message || 'Failed to upload image. No URL returned.');
         }
       } catch (err) {
         alert('Error uploading image: ' + err.message);
@@ -94,6 +96,7 @@ const MyPets = () => {
       // Ensure numeric values are sent correctly
       const payload = { 
         ...newPet, 
+        species: newPet.type,
         age: newPet.age ? Number(newPet.age) : 1,
         weight: newPet.weight ? Number(newPet.weight) : 5,
         ownerId: user.id || user._id 
@@ -153,7 +156,7 @@ const MyPets = () => {
   };
 
   const handleSetFavorite = (pet) => {
-    const defaultImg = pet.type?.toLowerCase() === 'cat' 
+    const defaultImg = (pet.type || pet.species)?.toLowerCase() === 'cat' 
       ? 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=200&auto=format&fit=crop' 
       : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=200&auto=format&fit=crop';
     
@@ -206,7 +209,7 @@ const MyPets = () => {
                   </div>
 
                   <div className="w-24 h-24 rounded-full border-4 border-white shadow-md overflow-hidden bg-white mb-4">
-                    <img src={pet.image || (pet.type?.toLowerCase() === 'cat' ? 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=200&auto=format&fit=crop' : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=200&auto=format&fit=crop')} alt={pet.name} className="w-full h-full object-cover" />
+                    <img src={pet.image || ((pet.type || pet.species)?.toLowerCase() === 'cat' ? 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=200&auto=format&fit=crop' : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=200&auto=format&fit=crop')} alt={pet.name} className="w-full h-full object-cover" />
                   </div>
                   <h3 className="font-headline-sm font-bold text-xl text-on-surface">{pet.name}</h3>
                   <p className="font-label-md text-sm text-primary font-bold">{pet.breed}</p>
