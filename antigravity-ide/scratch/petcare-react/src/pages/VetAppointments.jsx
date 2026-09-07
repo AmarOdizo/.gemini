@@ -24,7 +24,7 @@ const VetAppointments = () => {
   const fetchAppointments = async (vetId) => {
     try {
       const token = localStorage.getItem('vetToken') || localStorage.getItem('userToken') || '';
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/appointments?vetId=${vetId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/appointments?vetId=${vetId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
@@ -44,7 +44,7 @@ const VetAppointments = () => {
       const payload = { status };
       if (meetLinkStr) payload.meetLink = meetLinkStr;
       
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/appointments/${id}/status`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/appointments/${id}/status`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',

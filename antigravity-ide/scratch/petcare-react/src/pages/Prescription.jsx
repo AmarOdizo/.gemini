@@ -23,7 +23,7 @@ const Prescription = () => {
     try {
       // The Render API currently has a bug where filtering by ownerId fails because it queries the old Appointment collection instead of Consultation.
       // As a workaround, we fetch all prescriptions and filter them on the client side.
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/prescriptions`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/prescriptions`);
       if (res.ok) {
         const data = await res.json();
         const allPrescriptions = data.data || [];

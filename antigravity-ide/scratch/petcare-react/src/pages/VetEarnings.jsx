@@ -21,7 +21,7 @@ const VetEarnings = () => {
 
   const fetchAppointments = async (vetId) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/consultations?vetId=${vetId}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/consultations?vetId=${vetId}`);
       if (res.ok) {
         const data = await res.json();
         setAppointments(data.data || []);

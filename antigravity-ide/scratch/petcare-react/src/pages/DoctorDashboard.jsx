@@ -23,7 +23,7 @@ const DoctorDashboard = () => {
   const fetchAppointments = async (vetId) => {
     try {
       // Fetching all consultations for this vet
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/consultations?vetId=${vetId}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/consultations?vetId=${vetId}`);
       if (res.ok) {
         const data = await res.json();
         setAppointments(data.data || []);
@@ -37,7 +37,7 @@ const DoctorDashboard = () => {
 
   const handleUpdateStatus = async (id, status) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/consultations/${id}/status`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/consultations/${id}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status })

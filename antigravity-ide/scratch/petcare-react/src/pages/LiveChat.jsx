@@ -44,7 +44,7 @@ const LiveChat = () => {
     const token = localStorage.getItem('userToken') || localStorage.getItem('vetToken') || '';
 
     // Fetch consultation details
-    fetch(`${import.meta.env.VITE_API_URL}/api/consultations/${consultationId}`, {
+    fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/consultations/${consultationId}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.json())
