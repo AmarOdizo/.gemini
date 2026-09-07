@@ -102,7 +102,7 @@ const Appointments = () => {
   const handleJoin = (appt) => {
     const now = new Date();
     // Try to parse the date and time. If it's valid, compare.
-    const apptDateTime = new Date(`${appt.date} ${appt.time}`);
+    const apptDateTime = new Date(`${appt.date}T${appt.time}`);
     
     // Check if the parsed date is valid before comparing
     if (!isNaN(apptDateTime.getTime())) {
@@ -149,7 +149,7 @@ const Appointments = () => {
         ownerPhone: user.phone || "+91 00000 00000",
         petId: selectedPet._id || selectedPet.id,
         petName: selectedPet.name,
-        petSpecies: selectedPet.species || 'Unknown',
+        petSpecies: selectedPet.species || selectedPet.type || 'Unknown',
         petBreed: selectedPet.breed,
         petAge: selectedPet.age ? `${selectedPet.age} ${selectedPet.ageUnit || ''}`.trim() : 'Unknown',
         petWeight: selectedPet.weight ? `${selectedPet.weight} ${selectedPet.weightUnit || ''}`.trim() : 'Unknown',
@@ -256,8 +256,8 @@ const Appointments = () => {
                                     handleJoin(appt);
                                   }
                                 }} 
-                                disabled={appt.status === 'pending' || (new Date() < new Date(`${appt.date} ${appt.time}`))}
-                                className={`text-white text-xs font-bold py-1.5 px-3 rounded-lg flex items-center gap-1 shadow-sm transition-colors ${appt.status === 'pending' || (new Date() < new Date(`${appt.date} ${appt.time}`)) ? 'bg-outline-variant cursor-not-allowed' : 'bg-primary hover:bg-surface-tint'}`}
+                                disabled={appt.status === 'pending' || (new Date() < new Date(`${appt.date}T${appt.time}`))}
+                                className={`text-white text-xs font-bold py-1.5 px-3 rounded-lg flex items-center gap-1 shadow-sm transition-colors ${appt.status === 'pending' || (new Date() < new Date(`${appt.date}T${appt.time}`)) ? 'bg-outline-variant cursor-not-allowed' : 'bg-primary hover:bg-surface-tint'}`}
                               >
                                 <span className="material-symbols-outlined text-[16px]">videocam</span> Join Meet
                               </button>
