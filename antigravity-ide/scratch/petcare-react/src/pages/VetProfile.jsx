@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import OwnerSidebar from '../components/OwnerSidebar';
 import TopNav from '../components/TopNav';
 
 const VetProfile = () => {
@@ -217,22 +216,16 @@ const VetProfile = () => {
 
   if (loading) {
     return (
-      <div className="bg-background text-on-background font-body-md min-h-screen flex">
-        <OwnerSidebar />
-        <main className="flex-grow ml-0 md:ml-[280px] flex items-center justify-center">
-          <span className="material-symbols-outlined animate-spin text-4xl text-primary">sync</span>
-        </main>
-      </div>
+      <main className="flex items-center justify-center min-h-[60vh]">
+        <span className="material-symbols-outlined animate-spin text-4xl text-primary">sync</span>
+      </main>
     );
   }
 
   if (!vet) return null;
 
   return (
-    <div className="bg-background text-on-background font-body-md min-h-screen flex">
-      <OwnerSidebar />
-      
-      <main className="flex-grow ml-0 md:ml-[280px] p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
+    <main className="p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
         <TopNav backLink={{ to: '/find-vets', text: 'Back to Vets Directory' }} />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
@@ -409,15 +402,14 @@ const VetProfile = () => {
                     )}
                   </button>
                   <p className="text-[10px] text-center text-on-surface-variant font-medium mt-[-8px]">
-                    By booking, you agree to PawsIndia's Telehealth Terms of Service.
+                    By booking, you agree to PawsIndia&apos;s Telehealth Terms of Service.
                   </p>
                 </form>
               </div>
             </div>
           </div>
         </div>
-      </main>
-    </div>
+    </main>
   );
 };
 

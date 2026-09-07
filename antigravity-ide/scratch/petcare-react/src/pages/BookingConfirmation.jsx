@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-import OwnerSidebar from '../components/OwnerSidebar';
 import TopNav from '../components/TopNav';
 
 const BookingConfirmation = () => {
@@ -70,10 +69,7 @@ const BookingConfirmation = () => {
   if (!data) return null;
 
   return (
-    <div className="bg-background text-on-background font-body-md min-h-screen flex">
-      <OwnerSidebar />
-      
-      <main className="flex-grow ml-0 md:ml-[280px] p-4 md:p-8 pb-24 md:pb-8 flex flex-col items-center justify-center min-h-screen max-w-[1280px] mx-auto w-full">
+    <main className="p-4 md:p-8 pb-24 md:pb-8 flex flex-col items-center justify-center min-h-screen max-w-[1280px] mx-auto w-full">
         <div className="w-full max-w-3xl">
           {/* Header Section */}
           <div className="text-center mb-8 animate-fade-in-up">
@@ -209,8 +205,7 @@ const BookingConfirmation = () => {
             )}
           </div>
         </div>
-      </main>
-    </div>
+    </main>
   );
 };
 

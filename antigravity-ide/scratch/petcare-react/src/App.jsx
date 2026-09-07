@@ -20,6 +20,7 @@ import VetTelehealthRoom from './pages/VetTelehealthRoom'
 import LiveChat from './pages/LiveChat'
 import BookingConfirmation from './pages/BookingConfirmation'
 import ProtectedRoute from './components/ProtectedRoute'
+import MainLayout from './layouts/MainLayout'
 
 function App() {
   return (
@@ -31,24 +32,29 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/vet-register" element={<VetRegister />} />
       
-      {/* Owner Portal (Protected) */}
-      <Route path="/owner-dashboard" element={<ProtectedRoute allowedRoles={['owner']}><OwnerDashboard /></ProtectedRoute>} />
-      <Route path="/find-vets" element={<ProtectedRoute allowedRoles={['owner']}><FindVets /></ProtectedRoute>} />
-      <Route path="/owner-dashboard/vet-profile" element={<ProtectedRoute allowedRoles={['owner']}><VetProfile /></ProtectedRoute>} />
-      <Route path="/my-pets" element={<ProtectedRoute allowedRoles={['owner']}><MyPets /></ProtectedRoute>} />
-      <Route path="/appointments" element={<ProtectedRoute allowedRoles={['owner']}><Appointments /></ProtectedRoute>} />
-      <Route path="/prescription" element={<ProtectedRoute allowedRoles={['owner']}><Prescription /></ProtectedRoute>} />
-      <Route path="/booking-confirmation" element={<ProtectedRoute allowedRoles={['owner']}><BookingConfirmation /></ProtectedRoute>} />
+      {/* Protected Routes wrapped in MainLayout to prevent sidebar flickering */}
+      <Route element={<MainLayout />}>
+        {/* Owner Portal (Protected) */}
+        <Route path="/owner-dashboard" element={<ProtectedRoute allowedRoles={['owner']}><OwnerDashboard /></ProtectedRoute>} />
+        <Route path="/find-vets" element={<ProtectedRoute allowedRoles={['owner']}><FindVets /></ProtectedRoute>} />
+        <Route path="/owner-dashboard/vet-profile" element={<ProtectedRoute allowedRoles={['owner']}><VetProfile /></ProtectedRoute>} />
+        <Route path="/my-pets" element={<ProtectedRoute allowedRoles={['owner']}><MyPets /></ProtectedRoute>} />
+        <Route path="/appointments" element={<ProtectedRoute allowedRoles={['owner']}><Appointments /></ProtectedRoute>} />
+        <Route path="/prescription" element={<ProtectedRoute allowedRoles={['owner']}><Prescription /></ProtectedRoute>} />
+        <Route path="/booking-confirmation" element={<ProtectedRoute allowedRoles={['owner']}><BookingConfirmation /></ProtectedRoute>} />
+        
+        {/* Vet Portal (Protected) */}
+        <Route path="/doctor-dashboard" element={<ProtectedRoute allowedRoles={['doctor']}><DoctorDashboard /></ProtectedRoute>} />
+        <Route path="/doctor-profile" element={<ProtectedRoute allowedRoles={['doctor']}><DoctorProfile /></ProtectedRoute>} />
+        <Route path="/vet-appointments" element={<ProtectedRoute allowedRoles={['doctor']}><VetAppointments /></ProtectedRoute>} />
+        <Route path="/vet-availability" element={<ProtectedRoute allowedRoles={['doctor']}><VetAvailability /></ProtectedRoute>} />
+        <Route path="/vet-earnings" element={<ProtectedRoute allowedRoles={['doctor']}><VetEarnings /></ProtectedRoute>} />
+        <Route path="/prescribe" element={<ProtectedRoute allowedRoles={['doctor']}><Prescribe /></ProtectedRoute>} />
+        <Route path="/live-chat" element={<ProtectedRoute allowedRoles={['doctor', 'owner']}><LiveChat /></ProtectedRoute>} />
+      </Route>
       
-      {/* Vet Portal (Protected) */}
-      <Route path="/doctor-dashboard" element={<ProtectedRoute allowedRoles={['doctor']}><DoctorDashboard /></ProtectedRoute>} />
-      <Route path="/doctor-profile" element={<ProtectedRoute allowedRoles={['doctor']}><DoctorProfile /></ProtectedRoute>} />
-      <Route path="/vet-appointments" element={<ProtectedRoute allowedRoles={['doctor']}><VetAppointments /></ProtectedRoute>} />
-      <Route path="/vet-availability" element={<ProtectedRoute allowedRoles={['doctor']}><VetAvailability /></ProtectedRoute>} />
-      <Route path="/vet-earnings" element={<ProtectedRoute allowedRoles={['doctor']}><VetEarnings /></ProtectedRoute>} />
-      <Route path="/prescribe" element={<ProtectedRoute allowedRoles={['doctor']}><Prescribe /></ProtectedRoute>} />
+      {/* Full-screen protected routes (No Sidebar) */}
       <Route path="/vet-telehealth-room" element={<ProtectedRoute allowedRoles={['doctor', 'owner']}><VetTelehealthRoom /></ProtectedRoute>} />
-      <Route path="/live-chat" element={<ProtectedRoute allowedRoles={['doctor', 'owner']}><LiveChat /></ProtectedRoute>} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

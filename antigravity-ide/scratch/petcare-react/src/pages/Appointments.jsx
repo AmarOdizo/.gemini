@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import OwnerSidebar from '../components/OwnerSidebar';
 import TopNav from '../components/TopNav';
 
 const Appointments = () => {
@@ -177,10 +176,8 @@ const Appointments = () => {
   if (!user) return null;
 
   return (
-    <div className="bg-background text-on-background font-body-md min-h-screen flex">
-      <OwnerSidebar />
-      
-      <main className="flex-grow ml-0 md:ml-[280px] p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
+    <>
+      <main className="p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
         <TopNav title="My Appointments" subtitle="Manage your upcoming and past vet consultations." />
 
         <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl shadow-sm ambient-shadow overflow-hidden">
@@ -403,7 +400,7 @@ const Appointments = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

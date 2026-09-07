@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import VetSidebar from '../components/VetSidebar';
 import TopNav from '../components/TopNav';
 
 const DoctorProfile = () => {
@@ -62,10 +61,7 @@ const DoctorProfile = () => {
   if (!user) return null;
 
   return (
-    <div className="bg-background text-on-background font-body-md min-h-screen flex">
-      <VetSidebar />
-      
-      <main className="flex-grow ml-0 md:ml-[280px] p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
+    <main className="p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
         <TopNav title="Doctor Profile" subtitle="Manage your professional details and clinic information." />
 
         <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl shadow-sm ambient-shadow overflow-hidden">
@@ -157,8 +153,7 @@ const DoctorProfile = () => {
             </div>
           </div>
         </div>
-      </main>
-    </div>
+    </main>
   );
 };
 

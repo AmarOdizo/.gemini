@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import OwnerSidebar from '../components/OwnerSidebar';
 import TopNav from '../components/TopNav';
 
 const Prescription = () => {
@@ -37,10 +36,7 @@ const Prescription = () => {
   if (!user) return null;
 
   return (
-    <div className="bg-background text-on-background font-body-md min-h-screen flex">
-      <OwnerSidebar />
-      
-      <main className="flex-grow ml-0 md:ml-[280px] p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
+    <main className="p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
         <TopNav title="Digital Prescriptions" subtitle="View and download prescriptions from your vet consultations." />
 
         <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl shadow-sm ambient-shadow overflow-hidden max-w-4xl mx-auto w-full">
@@ -159,8 +155,7 @@ const Prescription = () => {
             )}
           </div>
         </div>
-      </main>
-    </div>
+    </main>
   );
 };
 

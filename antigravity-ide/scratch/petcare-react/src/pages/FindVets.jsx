@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import OwnerSidebar from '../components/OwnerSidebar';
 import TopNav from '../components/TopNav';
 
 const FindVets = () => {
@@ -25,10 +24,7 @@ const FindVets = () => {
   }, []);
 
   return (
-    <div className="bg-background text-on-background font-body-md min-h-screen flex">
-      <OwnerSidebar />
-      
-      <main className="flex-grow ml-0 md:ml-[280px] p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
+    <main className="p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
         <TopNav title="Find a Veterinarian" subtitle="Search and book appointments with top verified vets across India." />
 
         <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-surface-container-low p-4 rounded-xl border border-outline-variant/50">
@@ -105,8 +101,7 @@ const FindVets = () => {
             </div>
           )}
         </div>
-      </main>
-    </div>
+    </main>
   );
 };
 

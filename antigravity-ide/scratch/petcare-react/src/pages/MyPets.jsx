@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import OwnerSidebar from '../components/OwnerSidebar';
 import TopNav from '../components/TopNav';
 
 const MyPets = () => {
@@ -166,10 +165,8 @@ const MyPets = () => {
   if (!user) return null;
 
   return (
-    <div className="bg-background text-on-background font-body-md min-h-screen flex relative">
-      <OwnerSidebar />
-      
-      <main className="flex-grow ml-0 md:ml-[280px] p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
+    <>
+      <main className="p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
         <TopNav title="My Pets" subtitle="Manage your pet profiles and health records." />
 
         <div className="flex justify-between items-center bg-surface-container-low p-4 rounded-xl border border-outline-variant/50">
@@ -429,7 +426,7 @@ const MyPets = () => {
           </form>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

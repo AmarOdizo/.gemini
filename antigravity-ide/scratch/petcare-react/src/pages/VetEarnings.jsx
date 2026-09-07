@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import VetSidebar from '../components/VetSidebar';
 import TopNav from '../components/TopNav';
 
 const VetEarnings = () => {
@@ -41,10 +40,7 @@ const VetEarnings = () => {
   const totalEarnings = completedAppts.length * fee;
 
   return (
-    <div className="bg-background text-on-background font-body-md min-h-screen flex">
-      <VetSidebar />
-      
-      <main className="flex-grow ml-0 md:ml-[280px] p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
+    <main className="p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
         <TopNav title="Earnings & Payouts" subtitle="Track your financial performance and withdrawal history." />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -136,8 +132,7 @@ const VetEarnings = () => {
             </table>
           </div>
         </div>
-      </main>
-    </div>
+    </main>
   );
 };
 

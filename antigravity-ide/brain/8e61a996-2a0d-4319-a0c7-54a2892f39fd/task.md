@@ -1,0 +1,6 @@
+- `[x]` Create `src/layouts/MainLayout.jsx`
+- `[x]` Update `src/App.jsx`
+- `[x]` Update Owner pages (`OwnerDashboard.jsx`, `FindVets.jsx`, `VetProfile.jsx`, `MyPets.jsx`, `Appointments.jsx`, `Prescription.jsx`, `BookingConfirmation.jsx`)
+- `[x]` Update Vet pages (`DoctorDashboard.jsx`, `DoctorProfile.jsx`, `VetAppointments.jsx`, `VetAvailability.jsx`, `VetEarnings.jsx`, `Prescribe.jsx`)
+- `[x]` Update shared pages (`VetTelehealthRoom.jsx`, `LiveChat.jsx`)
+- `[ ]` Create `walkthrough.md`

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import OwnerSidebar from '../components/OwnerSidebar';
-import VetSidebar from '../components/VetSidebar';
+
 import supabase from '../supabaseClient';
 
 const LiveChat = () => {
@@ -170,10 +169,7 @@ const LiveChat = () => {
   if (!user) return null;
 
   return (
-    <div className="bg-background text-on-background font-body-md min-h-screen flex">
-      {isDoctor ? <VetSidebar /> : <OwnerSidebar />}
-      
-      <main className="flex-grow ml-0 md:ml-[280px] h-screen flex flex-col">
+    <main className="h-screen flex flex-col w-full max-w-[1280px] mx-auto">
         {/* Chat Header */}
         <header className="h-16 bg-surface-container-lowest border-b border-outline-variant/30 px-6 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-4">
@@ -273,8 +269,7 @@ const LiveChat = () => {
             </button>
           </form>
         </div>
-      </main>
-    </div>
+    </main>
   );
 };
 
