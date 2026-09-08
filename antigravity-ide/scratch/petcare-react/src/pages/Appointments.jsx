@@ -118,8 +118,8 @@ const Appointments = () => {
       }
     }
     
-    // Assuming LiveChat or consultation page handles the video call
-    navigate(`/live-chat?consultationId=${appt._id}`);
+    // Navigate to the WebRTC video call page
+    navigate(`/owner-dashboard/video-call/${appt._id}`);
   };
 
   const handleBooking = async (e) => {
@@ -242,17 +242,11 @@ const Appointments = () => {
                   </button>
                   {appt.consultationType === 'video' ? (
                     <button 
-                      onClick={() => {
-                        if (appt.meetLink) {
-                          window.open(appt.meetLink, '_blank');
-                        } else {
-                          handleJoin(appt);
-                        }
-                      }} 
+                      onClick={() => handleJoin(appt)} 
                       disabled={appt.status === 'pending' || (new Date() < new Date(`${appt.date}T${appt.time}`))}
                       className={`flex-1 text-white text-xs font-bold py-2.5 rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition-colors ${appt.status === 'pending' || (new Date() < new Date(`${appt.date}T${appt.time}`)) ? 'bg-outline-variant cursor-not-allowed opacity-50' : 'bg-primary hover:bg-primary-container hover:shadow-md hover:-translate-y-0.5 active:translate-y-0'}`}
                     >
-                      <span className="material-symbols-outlined text-[18px] filled-icon">videocam</span> Join Call
+                      <span className="material-symbols-outlined text-[18px] filled-icon">videocam</span> Start Video Call
                     </button>
                   ) : (
                     <button className="flex-1 bg-secondary/10 text-secondary border border-secondary/20 text-xs font-bold py-2.5 rounded-xl hover:bg-secondary/20 transition-colors flex items-center justify-center gap-1.5">

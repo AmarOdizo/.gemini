@@ -1,63 +1,83 @@
-# UI/UX Redesign Implementation Plan
+# 📹 Implementation Plan: WebRTC Video Calling
 
-This document outlines the comprehensive strategy to redesign the PetCare website for a premium, responsive, and user-friendly experience across Mobile, Tablet, and Desktop.
+This plan details the implementation of a 1-to-1 WebRTC video calling feature for Doctors and Pet Owners, strictly adhering to the requirements of using MongoDB for call tracking and Supabase Realtime *only* for WebRTC signaling.
+
+> [!WARNING]
+> **Missing Backend Repository**
+> I have thoroughly searched the current workspace (`scratch/petcare-react`), and it **only contains the frontend code**. Your Express backend (currently deployed at `https://odizopetcare.onrender.com`) is not present in this local workspace.
+> 
+> Therefore, I cannot directly implement the MongoDB models or API endpoints. I will provide the **exact backend code** for you to copy-paste into your backend repository, but I will fully implement the frontend architecture here.
 
 ## User Review Required
 
-> [!IMPORTANT]
-> Please review this comprehensive redesign plan. This will touch almost every component and page in the frontend to ensure a consistent, modern, and highly responsive experience. 
-> Once you approve this plan, I will begin executing these changes step-by-step.
-
-## Open Questions
-
-> [!NOTE]
-> 1. Do you have a preference for Mobile Navigation? (e.g., a Bottom Navigation Bar for phones, or a Hamburger Menu that opens the sidebar?)
-> 2. Are there any specific pages (like `FindVets` or `Appointments`) that you want to prioritize or have specific design ideas for?
+Please review the missing backend repository warning above. If you want me to write the backend code directly, you will need to clone your backend repository into the `scratch` folder and provide me the path. Otherwise, I will provide the backend code in a document for you to add manually.
 
 ## Proposed Changes
 
-We will use the existing Material Design 3 token system in `tailwind.config.js` to create a beautiful, cohesive look.
+### 1. Backend Implementation (Manual Addition Required)
+I will provide the code for:
+- `server/models/VideoCall.js`: The Mongoose schema storing `appointmentId`, `doctorId`, `ownerId`, `patientId`, `status`, `startedAt`, `endedAt`.
+- `server/routes/videoCallRoutes.js`: APIs to create, fetch, update status, and end calls.
+- Instructions on integrating this into your `server.js` or `app.js`.
 
-### 1. Global Layout & Navigation
+---
 
-- **Navigation Bars (`TopNav.jsx`, `OwnerSidebar.jsx`, `VetSidebar.jsx`)**
-  - **Desktop**: Fixed sidebar on the left, sticky `TopNav` on top.
-  - **Tablet/Mobile**: Sidebar collapses into a Hamburger menu (or Bottom Nav). `TopNav` remains sticky for quick access to profile/settings.
-  - **Aesthetics**: Glassmorphism (blur) effects on the TopNav, smooth hover states for sidebar links.
+### 2. Frontend: Services & Signaling
+#### [NEW] `src/services/videoCallApi.js`
+- Functions to interact with the new MongoDB video call APIs (`createCall`, `getCall`, `getCallByAppointment`, `updateCallStatus`, `endCall`).
+- Uses existing `userToken` from `localStorage`.
 
-### 2. Dashboards (Owner & Doctor)
+#### [NEW] `src/services/webrtc.js`
+- Core WebRTC logic using `navigator.mediaDevices.getUserMedia()`.
+- Uses `RTCPeerConnection` with the Google STUN server (`stun:stun.l.google.com:19302`).
+- Uses `supabase.channel('video-call-{callId}')` strictly for signaling (`offer`, `answer`, `ice-candidate`).
+- Completely isolated from the existing chat messaging logic in `LiveChat.jsx`.
 
-- **OwnerDashboard.jsx & DoctorDashboard.jsx**
-  - Use responsive CSS Grids (`grid-cols-1 md:grid-cols-2 lg:grid-cols-3/4`) for statistics cards.
-  - Upgrade cards to have smooth hover scaling (`hover:scale-[1.02]`) and subtle shadows.
-  - Replace simple text loaders with attractive Skeleton Loading states.
+---
 
-### 3. Core Workflows (Pets, Appointments, Vets)
+### 3. Frontend: Video Call UI Components
+#### [NEW] `src/components/video-call/LocalVideo.jsx` & `RemoteVideo.jsx`
+- Reusable React components to display media streams, utilizing existing Tailwind design tokens.
 
-- **MyPets.jsx & Appointments.jsx**
-  - Convert lists into beautiful grid cards.
-  - Implement collapsible sections or modals for adding new pets/appointments to save screen space on mobile.
-  - Improve form inputs with larger touch targets (minimum 48px height) for mobile users.
-  
-- **FindVets.jsx**
-  - Enhance the search bar with a sticky position on mobile.
-  - Upgrade the Vet Cards with better badging (Online/Offline, Rating stars) and rounded images.
+#### [NEW] `src/components/video-call/VideoControls.jsx`
+- Buttons for: Mute/Unmute audio track, Camera On/Off video track, and End Call.
 
-### 4. Auth & Landing Pages
+#### [NEW] `src/components/video-call/CallTimer.jsx`
+- Displays the active duration of the call.
 
-- **Login.jsx & Register.jsx**
-  - Improve the split-screen layout. On mobile, ensure the form takes full width gracefully.
-  - Add smooth fade-in animations when the page loads.
+#### [NEW] `src/components/video-call/VideoCall.jsx`
+- The main UI wrapper that integrates the above components and handles the signaling workflow.
 
-### 5. Polish & Interactivity
+---
 
-- Add CSS transitions (`transition-all duration-300 ease-in-out`) to all interactive elements.
-- Ensure consistent use of `Manrope` for all headings and `Inter` for body text.
-- Standardize button sizes and border radiuses (`rounded-xl` or `rounded-2xl`).
+### 4. Frontend: Pages and Routing
+#### [NEW] `src/pages/doctor/VideoCall.jsx`
+- The Doctor's entry point. Initializes the call, creates the MongoDB record, generates the WebRTC offer, and waits for the patient.
+
+#### [NEW] `src/pages/owner/VideoCall.jsx`
+- The Owner's entry point. Joins the call, receives the offer, generates the answer, and connects the stream.
+
+#### [MODIFY] `src/App.jsx`
+- Register the two new routes:
+  - `/doctor-dashboard/video-call/:appointmentId`
+  - `/owner-dashboard/video-call/:appointmentId`
+
+---
+
+### 5. Frontend: Integration into Existing Workflows
+#### [MODIFY] `src/pages/DoctorDashboard.jsx` (and/or `VetAppointments.jsx`)
+- Add a "Start Video Call" button to upcoming appointments.
+- Clicking the button verifies ownership and redirects to `/doctor-dashboard/video-call/:appointmentId`.
+
+#### [MODIFY] `src/pages/Appointments.jsx` (Owner Dashboard)
+- Add a "Join Video Call" button.
+- The button will query the backend API (`/api/video-calls/appointment/:id`) to check if a call is `waiting` or `active`. If so, it allows the owner to join.
 
 ## Verification Plan
-
 ### Manual Verification
-- View the app in Desktop mode to ensure grids use the full width optimally.
-- Open the app in Mobile/Tablet view (using Chrome DevTools) to verify that sidebars collapse, touch targets are appropriately sized, and no horizontal scrolling occurs.
-- Test all forms and buttons to ensure smooth hover states and interactions.
+1. Open the Doctor Dashboard in one browser and the Owner Dashboard in another.
+2. The Doctor clicks "Start Video Call". Ensure the camera activates and the UI shows "Waiting for patient".
+3. The Owner clicks "Join Video Call". Ensure the camera activates and the two WebRTC streams connect.
+4. Verify Mute and Camera Off controls work.
+5. Verify clicking "End Call" terminates the streams, updates the DB status, and redirects both users.
+6. Verify the existing text messaging (Supabase) is completely unaffected.

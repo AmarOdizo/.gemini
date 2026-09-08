@@ -21,6 +21,8 @@ import LiveChat from './pages/LiveChat'
 import BookingConfirmation from './pages/BookingConfirmation'
 import ProtectedRoute from './components/ProtectedRoute'
 import MainLayout from './layouts/MainLayout'
+import DoctorVideoCall from './pages/doctor/VideoCall'
+import OwnerVideoCall from './pages/owner/VideoCall'
 
 function App() {
   return (
@@ -55,6 +57,8 @@ function App() {
       
       {/* Full-screen protected routes (No Sidebar) */}
       <Route path="/vet-telehealth-room" element={<ProtectedRoute allowedRoles={['doctor', 'owner']}><VetTelehealthRoom /></ProtectedRoute>} />
+      <Route path="/doctor-dashboard/video-call/:appointmentId" element={<ProtectedRoute allowedRoles={['doctor']}><DoctorVideoCall /></ProtectedRoute>} />
+      <Route path="/owner-dashboard/video-call/:appointmentId" element={<ProtectedRoute allowedRoles={['owner']}><OwnerVideoCall /></ProtectedRoute>} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

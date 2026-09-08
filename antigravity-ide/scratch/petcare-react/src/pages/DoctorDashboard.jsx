@@ -148,17 +148,26 @@ const DoctorDashboard = () => {
                       <strong className="text-on-surface-variant mr-1">Reason:</strong> <span className="font-medium">{appt.reasonForVisit || "Routine checkup"}</span>
                     </div>
 
-                    <div className="flex flex-wrap gap-3">
-                      <button 
-                        onClick={() => navigate(`/live-chat?consultationId=${appt._id}`)}
-                        className="flex-1 bg-primary text-on-primary text-sm font-bold py-3 rounded-xl hover:bg-primary-container hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2">
-                        <span className="material-symbols-outlined text-[20px] filled-icon">play_circle</span> Start Consult
-                      </button>
+                    <div className="flex flex-col gap-3">
+                      <div className="flex flex-wrap gap-3">
+                        <button 
+                          onClick={() => navigate(`/live-chat?consultationId=${appt._id}`)}
+                          className="flex-1 bg-surface-container-low text-primary text-sm font-bold py-3 rounded-xl hover:bg-surface-container border border-primary/20 hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2">
+                          <span className="material-symbols-outlined text-[20px] filled-icon">chat</span> Text Consult
+                        </button>
+                        {appt.consultationType === 'video' && (
+                          <button 
+                            onClick={() => navigate(`/doctor-dashboard/video-call/${appt._id}`, { state: { appointment: appt } })}
+                            className="flex-1 bg-primary text-on-primary text-sm font-bold py-3 rounded-xl hover:bg-primary-container hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2">
+                            <span className="material-symbols-outlined text-[20px] filled-icon">videocam</span> Start Video Call
+                          </button>
+                        )}
+                      </div>
                       <button 
                         onClick={() => handleUpdateStatus(appt._id, 'completed')}
-                        className="flex-1 bg-surface-container text-on-surface text-sm font-bold py-3 rounded-xl hover:bg-surface-container-high hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2 border border-outline-variant/30"
+                        className="w-full bg-surface-container text-on-surface text-sm font-bold py-3 rounded-xl hover:bg-surface-container-high hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2 border border-outline-variant/30"
                       >
-                        <span className="material-symbols-outlined text-[20px] filled-icon">check_circle</span> Complete
+                        <span className="material-symbols-outlined text-[20px] filled-icon">check_circle</span> Complete Appointment
                       </button>
                     </div>
                   </div>

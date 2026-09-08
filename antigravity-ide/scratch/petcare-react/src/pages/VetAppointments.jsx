@@ -6,8 +6,6 @@ const VetAppointments = () => {
   const [user, setUser] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [acceptingId, setAcceptingId] = useState(null);
-  const [meetLink, setMeetLink] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,11 +36,10 @@ const VetAppointments = () => {
     }
   };
 
-  const handleUpdateStatus = async (id, status, meetLinkStr = undefined) => {
+  const handleUpdateStatus = async (id, status) => {
     try {
       const token = localStorage.getItem('vetToken') || localStorage.getItem('userToken') || '';
       const payload = { status };
-      if (meetLinkStr) payload.meetLink = meetLinkStr;
       
       const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/appointments/${id}/status`, {
         method: 'PUT',
@@ -53,9 +50,7 @@ const VetAppointments = () => {
         body: JSON.stringify(payload)
       });
       if (res.ok) {
-        setAppointments(appointments.map(a => a._id === id ? { ...a, status, meetLink: meetLinkStr || a.meetLink } : a));
-        setAcceptingId(null);
-        setMeetLink('');
+        setAppointments(appointments.map(a => a._id === id ? { ...a, status } : a));
       }
     } catch (err) {
       console.error("Error updating status", err);
@@ -81,8 +76,8 @@ const VetAppointments = () => {
       }
     }
     
-    // Assuming LiveChat or consultation page handles the video call
-    navigate(`/live-chat?consultationId=${appt._id}`);
+    // Navigate to the WebRTC video call page
+    navigate(`/doctor-dashboard/video-call/${appt._id}`, { state: { appointment: appt } });
   };
 
   if (!user) return null;
@@ -134,39 +129,13 @@ const VetAppointments = () => {
                       </div>
 
                       <div className="flex flex-col gap-2 shrink-0 md:min-w-[200px]">
-                        {appt.status === 'pending' && acceptingId !== appt._id && (
+                        {appt.status === 'pending' && (
                           <button
-                            onClick={() => setAcceptingId(appt._id)}
+                            onClick={() => handleUpdateStatus(appt._id, 'upcoming')}
                             className="bg-primary text-white text-xs font-bold py-2 px-3 rounded-lg hover:bg-surface-tint transition-colors flex items-center justify-center gap-1"
                           >
                             <span className="material-symbols-outlined text-[16px]">check_circle</span> Accept
                           </button>
-                        )}
-                        {acceptingId === appt._id && (
-                          <div className="flex flex-col gap-2">
-                            <input 
-                              type="url" 
-                              placeholder="Paste Google Meet Link" 
-                              value={meetLink}
-                              onChange={(e) => setMeetLink(e.target.value)}
-                              className="border border-outline-variant rounded-lg p-2 text-xs w-full focus:ring-1 focus:ring-primary outline-none"
-                            />
-                            <div className="flex gap-2">
-                              <button
-                                onClick={() => handleUpdateStatus(appt._id, 'upcoming', meetLink)}
-                                disabled={!meetLink.trim()}
-                                className="flex-1 bg-emerald-600 text-white text-xs font-bold py-2 px-2 rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50"
-                              >
-                                Done & Save
-                              </button>
-                              <button
-                                onClick={() => setAcceptingId(null)}
-                                className="flex-1 bg-surface-container-high border border-outline-variant text-on-surface text-xs font-bold py-2 px-2 rounded-lg hover:bg-surface-container transition-colors"
-                              >
-                                Cancel
-                              </button>
-                            </div>
-                          </div>
                         )}
                         {appt.status === 'upcoming' && (
                           <>
@@ -175,17 +144,11 @@ const VetAppointments = () => {
                             </button>
                             {appt.consultationType === 'video' && (
                               <button 
-                                onClick={() => {
-                                  if (appt.meetLink) {
-                                    window.open(appt.meetLink, '_blank');
-                                  } else {
-                                    handleJoin(appt);
-                                  }
-                                }} 
+                                onClick={() => handleJoin(appt)} 
                                 disabled={new Date() < new Date(`${appt.date} ${appt.time}`)}
                                 className={`text-white text-xs font-bold py-2 px-3 rounded-lg transition-colors flex items-center justify-center gap-1 ${new Date() < new Date(`${appt.date} ${appt.time}`) ? 'bg-outline-variant cursor-not-allowed' : 'bg-primary hover:bg-surface-tint'}`}
                               >
-                                <span className="material-symbols-outlined text-[16px]">videocam</span> Join Meet
+                                <span className="material-symbols-outlined text-[16px]">videocam</span> Start Video Call
                               </button>
                             )}
                             <button

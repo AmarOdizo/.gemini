@@ -319,11 +319,30 @@ const OwnerDashboard = () => {
                           <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">{appt.status}</span>
                         </div>
                         <p className="text-xs text-on-surface-variant mb-3 font-medium">For {appt.petName}</p>
-                        <div className="flex items-center gap-4 text-[11px] text-on-surface-variant font-bold bg-surface-container-low w-fit px-3 py-1.5 rounded-lg border border-outline-variant/20">
+                        <div className="flex items-center gap-4 text-[11px] text-on-surface-variant font-bold bg-surface-container-low w-fit px-3 py-1.5 rounded-lg border border-outline-variant/20 mb-3">
                           <span className="flex items-center gap-1.5"><span className="material-symbols-outlined text-[14px]">calendar_today</span> {appt.date}</span>
                           <span className="w-1 h-1 rounded-full bg-outline-variant"></span>
                           <span className="flex items-center gap-1.5"><span className="material-symbols-outlined text-[14px]">schedule</span> {appt.time}</span>
                         </div>
+                        
+                        {(appt.status === 'upcoming' || appt.status === 'pending') && (
+                          <div className="flex gap-2 mt-2">
+                            <button 
+                              onClick={(e) => { e.stopPropagation(); navigate(`/live-chat?consultationId=${appt._id}`); }}
+                              className="flex-1 bg-surface-container-high border border-outline-variant text-on-surface text-[11px] font-bold py-2 px-2 rounded-lg hover:bg-surface-container transition-colors flex items-center justify-center gap-1"
+                            >
+                              <span className="material-symbols-outlined text-[14px]">chat</span> Chat
+                            </button>
+                            {appt.consultationType === 'video' && (
+                              <button 
+                                onClick={(e) => { e.stopPropagation(); navigate(`/owner-dashboard/video-call/${appt._id}`); }}
+                                className="flex-1 bg-primary text-white text-[11px] font-bold py-2 px-2 rounded-lg hover:bg-surface-tint transition-colors flex items-center justify-center gap-1"
+                              >
+                                <span className="material-symbols-outlined text-[14px]">videocam</span> Start Video Call
+                              </button>
+                            )}
+                          </div>
+                        )}
                       </div>
                     ))
                   ) : (
