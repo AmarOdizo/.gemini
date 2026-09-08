@@ -77,26 +77,30 @@ const OwnerSidebar = () => {
       </nav>
 
       {/* Mobile Bottom Navigation */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant z-50 px-2 flex justify-between items-center shadow-[0_-4px_24px_rgba(0,0,0,0.05)] pb-safe">
-        <NavLink to="/owner-dashboard" className={({ isActive }) => `flex flex-col items-center py-2 px-3 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant z-50 px-1 flex justify-between items-center shadow-[0_-4px_24px_rgba(0,0,0,0.05)] pb-safe">
+        <NavLink to="/owner-dashboard" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
           <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/owner-dashboard' ? 'filled-icon' : ''}`}>dashboard</span>
-          <span className="text-[10px] font-bold mt-1">Home</span>
+          <span className="text-[9px] font-bold mt-1">Home</span>
         </NavLink>
-        <NavLink to="/find-vets" className={({ isActive }) => `flex flex-col items-center py-2 px-3 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+        <NavLink to="/find-vets" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
           <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/find-vets' ? 'filled-icon' : ''}`}>search</span>
-          <span className="text-[10px] font-bold mt-1">Search</span>
+          <span className="text-[9px] font-bold mt-1">Search</span>
         </NavLink>
-        <NavLink to="/my-pets" className={({ isActive }) => `flex flex-col items-center py-2 px-3 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+        <NavLink to="/my-pets" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
           <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/my-pets' ? 'filled-icon' : ''}`}>pets</span>
-          <span className="text-[10px] font-bold mt-1">Pets</span>
+          <span className="text-[9px] font-bold mt-1">Pets</span>
         </NavLink>
-        <NavLink to="/appointments" className={({ isActive }) => `flex flex-col items-center py-2 px-3 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+        <NavLink to="/appointments" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
           <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/appointments' ? 'filled-icon' : ''}`}>calendar_today</span>
-          <span className="text-[10px] font-bold mt-1">Visits</span>
+          <span className="text-[9px] font-bold mt-1">Visits</span>
         </NavLink>
-        <button onClick={handleLogout} className="flex flex-col items-center py-2 px-3 rounded-lg text-error hover:bg-error-container/20 transition-colors">
+        <NavLink to="/prescription" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+          <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/prescription' ? 'filled-icon' : ''}`}>medical_services</span>
+          <span className="text-[9px] font-bold mt-1">Rx</span>
+        </NavLink>
+        <button onClick={handleLogout} className="flex flex-col items-center py-2 px-2 rounded-lg text-error hover:bg-error-container/20 transition-colors">
           <span className="material-symbols-outlined text-[22px]">logout</span>
-          <span className="text-[10px] font-bold mt-1">Logout</span>
+          <span className="text-[9px] font-bold mt-1">Logout</span>
         </button>
       </div>
     </>
