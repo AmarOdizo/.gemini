@@ -72,7 +72,7 @@ const Appointments = () => {
 
   const fetchVets = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/auth/vets`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/vets`);
       const data = await res.json();
       if (data.success && data.data) {
         setVets(data.data);

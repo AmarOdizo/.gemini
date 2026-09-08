@@ -30,30 +30,46 @@ const OwnerDashboard = () => {
 
   const fetchData = async (currentUser) => {
     try {
-      const [apptsRes, vetsRes, petsRes] = await Promise.all([
-        fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/consultations?ownerId=${currentUser._id || currentUser.id}`),
-        fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/vets`),
-        fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/pets?ownerId=${currentUser._id || currentUser.id}`)
-      ]);
+      const ownerId = currentUser._id || currentUser.id;
+      const API_BASE = import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com';
 
-      if (apptsRes.ok) {
-        const apptsData = await apptsRes.json();
-        setAppointments(apptsData.data || []);
+      // Fetch Appointments
+      try {
+        const apptsRes = await fetch(`${API_BASE}/api/consultations?ownerId=${ownerId}`);
+        if (apptsRes.ok) {
+          const apptsData = await apptsRes.json();
+          setAppointments(apptsData.data || []);
+        }
+      } catch (err) {
+        console.error("Error fetching appointments:", err);
       }
 
-      if (vetsRes.ok) {
-        const vetsData = await vetsRes.json();
-        setVets(vetsData.data || []);
-        if (vetsData.data && vetsData.data.length > 0) setSelectedVetId(vetsData.data[0]._id);
+      // Fetch Vets
+      try {
+        const vetsRes = await fetch(`${API_BASE}/api/vets`);
+        if (vetsRes.ok) {
+          const vetsData = await vetsRes.json();
+          setVets(vetsData.data || []);
+          if (vetsData.data && vetsData.data.length > 0) setSelectedVetId(vetsData.data[0]._id || vetsData.data[0].id);
+        }
+      } catch (err) {
+        console.error("Error fetching vets:", err);
       }
       
-      if (petsRes.ok) {
-        const petsData = await petsRes.json();
-        setPets(petsData.data || []);
-        if (petsData.data && petsData.data.length > 0) setSelectedPetId(petsData.data[0]._id);
+      // Fetch Pets
+      try {
+        const petsRes = await fetch(`${API_BASE}/api/pets?ownerId=${ownerId}`);
+        if (petsRes.ok) {
+          const petsData = await petsRes.json();
+          setPets(petsData.data || []);
+          if (petsData.data && petsData.data.length > 0) setSelectedPetId(petsData.data[0]._id || petsData.data[0].id);
+        }
+      } catch (err) {
+        console.error("Error fetching pets:", err);
       }
+
     } catch (err) {
-      console.error("Error fetching dashboard data", err);
+      console.error("Error in dashboard initialization", err);
     } finally {
       setLoading(false);
     }
