@@ -240,11 +240,13 @@ const Prescription = () => {
                       </div>
                     </div>
 
-                    <div className="print-actions p-3 bg-surface-container border-t border-outline-variant flex justify-end gap-2">
-                      <button onClick={() => handlePrint(cardId, false, rx.patientName || rx.petName || 'Unknown_Pet')} className="px-4 py-1.5 bg-surface-container-lowest border border-outline-variant rounded-lg text-xs font-bold text-on-surface-variant hover:bg-surface-container-low transition-colors flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[16px]">Download</span> Download PDF
+                    <div className="print-actions p-4 bg-surface-container border-t border-outline-variant flex flex-col sm:flex-row justify-end gap-3">
+                      <button onClick={() => handlePrint(cardId, false, rx.patientName || rx.petName || 'Unknown_Pet')} className="w-full sm:w-auto px-5 py-2.5 bg-surface-container-lowest border-2 border-outline-variant/50 rounded-xl text-sm font-bold text-on-surface-variant hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2">
+                        <span className="material-symbols-outlined text-[18px]">print</span> Print (Desktop)
                       </button>
-
+                      <button onClick={() => handlePrint(cardId, true, rx.patientName || rx.petName || 'Unknown_Pet')} className="w-full sm:w-auto px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 shadow-sm">
+                        <span className="material-symbols-outlined text-[18px]">download</span> Download PDF
+                      </button>
                     </div>
                   </div>
                 );
