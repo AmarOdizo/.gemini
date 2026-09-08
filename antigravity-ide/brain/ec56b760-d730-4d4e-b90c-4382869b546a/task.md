@@ -1,0 +1,18 @@
+- `[x]` Global Layout & Navigation
+  - `[x]` Update `TopNav.jsx` for responsiveness and sticky behavior.
+  - `[x]` Update `OwnerSidebar.jsx` (mobile off-canvas/hamburger menu, fixed on desktop).
+  - `[x]` Update `VetSidebar.jsx` (mobile off-canvas/hamburger menu, fixed on desktop).
+- `[x]` Dashboards
+  - `[x]` Redesign `OwnerDashboard.jsx` (grid layouts, hover states, skeleton loaders).
+  - `[x]` Redesign `DoctorDashboard.jsx` (grid layouts, hover states, skeleton loaders).
+- `[x]` Core Workflows
+  - `[x]` Refactor `MyPets.jsx` into modern cards and responsive grid.
+  - `[x]` Refactor `Appointments.jsx` and improve mobile forms.
+  - `[x]` Refactor `FindVets.jsx` (sticky search, better cards).
+- `[x]` Auth & Landing Pages
+  - `[x]` Improve `Login.jsx` layout for mobile.
+  - `[x]` Improve `Register.jsx` layout for mobile.
+- `[x]` Polish & Interactivity
+  - `[x]` Add global CSS transitions and loading states.
+  - `[x]` Standardize button sizes and fonts.
+  - `[x]` Verify contrast ratios and text visibility.
