@@ -1,0 +1,11 @@
+  const [role, setRole] = useState('owner');
+  const switchRole = (newRole) => {
+    setRole(newRole);
+      const endpoint = role === 'owner' ? '/api/auth/login' : '/api/auth/vets/login';
+        if (role === 'owner') {
+                onClick={() => switchRole('owner')} 
+                className={`py-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 ${role === 'owner' ? 'bg-primary text-white' : 'text-on-surface-variant hover:bg-surface-container'}`}
+                onClick={() => switchRole('vet')} 
+                className={`py-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 ${role === 'vet' ? 'bg-primary text-white' : 'text-on-surface-variant hover:bg-surface-container'}`}
+              {role === 'owner' ? 'Welcome back, Pet Parent.' : 'Welcome back, Doctor.'}
+            <Link to={role === 'vet' ? '/vet-register' : '/register'} className="font-bold text-primary hover:underline">

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
+import supabase from '../supabaseClient';
 
 const DoctorDashboard = () => {
   const [user, setUser] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [notification, setNotification] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,7 +19,21 @@ const DoctorDashboard = () => {
     const parsedUser = JSON.parse(storedUser);
     // In a real app we'd verify the role, but here we just assume it's the vet
     setUser(parsedUser);
-    fetchAppointments(parsedUser._id);
+    const vetId = parsedUser._id || parsedUser.id;
+    fetchAppointments(vetId);
+
+    // Setup real-time notifications
+    const channel = supabase.channel(`notifications-${vetId}`)
+      .on('broadcast', { event: 'new-booking' }, (payload) => {
+        setNotification(payload.payload.message);
+        fetchAppointments(vetId); // refresh list automatically
+        setTimeout(() => setNotification(null), 6000); // hide after 6s
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [navigate]);
 
   const fetchAppointments = async (vetId) => {
@@ -52,6 +68,31 @@ const DoctorDashboard = () => {
       });
       if (res.ok) {
         setAppointments(appointments.map(a => a._id === id ? { ...a, status } : a));
+        
+        // Notify the owner
+        const appt = appointments.find(a => a._id === id);
+        if (appt && appt.ownerId) {
+          let message = `Your appointment for ${appt.petName} has been updated.`;
+          if (status === 'upcoming') {
+            message = `Great news! Dr. ${user.name.split(' ')[0]} has confirmed your appointment for ${appt.petName}.`;
+          } else if (status === 'completed') {
+            message = `Your consultation for ${appt.petName} with Dr. ${user.name.split(' ')[0]} has been marked as completed.`;
+          } else if (status === 'cancelled') {
+            message = `Dr. ${user.name.split(' ')[0]} has cancelled the appointment for ${appt.petName}.`;
+          }
+
+          const channel = supabase.channel(`notifications-${appt.ownerId}`);
+          channel.subscribe((subStatus) => {
+            if (subStatus === 'SUBSCRIBED') {
+              channel.send({
+                type: 'broadcast',
+                event: 'status-update',
+                payload: { message }
+              });
+              setTimeout(() => supabase.removeChannel(channel), 1000);
+            }
+          });
+        }
       }
     } catch (err) {
       console.error("Error updating status", err);
@@ -65,6 +106,21 @@ const DoctorDashboard = () => {
 
   return (
     <main className="p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full transition-opacity duration-300">
+        {notification && (
+          <div className="fixed top-4 right-4 z-50 bg-surface-container-lowest border-l-4 border-l-primary shadow-xl p-4 rounded-xl flex items-center gap-3 animate-fade-in-up">
+            <div className="bg-primary/20 text-primary w-10 h-10 rounded-full flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined filled-icon">notifications_active</span>
+            </div>
+            <div>
+              <p className="font-bold text-sm text-on-surface">New Appointment</p>
+              <p className="text-xs text-on-surface-variant">{notification}</p>
+            </div>
+            <button onClick={() => setNotification(null)} className="ml-2 text-on-surface-variant hover:text-error transition-colors">
+              <span className="material-symbols-outlined text-[18px]">close</span>
+            </button>
+          </div>
+        )}
+
         <TopNav title={`Welcome, Dr. ${user.name ? user.name.split(' ')[0] : 'Doctor'}! 👋`} subtitle="Here is your clinical schedule for today." />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

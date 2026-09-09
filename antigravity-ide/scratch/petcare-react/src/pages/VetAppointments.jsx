@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
+import supabase from '../supabaseClient';
 
 const VetAppointments = () => {
   const [user, setUser] = useState(null);
@@ -51,6 +52,31 @@ const VetAppointments = () => {
       });
       if (res.ok) {
         setAppointments(appointments.map(a => a._id === id ? { ...a, status } : a));
+        
+        // Notify the owner
+        const appt = appointments.find(a => a._id === id);
+        if (appt && appt.ownerId) {
+          let message = `Your appointment for ${appt.petName} has been updated.`;
+          if (status === 'upcoming') {
+            message = `Great news! Dr. ${user.name.split(' ')[0]} has confirmed your appointment for ${appt.petName}.`;
+          } else if (status === 'completed') {
+            message = `Your consultation for ${appt.petName} with Dr. ${user.name.split(' ')[0]} has been marked as completed.`;
+          } else if (status === 'cancelled') {
+            message = `Dr. ${user.name.split(' ')[0]} has cancelled the appointment for ${appt.petName}.`;
+          }
+
+          const channel = supabase.channel(`notifications-${appt.ownerId}`);
+          channel.subscribe((subStatus) => {
+            if (subStatus === 'SUBSCRIBED') {
+              channel.send({
+                type: 'broadcast',
+                event: 'status-update',
+                payload: { message }
+              });
+              setTimeout(() => supabase.removeChannel(channel), 1000);
+            }
+          });
+        }
       }
     } catch (err) {
       console.error("Error updating status", err);
