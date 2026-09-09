@@ -51,9 +51,10 @@ export class WebRTCManager {
       })
       .subscribe((status) => {
         if (status === 'SUBSCRIBED') {
-          // If this peer is the initiator (Doctor), create and send the offer once subscribed
           if (this.isInitiator) {
             this.createOffer();
+          } else {
+            this.sendSignalingData({ type: 'peer-joined' });
           }
         }
       });
@@ -81,7 +82,9 @@ export class WebRTCManager {
 
   async handleSignalingData(data) {
     try {
-      if (data.type === 'offer' && !this.isInitiator) {
+      if (data.type === 'peer-joined' && this.isInitiator) {
+        this.createOffer();
+      } else if (data.type === 'offer' && !this.isInitiator) {
         await this.peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
         const answer = await this.peerConnection.createAnswer();
         await this.peerConnection.setLocalDescription(answer);
