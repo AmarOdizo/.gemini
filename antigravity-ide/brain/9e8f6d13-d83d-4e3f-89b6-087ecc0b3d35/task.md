@@ -1,0 +1,9 @@
+- [ ] Initialize Vite React project in `PatCareLunch`
+- [ ] Install Tailwind CSS and Three.js
+- [ ] Configure `tailwind.config.js` and `src/index.css`
+- [ ] Create `Header.jsx`
+- [ ] Create `HeroSection.jsx` and `ThreeJsScene.jsx`
+- [ ] Create `HowItWorksSection.jsx`
+- [ ] Create `TelemetrySection.jsx`
+- [ ] Assemble `App.jsx`
+- [ ] Run development server to verify

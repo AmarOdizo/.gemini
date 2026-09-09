@@ -1,0 +1,9 @@
+|
+o  Scaffolding project in C:\Users\VICTUS\.gemini\antigravity-ide\scratch\PatCareLunch...
+|
+—  Done. Now run:
+
+  cd PatCareLunch
+  npm install
+  npm run dev
+

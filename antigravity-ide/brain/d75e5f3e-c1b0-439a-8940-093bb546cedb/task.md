@@ -1,0 +1,8 @@
+- `[x]` Initialize Vite React app in `LunchPetcare`
+- `[x]` Set up package.json dependencies (tailwindcss, postcss, autoprefixer, three)
+- `[x]` Setup Tailwind configuration and `index.css`
+- `[x]` Create `Header` component
+- `[x]` Create `Hero` component
+- `[x]` Create `ThreeScene` component
+- `[x]` Update `App.jsx` and `index.html`
+- `[x]` Completed code extraction and generation

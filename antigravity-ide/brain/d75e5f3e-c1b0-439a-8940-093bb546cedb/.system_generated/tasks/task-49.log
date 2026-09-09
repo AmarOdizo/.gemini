@@ -1,0 +1,17 @@
+v6.14.0
+npm.cmd : The term 'npm.cmd' is not recognized as the name of a cmdlet, function, script file, or operable program. 
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:188
++ ... TMP; $env:LOCALAPPDATA = $env:_LOCALAPPDATA; node -v; npm.cmd -v; npx ...
++                                                           ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (npm.cmd:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+npx.cmd : The term 'npx.cmd' is not recognized as the name of a cmdlet, function, script file, or operable program. 
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:200
++ ... nv:LOCALAPPDATA = $env:_LOCALAPPDATA; node -v; npm.cmd -v; npx.cmd -v
++                                                                ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (npx.cmd:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 

@@ -1,0 +1,34 @@
+npm warn cleanup Failed to remove some directories [
+npm warn cleanup   [
+npm warn cleanup     'C:\\Users\\VICTUS\\.gemini\\antigravity-ide\\scratch\\PatCareLunch\\node_modules\\@tailwindcss\\.oxide-win32-x64-msvc-VgUkUoSS',
+npm warn cleanup     [Error: EPERM: operation not permitted, unlink 'C:\Users\VICTUS\.gemini\antigravity-ide\scratch\PatCareLunch\node_modules\@tailwindcss\.oxide-win32-x64-msvc-VgUkUoSS\tailwindcss-oxide.win32-x64-msvc.node'] {
+npm warn cleanup       errno: -4048,
+npm warn cleanup       code: 'EPERM',
+npm warn cleanup       syscall: 'unlink',
+npm warn cleanup       path: 'C:\\Users\\VICTUS\\.gemini\\antigravity-ide\\scratch\\PatCareLunch\\node_modules\\@tailwindcss\\.oxide-win32-x64-msvc-VgUkUoSS\\tailwindcss-oxide.win32-x64-msvc.node'
+npm warn cleanup     }
+npm warn cleanup   ],
+npm warn cleanup   [
+npm warn cleanup     'C:\\Users\\VICTUS\\.gemini\\antigravity-ide\\scratch\\PatCareLunch\\node_modules\\@tailwindcss\\.node-PCGvqsps',
+npm warn cleanup     [Error: EPERM: operation not permitted, unlink 'C:\Users\VICTUS\.gemini\antigravity-ide\scratch\PatCareLunch\node_modules\@tailwindcss\.node-PCGvqsps\node_modules\lightningcss-win32-x64-msvc\lightningcss.win32-x64-msvc.node'] {
+npm warn cleanup       errno: -4048,
+npm warn cleanup       code: 'EPERM',
+npm warn cleanup       syscall: 'unlink',
+npm warn cleanup       path: 'C:\\Users\\VICTUS\\.gemini\\antigravity-ide\\scratch\\PatCareLunch\\node_modules\\@tailwindcss\\.node-PCGvqsps\\node_modules\\lightningcss-win32-x64-msvc\\lightningcss.win32-x64-msvc.node'
+npm warn cleanup     }
+npm warn cleanup   ]
+npm warn cleanup ]
+
+removed 18 packages, and audited 36 packages in 3s
+
+14 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+added 66 packages, and audited 102 packages in 7s
+
+28 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities

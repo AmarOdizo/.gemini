@@ -1,0 +1,31 @@
+cd : Access is denied
+At line:1 char:179
++ ... CALAPPDATA; cd C:\Users\VICTUS\.gemini\antigravity-ide\scratch\LunchP ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Set-Location], UnauthorizedAccessException
+    + FullyQualifiedErrorId : System.UnauthorizedAccessException,Microsoft.PowerShell.Commands.SetLocationCommand
+ 
+npm : The term 'npm' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the 
+spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:244
++ ... sers\VICTUS\.gemini\antigravity-ide\scratch\LunchPetcare; npm install ...
++                                                               ~~~
+    + CategoryInfo          : ObjectNotFound: (npm:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+npm : The term 'npm' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the 
+spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:257
++ ... gemini\antigravity-ide\scratch\LunchPetcare; npm install; npm install ...
++                                                               ~~~
+    + CategoryInfo          : ObjectNotFound: (npm:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+npx : The term 'npx' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the 
+spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:309
++ ... tall; npm install tailwindcss postcss autoprefixer three; npx tailwin ...
++                                                               ~~~
+    + CategoryInfo          : ObjectNotFound: (npx:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 

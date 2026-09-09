@@ -1,0 +1,25 @@
+
+
+    Directory: C:\Users\VICTUS\.gemini\antigravity-ide\scratch
+
+
+Mode                 LastWriteTime         Length Name                                                                 
+----                 -------------         ------ ----                                                                 
+d-----        09-09-2026     13:31                LunchPetcare                                                         
+cd : Access is denied
+At line:1 char:277
++ ... lyContinue; cd C:\Users\VICTUS\.gemini\antigravity-ide\scratch\LunchP ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Set-Location], UnauthorizedAccessException
+    + FullyQualifiedErrorId : System.UnauthorizedAccessException,Microsoft.PowerShell.Commands.SetLocationCommand
+ 
+npx : The term 'npx' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the 
+spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:342
++ ... sers\VICTUS\.gemini\antigravity-ide\scratch\LunchPetcare; npx -y crea ...
++                                                               ~~~
+    + CategoryInfo          : ObjectNotFound: (npx:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+

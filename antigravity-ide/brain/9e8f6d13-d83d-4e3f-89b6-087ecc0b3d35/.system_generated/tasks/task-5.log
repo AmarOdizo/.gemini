@@ -1,0 +1,9 @@
+cat : Access is denied
+At line:1 char:179
++ ... CALAPPDATA; cat C:\Users\VICTUS\.gemini\antigravity-ide\brain\d75e5f3 ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (C:\Users\VICTUS...ranscript.jsonl:String) [Get-Content], Unauthorized 
+   AccessException
+    + FullyQualifiedErrorId : ItemExistsUnauthorizedAccessError,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+cat : Cannot find path 'C:\Users\VICTUS\.gemini\antigravity-ide\brain\d75e5f3e-c1b0-439a-8940-093bb546cedb\.system_gene
