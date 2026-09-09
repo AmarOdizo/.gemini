@@ -237,25 +237,36 @@ const Appointments = () => {
                 </div>
 
                 <div className="flex items-center gap-2 pt-4 border-t border-outline-variant/30">
-                  <button onClick={() => navigate(`/live-chat?consultationId=${appt._id}`)} className="flex-1 bg-surface-container text-on-surface border border-outline-variant/30 text-xs font-bold py-2.5 rounded-xl hover:bg-surface-container-high hover:border-outline-variant transition-colors flex items-center justify-center gap-1.5">
-                    <span className="material-symbols-outlined text-[18px]">chat</span> Chat
-                  </button>
-                  {appt.consultationType === 'video' ? (
-                    <button 
-                      onClick={() => handleJoin(appt)} 
-                      disabled={appt.status === 'pending' || (new Date() < new Date(`${appt.date}T${appt.time}`))}
-                      className={`flex-1 text-white text-xs font-bold py-2.5 rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition-colors ${appt.status === 'pending' || (new Date() < new Date(`${appt.date}T${appt.time}`)) ? 'bg-outline-variant cursor-not-allowed opacity-50' : 'bg-primary hover:bg-primary-container hover:shadow-md hover:-translate-y-0.5 active:translate-y-0'}`}
-                    >
-                      <span className="material-symbols-outlined text-[18px] filled-icon">videocam</span> Start Video Call
-                    </button>
+                  {(appt.status === 'upcoming' || appt.status === 'pending') ? (
+                    <>
+                      <button onClick={() => navigate(`/live-chat?consultationId=${appt._id}`)} className="flex-1 bg-surface-container text-on-surface border border-outline-variant/30 text-xs font-bold py-2.5 rounded-xl hover:bg-surface-container-high hover:border-outline-variant transition-colors flex items-center justify-center gap-1.5">
+                        <span className="material-symbols-outlined text-[18px]">chat</span> Chat
+                      </button>
+                      {appt.consultationType === 'video' ? (
+                        <button 
+                          onClick={() => handleJoin(appt)} 
+                          disabled={appt.status === 'pending' || (new Date() < new Date(`${appt.date}T${appt.time}`))}
+                          className={`flex-1 text-white text-xs font-bold py-2.5 rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition-colors ${appt.status === 'pending' || (new Date() < new Date(`${appt.date}T${appt.time}`)) ? 'bg-outline-variant cursor-not-allowed opacity-50' : 'bg-primary hover:bg-primary-container hover:shadow-md hover:-translate-y-0.5 active:translate-y-0'}`}
+                        >
+                          <span className="material-symbols-outlined text-[18px] filled-icon">videocam</span> Start Video Call
+                        </button>
+                      ) : (
+                        <button className="flex-1 bg-secondary/10 text-secondary border border-secondary/20 text-xs font-bold py-2.5 rounded-xl hover:bg-secondary/20 transition-colors flex items-center justify-center gap-1.5">
+                          <span className="material-symbols-outlined text-[18px]">directions</span> Directions
+                        </button>
+                      )}
+                      <button onClick={() => handleCancel(appt._id)} className="w-10 h-10 flex items-center justify-center text-error bg-error-container/10 hover:bg-error-container/30 rounded-xl transition-colors border border-error/10" title="Cancel Appointment">
+                        <span className="material-symbols-outlined text-[20px]">cancel</span>
+                      </button>
+                    </>
                   ) : (
-                    <button className="flex-1 bg-secondary/10 text-secondary border border-secondary/20 text-xs font-bold py-2.5 rounded-xl hover:bg-secondary/20 transition-colors flex items-center justify-center gap-1.5">
-                      <span className="material-symbols-outlined text-[18px]">directions</span> Directions
-                    </button>
+                    <div className="flex-1 flex items-center justify-center gap-2 text-on-surface-variant text-sm font-bold bg-surface-container-low py-2.5 rounded-xl border border-outline-variant/30">
+                      <span className={`material-symbols-outlined text-[18px] ${appt.status === 'completed' ? 'text-emerald-600' : 'text-error'}`}>
+                        {appt.status === 'completed' ? 'check_circle' : 'cancel'}
+                      </span>
+                      {appt.status === 'completed' ? 'Appointment Completed' : 'Appointment Cancelled'}
+                    </div>
                   )}
-                  <button onClick={() => handleCancel(appt._id)} className="w-10 h-10 flex items-center justify-center text-error bg-error-container/10 hover:bg-error-container/30 rounded-xl transition-colors border border-error/10" title="Cancel Appointment">
-                    <span className="material-symbols-outlined text-[20px]">cancel</span>
-                  </button>
                 </div>
               </div>
             ))}

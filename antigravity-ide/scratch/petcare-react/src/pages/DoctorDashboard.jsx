@@ -22,11 +22,13 @@ const DoctorDashboard = () => {
 
   const fetchAppointments = async (vetId) => {
     try {
-      // Fetching all consultations for this vet
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/consultations?vetId=${vetId}`);
+      const token = localStorage.getItem('vetToken') || localStorage.getItem('userToken') || '';
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/appointments?vetId=${vetId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       if (res.ok) {
         const data = await res.json();
-        setAppointments(data.data || []);
+        setAppointments(data.appointments || []);
       }
     } catch (err) {
       console.error("Error fetching vet appointments", err);
@@ -37,10 +39,16 @@ const DoctorDashboard = () => {
 
   const handleUpdateStatus = async (id, status) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/consultations/${id}/status`, {
+      const token = localStorage.getItem('vetToken') || localStorage.getItem('userToken') || '';
+      const payload = { status };
+      
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/appointments/${id}/status`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status })
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
       });
       if (res.ok) {
         setAppointments(appointments.map(a => a._id === id ? { ...a, status } : a));
