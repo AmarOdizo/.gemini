@@ -241,8 +241,15 @@ const Prescription = () => {
                     </div>
 
                     <div className="print-actions p-4 bg-surface-container border-t border-outline-variant flex flex-col sm:flex-row justify-end gap-3">
-                      <button onClick={() => handlePrint(cardId, false, rx.patientName || rx.petName || 'Unknown_Pet')} className="w-full sm:w-auto px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 shadow-sm">
-                        <span className="material-symbols-outlined text-[18px]">print</span> Print / Save
+                      <button 
+                        onClick={() => {
+                          const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                          handlePrint(cardId, isMobile, rx.patientName || rx.petName || 'Unknown_Pet');
+                        }} 
+                        className="w-full sm:w-auto px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 shadow-sm"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">{/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? 'download' : 'print'}</span> 
+                        {/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? 'Save PDF' : 'Print / Save'}
                       </button>
                     </div>
                   </div>
