@@ -36,6 +36,18 @@ const AdminHeader = () => {
           <span className="w-2 h-2 rounded-full bg-error animate-ping"></span>
         </div>
 
+        {/* Swagger API Docs Button */}
+        <a
+          href="http://localhost:5001/api-docs"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden sm:flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-700 border border-emerald-500/30 hover:bg-emerald-500/20 transition-all shadow-sm"
+          title="Open Swagger OpenAPI Documentation for all backend endpoints"
+        >
+          <span className="material-symbols-outlined text-[1.125rem]">api</span>
+          <span>Swagger Docs</span>
+        </a>
+
         {/* Portal Switcher */}
         <Link
           to="/owner-dashboard"

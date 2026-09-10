@@ -105,12 +105,26 @@ const AdminSidebar = () => {
 
       {/* Footer Status & Logout */}
       <div className="p-3 space-y-2 border-t border-outline-variant/20">
+        <a
+          href="http://localhost:5001/api-docs"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-between px-3 py-2 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 text-xs font-bold transition-colors"
+          title="Open Swagger API Explorer for maintenance"
+        >
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-[1.125rem]">api</span>
+            <span>API Docs (Swagger)</span>
+          </div>
+          <span className="material-symbols-outlined text-[0.875rem]">open_in_new</span>
+        </a>
+
         <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-container-low">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
           </span>
-          <span className="text-xs text-on-surface font-semibold">Clinical Network: Normal</span>
+          <span className="text-xs text-on-surface font-semibold">MongoDB Atlas: Online</span>
         </div>
 
         <button

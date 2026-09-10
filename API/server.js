@@ -19,6 +19,9 @@ const imagekitRoutes = require("./routes/imagekitRoutes");
 const favoriteVetsRoutes = require("./routes/favoriteVets");
 const adminRoutes = require("./routes/adminRoutes");
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swaggerSpec");
+
 const app = express();
 
 // Middleware
@@ -53,23 +56,41 @@ app.use("/api/favorites", favoriteVetsRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api", apiRoutes);
 
+// Swagger API Documentation UI
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    customCss: ".swagger-ui .topbar { display: none }",
+    customSiteTitle: "PetCare Tele-Veterinary Platform API Docs"
+  })
+);
+
+app.get("/swagger.json", function (req, res) {
+  res.setHeader("Content-Type", "application/json");
+  res.json(swaggerSpec);
+});
+
 // Root Index Route
 app.get("/", function (req, res) {
   res.json({
     success: true,
-    message: "Welcome to Gemini Backend API Server",
+    message: "Welcome to PetCare Tele-Veterinary API Server",
+    documentation: "/api-docs",
+    swaggerJson: "/swagger.json",
     endpoints: {
+      swaggerUI: "/api-docs",
+      adminMetrics: "/api/admin/metrics",
+      adminAppointments: "/api/admin/appointments",
+      adminVets: "/api/admin/vets",
+      adminOwners: "/api/admin/owners",
+      adminPrescriptions: "/api/admin/prescriptions",
       health: "/api/health",
-      status: "/api/status",
-      login: "/api/auth/login",
-      register: "/api/auth/register",
+      authLogin: "/api/auth/login",
+      authRegister: "/api/auth/register",
       vets: "/api/vets",
-      vetLogin: "/api/vets/login",
-      vetRegister: "/api/vets/register",
       pets: "/api/pets",
-      imagekitAuth: "/api/imagekit/auth",
-      imagekitUpload: "/api/imagekit/upload",
-      items: "/api/items",
+      appointments: "/api/appointments"
     },
   });
 });
@@ -87,18 +108,12 @@ const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, function () {
   console.log("==========================================");
-  console.log("  Gemini API Server Running Successfully  ");
+  console.log("  PetCare API Server Running Successfully ");
   console.log("  Port: " + PORT);
+  console.log("  Swagger Docs: http://localhost:" + PORT + "/api-docs");
   console.log("  Health URL: http://localhost:" + PORT + "/api/health");
-  console.log("  Auth Login: http://localhost:" + PORT + "/api/auth/login");
-  console.log(
-    "  Auth Register: http://localhost:" + PORT + "/api/auth/register",
-  );
+  console.log("  Admin Metrics: http://localhost:" + PORT + "/api/admin/metrics");
   console.log("  Vets API: http://localhost:" + PORT + "/api/vets");
-  console.log(
-    "  Vet Register: http://localhost:" + PORT + "/api/vets/register",
-  );
-  console.log("  Vet Login: http://localhost:" + PORT + "/api/vets/login");
   console.log("  Pets API: http://localhost:" + PORT + "/api/pets");
   console.log("==========================================");
 });
