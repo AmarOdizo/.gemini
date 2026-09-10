@@ -1,0 +1,7 @@
+At line:1 char:187
++ ...  $env:_TMP; $env:LOCALAPPDATA = $env:_LOCALAPPDATA; node -v && npm -v
++                                                                 ~~
+The token '&&' is not a valid statement separator in this version.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : InvalidEndOfLine
+ 
