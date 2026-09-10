@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..900;1,300..900&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"secondary-container":"#82f5c1","on-primary-container":"#91d5ce","on-tertiary-fixed":"#001d31","on-tertiary-container":"#99cfff","background":"#faf8ff","inverse-on-surface":"#eef0ff","surface-dim":"#d2d9f4","primary":"#004541","on-background":"#131b2e","secondary-fixed":"#85f8c4","surface-container-highest":"#dae2fd","surface-container-lowest":"#ffffff","on-secondary-fixed-variant":"#005137","on-tertiary":"#ffffff","primary-fixed":"#abefe8","on-primary-fixed":"#00201e","outline-variant":"#bec9c7","surface-container-high":"#e2e7ff","on-tertiary-fixed-variant":"#004b73","on-primary":"#ffffff","surface":"#faf8ff","primary-container":"#115e59","tertiary-fixed":"#cce5ff","on-secondary-container":"#00714e","on-primary-fixed-variant":"#00504b","error":"#ba1a1a","surface-container":"#eaedff","error-container":"#ffdad6","on-error-container":"#93000a","on-surface":"#131b2e","tertiary-fixed-dim":"#93ccff","inverse-surface":"#283044","primary-fixed-dim":"#8fd3cc","inverse-primary":"#8fd3cc","on-secondary":"#ffffff","secondary":"#006c4a","surface-tint":"#216963","outline":"#6f7977","secondary-fixed-dim":"#68dba9","on-surface-variant":"#3f4947","tertiary-container":"#005988","on-error":"#ffffff","surface-container-low":"#f2f3ff","surface-bright":"#faf8ff","surface-variant":"#dae2fd","on-secondary-fixed":"#002114","tertiary":"#004165"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter":"1.5rem","max-content-width":"100rem","sidebar-width":"17.5rem","space-2xs":"0.25rem","space-md":"1rem","space-lg":"1.5rem","space-xl":"2rem","space-xs":"0.5rem","space-3xl":"3rem","space-sm":"0.75rem","space-2xl":"2.5rem"},"fontFamily":{"label-lg":["Hanken Grotesk"],"headline-sm":["Manrope"],"headline-lg":["Manrope"],"label-md":["Hanken Grotesk"],"headline-md":["Manrope"],"body-sm":["Hanken Grotesk"],"display-lg":["Manrope"],"body-lg":["Hanken Grotesk"],"headline-xl":["Manrope"],"body-md":["Hanken Grotesk"],"display-lg-mobile":["Manrope"],"label-caps":["Hanken Grotesk"]},"fontSize":{"label-lg":["0.875rem",{"lineHeight":"1.25rem","letterSpacing":"0.01em","fontWeight":"600"}],"headline-sm":["1.125rem",{"lineHeight":"1.5rem","fontWeight":"600"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.015em","fontWeight":"600"}],"label-md":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.02em","fontWeight":"600"}],"headline-md":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.01em","fontWeight":"600"}],"body-sm":["0.75rem",{"lineHeight":"1.125rem","fontWeight":"400"}],"display-lg":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.025em","fontWeight":"700"}],"body-lg":["1rem",{"lineHeight":"1.5rem","fontWeight":"400"}],"headline-xl":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.02em","fontWeight":"600"}],"body-md":["0.875rem",{"lineHeight":"1.375rem","fontWeight":"400"}],"display-lg-mobile":["1.75rem",{"lineHeight":"2.25rem","letterSpacing":"-0.02em","fontWeight":"700"}],"label-caps":["0.6875rem",{"lineHeight":"0.875rem","letterSpacing":"0.06em","fontWeight":"700"}]}}}}</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-[17.5rem] bg-surface-container-lowest border-r border-outline-variant/30 z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="h-16 px-space-md flex items-center gap-space-sm border-b border-outline-variant/20"><img alt="PetCare Admin Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WYGVAAW2nanDItql34Y87dMW2cdlC8GvfOkWUAs4J4s0zfx5dHp613HCuZg52vyddep3rM73DGKGRMsZGwcdOAt-XTxViOfQ894qvMl00C-p1yMNpUHVK1LML0VUXS-M-7wbeDXGOMhpjpVa9uqchjZgNUjKYLtomBShdW_mDzghJ-jjj0pTiVS9lzoFa3sWJ5nfxLD5SIAbB2ogiCXXZkVceeUTFZAClW78CXipnL5D47p2VLrphRrfc"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight font-semibold">PetCare</span><span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Clinical Admin</span></div></div><div class="px-space-sm py-space-sm"><nav class="space-y-1" data-active-classes="bg-primary-container text-on-primary font-semibold rounded-xl"><a class="flex items-center justify-between px-space-sm py-space-xs rounded-xl text-on-surface-variant font-label-lg text-label-lg hover:bg-surface-container hover:text-on-surface transition-colors" data-path="dashboard" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">grid_view</span><span>Dashboard</span></div></a><a aria-current="page" class="flex items-center justify-between px-space-sm py-space-xs transition-colors bg-primary-container text-on-primary font-semibold rounded-xl" data-path="owners" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">supervisor_account</span><span>Owners</span></div></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-xl text-on-surface-variant font-label-lg text-label-lg hover:bg-surface-container hover:text-on-surface transition-colors" data-path="veterinarians" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">stethoscope</span><span>Veterinarians</span></div><span class="font-label-md text-label-md px-space-xs py-0.5 rounded-full bg-surface-container-high text-on-surface font-semibold">4 pending</span></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-xl text-on-surface-variant font-label-lg text-label-lg hover:bg-surface-container hover:text-on-surface transition-colors" data-path="appointments" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">calendar_clock</span><span>Appointments</span></div></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-xl text-on-surface-variant font-label-lg text-label-lg hover:bg-surface-container hover:text-on-surface transition-colors" data-path="consultations" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">videocam</span><span>Consultations</span></div><span class="inline-flex items-center gap-1 font-label-md text-label-md px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>12 live</span></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-xl text-on-surface-variant font-label-lg text-label-lg hover:bg-surface-container hover:text-on-surface transition-colors" data-path="prescriptions" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">prescriptions</span><span>Prescriptions</span></div></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-xl text-on-surface-variant font-label-lg text-label-lg hover:bg-surface-container hover:text-on-surface transition-colors" data-path="reviews-and-ratings" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">grade</span><span>Reviews &amp; Ratings</span></div></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-xl text-on-surface-variant font-label-lg text-label-lg hover:bg-surface-container hover:text-on-surface transition-colors" data-path="reports" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">clinical_notes</span><span>Reports</span></div></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-xl text-on-surface-variant font-label-lg text-label-lg hover:bg-surface-container hover:text-on-surface transition-colors" data-path="notifications" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">notifications</span><span>Notifications</span></div><span class="font-label-md text-label-md px-space-xs py-0.5 rounded-full bg-error-container text-on-error-container font-semibold">3</span></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-xl text-on-surface-variant font-label-lg text-label-lg hover:bg-surface-container hover:text-on-surface transition-colors" data-path="settings" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[1.25rem]">settings</span><span>Settings</span></div></a></nav></div></div><div class="p-space-sm space-y-space-sm border-t border-outline-variant/20"><div class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-xl bg-surface-container-low"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span></span><span class="font-label-md text-label-md text-on-surface font-semibold">Clinical Network: Normal</span></div><button class="w-full flex items-center gap-space-sm px-space-sm py-space-xs rounded-xl text-error font-label-lg text-label-lg hover:bg-error-container/40 hover:text-on-error-container transition-colors" type="button"><span class="material-symbols-outlined text-[1.25rem]">logout</span><span>Log Out</span></button></div></aside><div class="pl-[17.5rem]"><header class="fixed top-0 left-[17.5rem] right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/20 z-40 px-space-lg flex items-center justify-between"><div class="flex items-center gap-space-md flex-1 max-w-xl"><div class="relative w-full"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[1.25rem]">search</span><input class="w-full pl-10 pr-12 py-2 bg-surface-container-low rounded-xl border border-outline-variant/40 font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:border-primary-container focus:bg-surface-container-lowest transition-all" placeholder="Search owners, veterinarians, appointments, microchips..." type="search"/><kbd class="absolute right-3 top-1/2 -translate-y-1/2 font-label-md text-label-md px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant font-semibold">⌘K</kbd></div></div><div class="flex items-center gap-space-md"><div class="hidden xl:flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-error-container/40 border border-error-container text-on-error-container"><span class="material-symbols-outlined text-error text-[1rem]">emergency</span><span class="font-label-md text-label-md font-semibold text-error">Urgent Escalations</span><span class="w-2 h-2 rounded-full bg-error animate-ping"></span></div><a class="flex items-center gap-1 font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-[1.25rem]">help_outline</span><span class="hidden md:inline">Support</span></a><button aria-label="Notifications" class="relative p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[1.25rem]">notifications</span><span class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-error font-label-md text-[0.625rem] text-on-error font-semibold">3</span></button><div class="h-8 w-[1px] bg-outline-variant/30"></div><div class="flex items-center gap-space-sm pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdaPkn1KM9piKvy7XnP_UGgke9PLVNZpiXc_TPsfaZoF3huvI21wUaiDXKbzSwv1rUvyX-3_wd4Fgf51-qAo5_DzQ7lvo5t9h8udHX1Yl2So_O6CtwOk6PpRiqIHok-vXrNBxkkJYiOhk-OjF4Pkym10rh5rbghDPlySYoNqLW7qpC2jJrr13HPoR9dyRTsK6vwkUIQpnotel8_aHXSIFLqCJeQZ2-Go39ygbZi471U6J4c4j8aIXs"/><div class="hidden sm:flex flex-col text-left"><span class="font-label-lg text-label-lg text-on-surface font-semibold leading-tight">Dr. Sarah Jenkins</span><span class="font-label-md text-label-md text-on-surface-variant font-normal leading-tight">Chief Clinical Admin</span></div><button aria-label="User menu" class="p-1 rounded text-on-surface-variant hover:text-on-surface" type="button"><span class="material-symbols-outlined text-[1.125rem]">expand_more</span></button></div></div></header><main class="relative pt-16 min-h-screen bg-surface"><div class="flex flex-col w-full">
+<div class="w-full max-w-[100rem] mx-auto p-space-lg space-y-space-xl">
+<!-- Top Action & Title Zone -->
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-space-md">
+<div class="space-y-1">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider bg-secondary-container/40 text-on-secondary-container px-space-xs py-0.5 rounded-md">Client Registry Hub</span>
+<span class="text-outline-variant font-label-md">•</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Live Synchronized Database</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface font-bold tracking-tight">Owner Directory &amp; Pet Profiles</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+          Manage registered pet owners, microchip linkings, pet medical records, and client account statuses.
+        </p>
+</div>
+<!-- Primary Operational Controls -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="inline-flex items-center gap-space-xs px-space-md py-2.5 rounded-xl bg-surface-container-high text-on-surface font-label-lg text-label-lg shadow-sm hover:bg-surface-container-highest transition-all" type="button">
+<span class="material-symbols-outlined text-[1.2rem]">file_download</span>
+<span>Export Owner Data</span>
+</button>
+<button class="inline-flex items-center gap-space-xs px-space-md py-2.5 rounded-xl bg-surface-container-high text-on-surface font-label-lg text-label-lg shadow-sm hover:bg-surface-container-highest transition-all" type="button">
+<span class="material-symbols-outlined text-[1.2rem]">forward_to_inbox</span>
+<span>Bulk Message Notification</span>
+</button>
+<button class="inline-flex items-center gap-space-xs px-space-lg py-2.5 rounded-xl bg-primary-container text-on-primary font-label-lg text-label-lg shadow-md hover:bg-primary transition-all" type="button">
+<span class="material-symbols-outlined text-[1.2rem]">person_add</span>
+<span>Register New Owner</span>
+</button>
+</div>
+</div>
+<!-- Clinical Triage Status & Operational Metric Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- Total Registered Owners -->
+<div class="relative overflow-hidden rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider block">Registered Owners</span>
+<span class="font-display-lg text-display-lg font-bold text-on-surface tracking-tight mt-1 block">14,820</span>
+</div>
+<div class="p-2.5 rounded-xl bg-surface-container-low text-primary">
+<span class="material-symbols-outlined text-[1.75rem]">supervisor_account</span>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-space-xs">
+<span class="inline-flex items-center text-secondary font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[1rem]">trending_up</span> +3.8%
+          </span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">vs prior 30-day window</span>
+</div>
+<div class="absolute -right-4 -bottom-4 w-20 h-20 bg-primary/5 rounded-full blur-xl pointer-events-none"></div>
+</div>
+<!-- Total Registered Pets -->
+<div class="relative overflow-hidden rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider block">Total Registered Pets</span>
+<span class="font-display-lg text-display-lg font-bold text-on-surface tracking-tight mt-1 block">21,430</span>
+</div>
+<div class="p-2.5 rounded-xl bg-secondary-container/30 text-on-secondary-container">
+<span class="material-symbols-outlined text-[1.75rem]">pets</span>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<span>Avg. 1.44 pets / household</span>
+<span class="font-label-md text-label-md text-primary font-semibold">98.2% chipped</span>
+</div>
+<div class="absolute -right-4 -bottom-4 w-20 h-20 bg-secondary/5 rounded-full blur-xl pointer-events-none"></div>
+</div>
+<!-- Active This Month -->
+<div class="relative overflow-hidden rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider block">Active This Month</span>
+<span class="font-display-lg text-display-lg font-bold text-secondary tracking-tight mt-1 block">9,410</span>
+</div>
+<div class="p-2.5 rounded-xl bg-surface-container-low text-secondary">
+<span class="material-symbols-outlined text-[1.75rem]">vital_signs</span>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="text-on-surface-variant font-body-sm text-body-sm">63.5% engagement rate across tele-care</span>
+</div>
+</div>
+<!-- Suspended / Restricted Accounts -->
+<div class="relative overflow-hidden rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-caps text-label-caps text-error uppercase tracking-wider block">Suspended Accounts</span>
+<span class="font-display-lg text-display-lg font-bold text-error tracking-tight mt-1 block">14</span>
+</div>
+<div class="p-2.5 rounded-xl bg-error-container/40 text-error">
+<span class="material-symbols-outlined text-[1.75rem]">gavel</span>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<span class="text-on-surface-variant font-body-sm text-body-sm">Identity &amp; verification flags</span>
+<a class="font-label-md text-label-md text-error hover:underline font-semibold" href="#">Review 14</a>
+</div>
+</div>
+</div>
+<!-- Filter & Query Control Center -->
+<div class="rounded-2xl bg-surface-container-lowest p-space-md shadow-sm space-y-space-md">
+<!-- Search Field -->
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[1.35rem]">person_search</span>
+<input class="w-full pl-12 pr-10 py-3 bg-surface-container-low rounded-xl text-on-surface placeholder:text-outline font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest transition-all" id="owner-search-input" placeholder="Search by owner name, email, phone number, pet name, or microchip ID (e.g., 98200036491)..." type="text"/>
+<button aria-label="Clear search" class="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-outline hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[1.2rem]">close</span>
+</button>
+</div>
+<!-- Deep Clinical Filters -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-1">
+<div class="flex flex-wrap items-center gap-space-xs">
+<!-- Status Dropdown Filter -->
+<div class="relative">
+<select class="appearance-none bg-surface-container-low text-on-surface font-label-md text-label-md pl-3 pr-8 py-2 rounded-xl focus:outline-none cursor-pointer">
+<option value="">Account Status: All</option>
+<option value="active">Active Verified</option>
+<option value="pending">Pending Email</option>
+<option value="restricted">Restricted</option>
+<option value="suspended">Suspended</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[1.1rem]">arrow_drop_down</span>
+</div>
+<!-- Species Filter -->
+<div class="relative">
+<select class="appearance-none bg-surface-container-low text-on-surface font-label-md text-label-md pl-3 pr-8 py-2 rounded-xl focus:outline-none cursor-pointer">
+<option value="">Species: All Categories</option>
+<option value="canine">Canine (Dogs)</option>
+<option value="feline">Feline (Cats)</option>
+<option value="exotic">Exotic &amp; Avian</option>
+<option value="multi">Multi-Pet Household</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[1.1rem]">arrow_drop_down</span>
+</div>
+<!-- History Filter -->
+<div class="relative">
+<select class="appearance-none bg-surface-container-low text-on-surface font-label-md text-label-md pl-3 pr-8 py-2 rounded-xl focus:outline-none cursor-pointer">
+<option value="">Clinical Visits: Any Frequency</option>
+<option value="frequent">Frequent Care (&gt;5 visits)</option>
+<option value="moderate">Moderate (2-5 visits)</option>
+<option value="first-time">First-time Patient</option>
+<option value="none">No History Recorded</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[1.1rem]">arrow_drop_down</span>
+</div>
+<!-- Date Registered -->
+<div class="relative">
+<select class="appearance-none bg-surface-container-low text-on-surface font-label-md text-label-md pl-3 pr-8 py-2 rounded-xl focus:outline-none cursor-pointer">
+<option value="">Enrolled: All-Time</option>
+<option value="last30">Last 30 Days</option>
+<option value="q1">This Quarter (Q1)</option>
+<option value="year2024">Year 2024</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant text-[1.1rem]">arrow_drop_down</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs text-on-surface-variant font-body-sm text-body-sm">
+<span>Showing <strong class="text-on-surface font-semibold">1-5</strong> of 14,820 profiles</span>
+<button class="p-1 rounded-lg hover:bg-surface-container text-on-surface-variant" type="button">
+<span class="material-symbols-outlined text-[1.2rem]">refresh</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Main Workspace Split: Dynamic Table + Inspection Dossier Panel -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-start">
+<!-- Table Section (7 or 8 columns on large screens) -->
+<div class="xl:col-span-8 rounded-2xl bg-surface-container-lowest shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="py-3.5 px-space-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider" scope="col">Owner Profile</th>
+<th class="py-3.5 px-space-sm font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider" scope="col">Contact &amp; Location</th>
+<th class="py-3.5 px-space-sm font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider" scope="col">Registered Pets</th>
+<th class="py-3.5 px-space-sm font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider" scope="col">Visits &amp; Encounters</th>
+<th class="py-3.5 px-space-sm font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider" scope="col">Status</th>
+<th class="py-3.5 px-space-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider text-right" scope="col">Actions</th>
+</tr>
+</thead>
+<tbody class="text-on-surface font-body-md text-body-md" id="owners-table-body">
+<!-- Row 1: Selected (Marcus Vance) -->
+<tr class="bg-surface-container-low/70 transition-colors cursor-pointer group" onclick="selectOwner('marcus-vance')">
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="relative">
+<img class="w-10 h-10 rounded-full object-cover shadow-sm" data-alt="Close up professional portrait of Marcus Vance, a 34 year old male with short brown hair, gentle smiling expression, soft neutral lighting, clinical high trust setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAj84gbKJhZoViLul7TKqSgtZmvXE9CEVPVKE3XpXvBDkrO_gASCxN_PypqCX-D-NcTBNBl4NJHhJ5ff9cbpRj2_kQ96FbscStQ-XhJdZDEUQJqDNbSwRhmcOvboWv0TcU6icdRgkozAbLpIa9yuvGyepW0E6-Xnuafb0Ucv1wpA_Q5l8xcODUuKQzc21XRa3kbsRx0ZFfNgLWDKqgWIx0I9gfhBsQ1as72Iu6hzFAXASwFtzDi6Ecn"/>
+<span class="absolute -bottom-1 -right-1 bg-secondary text-on-secondary rounded-full p-0.5 flex items-center justify-center text-[0.65rem]" title="Identity Verified">
+<span class="material-symbols-outlined text-[0.75rem]">verified</span>
+</span>
+</div>
+<div class="min-w-0">
+<div class="flex items-center gap-1">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate group-hover:text-primary transition-colors">Marcus Vance</span>
+<span class="font-label-caps text-[0.625rem] px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-bold">VIP CLIENT</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate block">m.vance@example.com</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="font-label-md text-label-md text-on-surface font-medium">+1 (555) 392-1829</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.95rem] text-outline">location_on</span> Austin, TX
+                  </div>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="flex flex-wrap items-center gap-1 max-w-[14rem]">
+<span class="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-md font-label-md text-label-md text-on-surface">
+<span>🐶</span> Buster <span class="text-on-surface-variant text-[0.7rem] font-normal">(Labrador)</span>
+</span>
+<span class="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-md font-label-md text-label-md text-on-surface">
+<span>🐱</span> Luna <span class="text-on-surface-variant text-[0.7rem] font-normal">(Siamese)</span>
+</span>
+<span class="font-label-caps text-label-caps px-1.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant">+1 more</span>
+</div>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="font-label-md text-label-md text-on-surface font-semibold">8 Visits</div>
+<div class="font-body-sm text-body-sm text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.85rem]">schedule</span> 2 days ago
+                  </div>
+</td>
+<td class="py-3.5 px-space-sm">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/40 text-on-secondary-container font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Active
+                  </span>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-primary hover:bg-surface-container-high transition-colors" title="Quick View" type="button">
+<span class="material-symbols-outlined text-[1.25rem]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" title="More Management Controls" type="button">
+<span class="material-symbols-outlined text-[1.25rem]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Elena Rostova (Active) -->
+<tr class="hover:bg-surface-container-low/50 transition-colors cursor-pointer group">
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="relative">
+<img class="w-10 h-10 rounded-full object-cover shadow-sm" data-alt="Portrait of Elena Rostova, a 42 year old woman wearing spectacles, professional clinical aura, neutral background with sage teal tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjvmfTSXgkGM_MuTpp2xnQ-VtBVUKqOi_-voVGbpz8QEP5fcMUcFG_fgVlWwItB1iGSACqb8ozPAXybdRSRp0zApDthnXTkS6tQzX-UuXW7XPVLdc8qzh-y1ORWdcL_ugi7lVDjYaNotDuXLqyhWfprVGcXVxd3iN4ROFjUa43D_PAk3z6EuTXdDZXxvsdVW9auCWXwY_k6uKVVPx9cSxIJRl5UAlsZWBTA78IauNJ4rGQMSUUA9DL"/>
+<span class="absolute -bottom-1 -right-1 bg-secondary text-on-secondary rounded-full p-0.5 flex items-center justify-center text-[0.65rem]" title="Verified">
+<span class="material-symbols-outlined text-[0.75rem]">verified</span>
+</span>
+</div>
+<div class="min-w-0">
+<div class="flex items-center gap-1">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate group-hover:text-primary transition-colors">Dr. Elena Rostova</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate block">e.rostova@meditech.org</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="font-label-md text-label-md text-on-surface font-medium">+1 (555) 849-2041</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.95rem] text-outline">location_on</span> Seattle, WA
+                  </div>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="flex flex-wrap items-center gap-1 max-w-[14rem]">
+<span class="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-md font-label-md text-label-md text-on-surface">
+<span>🐶</span> Barnaby <span class="text-on-surface-variant text-[0.7rem] font-normal">(Golden Retriever)</span>
+</span>
+</div>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="font-label-md text-label-md text-on-surface font-semibold">14 Visits</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.85rem]">schedule</span> 1 week ago
+                  </div>
+</td>
+<td class="py-3.5 px-space-sm">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/40 text-on-secondary-container font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Active
+                  </span>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-primary hover:bg-surface-container-high transition-colors" title="Quick View" type="button">
+<span class="material-symbols-outlined text-[1.25rem]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" title="More Management Controls" type="button">
+<span class="material-symbols-outlined text-[1.25rem]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Liam Chen (Pending Email) -->
+<tr class="hover:bg-surface-container-low/50 transition-colors cursor-pointer group">
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-headline-sm text-headline-sm flex items-center justify-center font-bold">
+                      LC
+                    </div>
+<div class="min-w-0">
+<div class="flex items-center gap-1">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate group-hover:text-primary transition-colors">Liam Chen</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate block">liam.c.chen@gmail.com</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="font-label-md text-label-md text-on-surface font-medium">+1 (555) 601-9238</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.95rem] text-outline">location_on</span> Denver, CO
+                  </div>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="flex flex-wrap items-center gap-1 max-w-[14rem]">
+<span class="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-md font-label-md text-label-md text-on-surface">
+<span>🦜</span> Pip <span class="text-on-surface-variant text-[0.7rem] font-normal">(Macaw)</span>
+</span>
+</div>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="font-label-md text-label-md text-on-surface font-semibold">1 Visit</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.85rem]">schedule</span> 3 weeks ago
+                  </div>
+</td>
+<td class="py-3.5 px-space-sm">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Pending Confirmation
+                  </span>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-primary hover:bg-surface-container-high transition-colors" title="Quick View" type="button">
+<span class="material-symbols-outlined text-[1.25rem]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" title="More Management Controls" type="button">
+<span class="material-symbols-outlined text-[1.25rem]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Sandra Bullock-Dean (Active) -->
+<tr class="hover:bg-surface-container-low/50 transition-colors cursor-pointer group">
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="relative">
+<img class="w-10 h-10 rounded-full object-cover shadow-sm" data-alt="Portrait of Sandra Dean, an older woman with silver-grey hair, dignified, wearing a high-neck dark forest green top, serene clean light background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4u5w5CBbtZVEGfyS9ua9nB2gKm-6ykZagRDSnvn2EUQovqpDdufqeTqp9vNSTgPt7rO6zVm80YJBDbip3ZiJPs1cn6-u2gmYMp7xqFRzk-6V9gWgB5-rVMK-dOSpw7XktjYyT7cvb3WN1P2aS1eq542m6v2dKGn-L8t0yZr94WzHHKzvKEU1wTxd5sNj8E66xv4W8XFu6s9Vf5vWe48LvDkhJ_A_-lGsaxt1GluUigSzSLFKcPTkP"/>
+<span class="absolute -bottom-1 -right-1 bg-secondary text-on-secondary rounded-full p-0.5 flex items-center justify-center text-[0.65rem]" title="Verified">
+<span class="material-symbols-outlined text-[0.75rem]">verified</span>
+</span>
+</div>
+<div class="min-w-0">
+<div class="flex items-center gap-1">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate group-hover:text-primary transition-colors">Sandra Dean</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate block">s.dean@archvet.net</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="font-label-md text-label-md text-on-surface font-medium">+1 (555) 774-8832</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.95rem] text-outline">location_on</span> Portland, OR
+                  </div>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="flex flex-wrap items-center gap-1 max-w-[14rem]">
+<span class="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-md font-label-md text-label-md text-on-surface">
+<span>🐱</span> Mochi <span class="text-on-surface-variant text-[0.7rem] font-normal">(Bengal)</span>
+</span>
+<span class="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-md font-label-md text-label-md text-on-surface">
+<span>🐱</span> Kiko <span class="text-on-surface-variant text-[0.7rem] font-normal">(Ragdoll)</span>
+</span>
+</div>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="font-label-md text-label-md text-on-surface font-semibold">5 Visits</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.85rem]">schedule</span> 1 month ago
+                  </div>
+</td>
+<td class="py-3.5 px-space-sm">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/40 text-on-secondary-container font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Active
+                  </span>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-primary hover:bg-surface-container-high transition-colors" title="Quick View" type="button">
+<span class="material-symbols-outlined text-[1.25rem]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" title="More Management Controls" type="button">
+<span class="material-symbols-outlined text-[1.25rem]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5: Raymond K. Thorne (Suspended) -->
+<tr class="hover:bg-surface-container-low/50 transition-colors cursor-pointer group">
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-error-container text-on-error-container font-headline-sm text-headline-sm flex items-center justify-center font-bold">
+                      RT
+                    </div>
+<div class="min-w-0">
+<div class="flex items-center gap-1">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold truncate group-hover:text-error transition-colors">Raymond K. Thorne</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate block">thorne_rk@fastmail.com</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="font-label-md text-label-md text-on-surface font-medium">+1 (555) 912-3004</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.95rem] text-outline">location_on</span> Dallas, TX
+                  </div>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="flex flex-wrap items-center gap-1 max-w-[14rem]">
+<span class="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-md font-label-md text-label-md text-on-surface">
+<span>🐶</span> Zeus <span class="text-on-surface-variant text-[0.7rem] font-normal">(Rottweiler)</span>
+</span>
+</div>
+</td>
+<td class="py-3.5 px-space-sm">
+<div class="font-label-md text-label-md text-on-surface font-semibold">2 Visits</div>
+<div class="font-body-sm text-body-sm text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.85rem]">block</span> Flagged
+                  </div>
+</td>
+<td class="py-3.5 px-space-sm">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container text-on-error-container font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> Suspended
+                  </span>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-primary hover:bg-surface-container-high transition-colors" title="Quick View" type="button">
+<span class="material-symbols-outlined text-[1.25rem]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" title="More Management Controls" type="button">
+<span class="material-symbols-outlined text-[1.25rem]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination Toolbar -->
+<div class="p-space-md bg-surface-container-lowest flex flex-col sm:flex-row items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant">
+<span>Rows per view:</span>
+<select class="bg-surface-container-low text-on-surface font-label-md text-label-md rounded-lg px-2 py-1 focus:outline-none">
+<option>10</option>
+<option>25</option>
+<option>50</option>
+</select>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-outline hover:bg-surface-container hover:text-on-surface" disabled="" type="button">
+<span class="material-symbols-outlined text-[1.2rem]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md font-semibold flex items-center justify-center" type="button">1</button>
+<button class="w-8 h-8 rounded-lg text-on-surface-variant hover:bg-surface-container font-label-md text-label-md font-semibold flex items-center justify-center" type="button">2</button>
+<button class="w-8 h-8 rounded-lg text-on-surface-variant hover:bg-surface-container font-label-md text-label-md font-semibold flex items-center justify-center" type="button">3</button>
+<span class="px-1 text-outline">...</span>
+<button class="w-8 h-8 rounded-lg text-on-surface-variant hover:bg-surface-container font-label-md text-label-md font-semibold flex items-center justify-center" type="button">296</button>
+<button class="p-1.5 rounded-lg text-on-surface hover:bg-surface-container" type="button">
+<span class="material-symbols-outlined text-[1.2rem]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Quick-View Detail Dossier Panel (Right side: 4 columns) -->
+<div class="xl:col-span-4 rounded-2xl bg-surface-container-lowest p-space-lg shadow-sm space-y-space-md">
+<!-- Quick View Header -->
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[1.4rem]">badge</span>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Owner Dossier</h2>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">ID: OW-8840291 • Live Inspection</span>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container/50 text-on-secondary-container font-label-md text-label-md font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Verified
+          </span>
+</div>
+<!-- Selected Owner Summary Card -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex items-center gap-space-md">
+<img class="w-14 h-14 rounded-2xl object-cover shadow-sm" data-alt="Close up portrait of Marcus Vance, a 34 year old male pet owner with high trust styling, friendly demeanor, professional lighting against teal studio backdrop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCP23LWSc217eT_0biU1ZmUXL07q4gXgMAEwYGwkK9A4mqHHL6BShjXI0fm-sgUjynuHS_Hi5WHZVxeNowuyysKFB3dsaVVA12nZrIwCJiHz5TK2DXjMEQoUNGYr7yLKxUHPIM9MQIbobgsnk0TrjFOkJSmFJo5uTT9fE5CN9X6yh6WhclPIGhZdDEOWx2YeFHWkSTUmNH5lflJNZ-rGqOU6ZTzCH8fDOBY6mp1FFsaP1b9SO9BD5dE"/>
+<div class="min-w-0 flex-1">
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold truncate">Marcus Vance</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">m.vance@example.com</p>
+<p class="font-label-md text-label-md text-primary font-semibold mt-0.5">+1 (555) 392-1829</p>
+</div>
+</div>
+<!-- Administrative Account Operations Bar -->
+<div class="grid grid-cols-3 gap-2">
+<button class="flex flex-col items-center justify-center p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors text-on-surface" type="button">
+<span class="material-symbols-outlined text-primary text-[1.25rem]">lock_reset</span>
+<span class="font-label-caps text-[0.625rem] mt-1 text-center font-bold">Password Reset</span>
+</button>
+<button class="flex flex-col items-center justify-center p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors text-on-surface" type="button">
+<span class="material-symbols-outlined text-secondary text-[1.25rem]">notifications_active</span>
+<span class="font-label-caps text-[0.625rem] mt-1 text-center font-bold">Send Direct Notice</span>
+</button>
+<button class="flex flex-col items-center justify-center p-2.5 rounded-xl bg-error-container/30 hover:bg-error-container/60 transition-colors text-error" type="button">
+<span class="material-symbols-outlined text-[1.25rem]">person_off</span>
+<span class="font-label-caps text-[0.625rem] mt-1 text-center font-bold">Restrict Account</span>
+</button>
+</div>
+<!-- Connected Pets & Medical Overview -->
+<div class="space-y-space-xs pt-1">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Registered Pets (3)</span>
+<button class="font-label-md text-label-md text-primary hover:underline font-semibold flex items-center gap-0.5" type="button">
+<span class="material-symbols-outlined text-[1rem]">add_circle</span> Add Pet
+            </button>
+</div>
+<!-- Pet 1: Buster -->
+<div class="p-space-sm rounded-xl bg-surface-container-low space-y-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="text-xl">🐶</span>
+<div>
+<h4 class="font-label-lg text-label-lg font-bold text-on-surface">Buster</h4>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Yellow Labrador • 4 yrs • 31.2 kg</span>
+</div>
+</div>
+<span class="font-label-md text-label-md px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container font-semibold">Up-to-Date</span>
+</div>
+<div class="grid grid-cols-2 gap-2 text-on-surface-variant font-body-sm text-body-sm pt-1">
+<div class="bg-surface-container-lowest p-2 rounded-lg">
+<span class="font-label-caps text-[0.625rem] text-outline block">MICROCHIP ID</span>
+<span class="font-label-md text-label-md font-mono text-on-surface font-semibold">982 000 364 912</span>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded-lg">
+<span class="font-label-caps text-[0.625rem] text-outline block">NEXT VACCINATION</span>
+<span class="font-label-md text-label-md text-primary font-semibold">DHPP Booster: Nov 2025</span>
+</div>
+</div>
+</div>
+<!-- Pet 2: Luna -->
+<div class="p-space-sm rounded-xl bg-surface-container-low space-y-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="text-xl">🐱</span>
+<div>
+<h4 class="font-label-lg text-label-lg font-bold text-on-surface">Luna</h4>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Siamese • 2 yrs • 3.8 kg</span>
+</div>
+</div>
+<span class="font-label-md text-label-md px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container font-semibold">Rabies Valid</span>
+</div>
+<div class="grid grid-cols-2 gap-2 text-on-surface-variant font-body-sm text-body-sm pt-1">
+<div class="bg-surface-container-lowest p-2 rounded-lg">
+<span class="font-label-caps text-[0.625rem] text-outline block">MICROCHIP ID</span>
+<span class="font-label-md text-label-md font-mono text-on-surface font-semibold">982 000 482 108</span>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded-lg">
+<span class="font-label-caps text-[0.625rem] text-outline block">UPCOMING APPT</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Dental Check: In 12 Days</span>
+</div>
+</div>
+</div>
+<!-- Pet 3: Pip (Folded) -->
+<div class="p-2.5 rounded-xl bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-base">🐹</span>
+<span class="font-label-md text-label-md font-semibold text-on-surface">Clover (Syrian Hamster)</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Active file</span>
+</div>
+</div>
+<!-- Recent Clinical Tele-Consultations -->
+<div class="space-y-space-xs pt-1">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Clinical Encounters</span>
+<a class="font-label-md text-label-md text-primary hover:underline font-semibold" href="#">Full Logs</a>
+</div>
+<div class="space-y-2">
+<!-- Consult item 1 -->
+<div class="p-2.5 rounded-xl bg-surface-container-low flex items-start gap-space-xs">
+<div class="p-1.5 rounded-lg bg-secondary-container text-on-secondary-container mt-0.5">
+<span class="material-symbols-outlined text-[1.1rem]">videocam</span>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Acute Canine Otitis Triage</span>
+<span class="font-label-caps text-[0.625rem] text-on-surface-variant">2d ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Attending: Dr. Sarah Jenkins (Lead Tele-Vet)</p>
+<div class="mt-1 flex items-center gap-1">
+<span class="font-label-caps text-[0.625rem] px-1.5 py-0.2 rounded bg-surface-container text-on-surface">Resolved</span>
+<span class="font-label-caps text-[0.625rem] px-1.5 py-0.2 rounded bg-secondary-container text-on-secondary-container">Rx Dispatched</span>
+</div>
+</div>
+</div>
+<!-- Consult item 2 -->
+<div class="p-2.5 rounded-xl bg-surface-container-low flex items-start gap-space-xs">
+<div class="p-1.5 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed mt-0.5">
+<span class="material-symbols-outlined text-[1.1rem]">clinical_notes</span>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-semibold text-on-surface truncate">Annual Wellness Assessment</span>
+<span class="font-label-caps text-[0.625rem] text-on-surface-variant">3 mos ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Attending: Dr. Alan Mitchell, DVM</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Administrative Audit Notes & Security Logs -->
+<div class="space-y-space-xs pt-1">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Security &amp; Audit Trail</span>
+<div class="p-space-sm rounded-xl bg-surface-container-low space-y-2">
+<div class="flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.95rem] text-secondary">check_circle</span> 2FA Protocol
+              </span>
+<strong class="text-on-surface font-semibold">Enabled (Authenticator App)</strong>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.95rem] text-outline">devices</span> Last Login Device
+              </span>
+<span class="truncate max-w-[10rem]">iOS App v4.19 (Austin, TX)</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[0.95rem] text-outline">history</span> Registered Date
+              </span>
+<span>March 14, 2022</span>
+</div>
+</div>
+</div>
+<!-- Open Full Master Dossier CTA -->
+<button class="w-full py-3 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg font-semibold shadow-sm hover:bg-primary-container transition-all flex items-center justify-center gap-space-xs" type="button">
+<span>Inspect Full Medical Dossier</span>
+<span class="material-symbols-outlined text-[1.1rem]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+    function selectOwner(ownerId) {
+      // Microinteraction feedback for client-side selection
+      const tableBody = document.getElementById('owners-table-body');
+      const rows = tableBody.querySelectorAll('tr');
+      rows.forEach(row => {
+        row.classList.remove('bg-surface-container-low/70');
+      });
+      event.currentTarget.classList.add('bg-surface-container-low/70');
+    }
+  </script>
+</div></main></div></body></html>

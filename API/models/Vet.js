@@ -86,13 +86,39 @@ if (mongoose) {
           type: String,
           default: ""
         },
+        licenseNumber: {
+          type: String,
+          default: ""
+        },
+        deaNumber: {
+          type: String,
+          default: ""
+        },
+        deaCertUrl: {
+          type: String,
+          default: ""
+        },
+        insuranceCertUrl: {
+          type: String,
+          default: ""
+        },
+        rejectionReason: {
+          type: String,
+          default: ""
+        },
+        verifiedAt: {
+          type: Date
+        },
+        verifiedBy: {
+          type: String
+        },
         isVerified: {
           type: Boolean,
           default: true
         },
         status: {
           type: String,
-          enum: ["active", "pending", "suspended"],
+          enum: ["active", "pending", "suspended", "rejected"],
           default: "active"
         },
         role: {

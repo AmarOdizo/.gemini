@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "StitchMCP": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\VICTUS\\.gemini\\config\\stitch-bridge.js"
+      ],
+      "env": {
+        "STITCH_API_KEY": "YOUR_STITCH_API_KEY"
+      }
+    }
+  }
+}

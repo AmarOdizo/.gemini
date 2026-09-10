@@ -22,8 +22,15 @@ if (mongoose) {
         weightUnit: { type: String, enum: ["kg", "lb"], default: "kg" },
         image: { type: String, default: "" },
         description: { type: String, default: "" },
+        microchipId: { type: String, default: "" },
         vaccinated: { type: Boolean, default: true },
         vaccinationDate: { type: Date, default: Date.now },
+        vaccinations: [{
+          name: { type: String },
+          date: { type: Date },
+          validUntil: { type: Date },
+          status: { type: String, default: "Up-to-date" }
+        }],
         healthStatus: { type: String, enum: ["Healthy", "Sick", "Under Treatment"], default: "Healthy" },
         ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
         ownerName: { type: String, default: "Jane Doe" },

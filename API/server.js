@@ -15,6 +15,7 @@ const chatRoutes = require("./routes/chat");
 const prescriptionRoutes = require("./routes/prescriptions");
 const imagekitRoutes = require("./routes/imagekitRoutes");
 const favoriteVetsRoutes = require("./routes/favoriteVets");
+const adminRoutes = require("./routes/adminRoutes");
 
 dotenv.config();
 
@@ -22,8 +23,8 @@ const app = express();
 
 // Middleware
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || '*',
-  optionsSuccessStatus: 200
+  origin: process.env.FRONTEND_URL || "*",
+  optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "10mb" }));
@@ -31,7 +32,9 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 // Request logging middleware
 app.use(function (req, res, next) {
-  console.log("[" + new Date().toISOString() + "] " + req.method + " " + req.url);
+  console.log(
+    "[" + new Date().toISOString() + "] " + req.method + " " + req.url,
+  );
   next();
 });
 
@@ -47,6 +50,7 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/prescriptions", prescriptionRoutes);
 app.use("/api/imagekit", imagekitRoutes);
 app.use("/api/favorites", favoriteVetsRoutes);
+app.use("/api/admin", adminRoutes);
 app.use("/api", apiRoutes);
 
 // Root Index Route
@@ -65,8 +69,8 @@ app.get("/", function (req, res) {
       pets: "/api/pets",
       imagekitAuth: "/api/imagekit/auth",
       imagekitUpload: "/api/imagekit/upload",
-      items: "/api/items"
-    }
+      items: "/api/items",
+    },
   });
 });
 
@@ -74,7 +78,7 @@ app.get("/", function (req, res) {
 app.use(function (req, res) {
   res.status(404).json({
     success: false,
-    message: "Endpoint not found: " + req.originalUrl
+    message: "Endpoint not found: " + req.originalUrl,
   });
 });
 
@@ -87,9 +91,13 @@ const server = app.listen(PORT, function () {
   console.log("  Port: " + PORT);
   console.log("  Health URL: http://localhost:" + PORT + "/api/health");
   console.log("  Auth Login: http://localhost:" + PORT + "/api/auth/login");
-  console.log("  Auth Register: http://localhost:" + PORT + "/api/auth/register");
+  console.log(
+    "  Auth Register: http://localhost:" + PORT + "/api/auth/register",
+  );
   console.log("  Vets API: http://localhost:" + PORT + "/api/vets");
-  console.log("  Vet Register: http://localhost:" + PORT + "/api/vets/register");
+  console.log(
+    "  Vet Register: http://localhost:" + PORT + "/api/vets/register",
+  );
   console.log("  Vet Login: http://localhost:" + PORT + "/api/vets/login");
   console.log("  Pets API: http://localhost:" + PORT + "/api/pets");
   console.log("==========================================");

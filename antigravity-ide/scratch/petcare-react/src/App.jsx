@@ -23,6 +23,16 @@ import ProtectedRoute from './components/ProtectedRoute'
 import MainLayout from './layouts/MainLayout'
 import DoctorVideoCall from './pages/doctor/VideoCall'
 import OwnerVideoCall from './pages/owner/VideoCall'
+import AdminLayout from './layouts/AdminLayout'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminAppointments from './pages/admin/AdminAppointments'
+import AdminVeterinarians from './pages/admin/AdminVeterinarians'
+import AdminOwners from './pages/admin/AdminOwners'
+import AdminPrescriptions from './pages/admin/AdminPrescriptions'
+import AdminReports from './pages/admin/AdminReports'
+import AdminNotifications from './pages/admin/AdminNotifications'
+import AdminSettings from './pages/admin/AdminSettings'
+import AdminReviews from './pages/admin/AdminReviews'
 
 function App() {
   return (
@@ -59,6 +69,21 @@ function App() {
       <Route path="/vet-telehealth-room" element={<ProtectedRoute allowedRoles={['doctor', 'owner']}><VetTelehealthRoom /></ProtectedRoute>} />
       <Route path="/doctor-dashboard/video-call/:appointmentId" element={<ProtectedRoute allowedRoles={['doctor']}><DoctorVideoCall /></ProtectedRoute>} />
       <Route path="/owner-dashboard/video-call/:appointmentId" element={<ProtectedRoute allowedRoles={['owner']}><OwnerVideoCall /></ProtectedRoute>} />
+
+      {/* Clinical Admin Portal */}
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<Navigate to="/admin/dashboard" replace />} />
+        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="appointments" element={<AdminAppointments />} />
+        <Route path="consultations" element={<AdminAppointments />} />
+        <Route path="veterinarians" element={<AdminVeterinarians />} />
+        <Route path="owners" element={<AdminOwners />} />
+        <Route path="prescriptions" element={<AdminPrescriptions />} />
+        <Route path="reviews" element={<AdminReviews />} />
+        <Route path="reports" element={<AdminReports />} />
+        <Route path="notifications" element={<AdminNotifications />} />
+        <Route path="settings" element={<AdminSettings />} />
+      </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
