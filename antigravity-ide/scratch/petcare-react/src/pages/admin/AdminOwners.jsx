@@ -1,100 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { adminApi } from '../../services/adminApi';
 
 const AdminOwners = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [speciesFilter, setSpeciesFilter] = useState('all');
   const [selectedOwner, setSelectedOwner] = useState(null);
+  const [ownersList, setOwnersList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const initialOwners = [
-    {
-      id: 'OWN-101',
-      name: 'Eleanor Vance',
-      email: 'eleanor.vance@example.com',
-      phone: '+1 (555) 432-8901',
-      address: 'Seattle, WA',
-      joinedDate: 'Jan 14, 2023',
-      totalConsultations: 8,
-      status: 'Active',
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=120',
-      pets: [
-        { name: 'Barnaby', species: 'Dog', breed: 'Golden Retriever', age: '4 yrs', microchip: '985141002349182', vaccinated: true },
-        { name: 'Pip', species: 'Cat', breed: 'Tabby', age: '2 yrs', microchip: '985141002349183', vaccinated: true }
-      ]
-    },
-    {
-      id: 'OWN-102',
-      name: 'Liam Henderson',
-      email: 'liam.h@example.com',
-      phone: '+1 (555) 543-9012',
-      address: 'Austin, TX',
-      joinedDate: 'Mar 22, 2023',
-      totalConsultations: 5,
-      status: 'Active',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120',
-      pets: [
-        { name: 'Cleo', species: 'Cat', breed: 'Siamese', age: '3 yrs', microchip: '985141008819201', vaccinated: true },
-        { name: 'Mochi', species: 'Cat', breed: 'Siamese', age: '3 yrs', microchip: '985141008819202', vaccinated: false }
-      ]
-    },
-    {
-      id: 'OWN-103',
-      name: 'Sophia Chen',
-      email: 'sophia.c@example.com',
-      phone: '+1 (555) 654-0123',
-      address: 'San Francisco, CA',
-      joinedDate: 'Jun 05, 2023',
-      totalConsultations: 12,
-      status: 'Active',
-      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=120',
-      pets: [
-        { name: 'Rory', species: 'Dog', breed: 'French Bulldog', age: '1 yr', microchip: '985141003412984', vaccinated: true }
-      ]
-    },
-    {
-      id: 'OWN-104',
-      name: 'David Miller',
-      email: 'david.m@example.com',
-      phone: '+1 (555) 765-1234',
-      address: 'Denver, CO',
-      joinedDate: 'Nov 18, 2022',
-      totalConsultations: 16,
-      status: 'Active',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=120',
-      pets: [
-        { name: 'Zeus', species: 'Dog', breed: 'German Shepherd', age: '6 yrs', microchip: '985141009948210', vaccinated: true }
-      ]
-    },
-    {
-      id: 'OWN-105',
-      name: 'Maya Lin',
-      email: 'maya.lin@example.com',
-      phone: '+1 (555) 876-2345',
-      address: 'Boston, MA',
-      joinedDate: 'Aug 10, 2023',
-      totalConsultations: 4,
-      status: 'Active',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120',
-      pets: [
-        { name: 'Luna', species: 'Cat', breed: 'Persian', age: '5 yrs', microchip: '985141001293847', vaccinated: true }
-      ]
-    },
-    {
-      id: 'OWN-106',
-      name: 'James Wilson',
-      email: 'j.wilson@example.com',
-      phone: '+1 (555) 987-3456',
-      address: 'Chicago, IL',
-      joinedDate: 'Feb 02, 2024',
-      totalConsultations: 2,
-      status: 'Restricted',
-      avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=120',
-      pets: [
-        { name: 'Buster', species: 'Dog', breed: 'Beagle', age: '2 yrs', microchip: '985141007728192', vaccinated: false }
-      ]
-    }
-  ];
-
-  const [ownersList, setOwnersList] = useState(initialOwners);
+  useEffect(() => {
+    const fetchOwnersFromDatabase = async () => {
+      try {
+        setLoading(true);
+        const json = await adminApi.getOwners();
+        if (json.success && json.owners) {
+          setOwnersList(json.owners);
+        }
+      } catch (err) {
+        console.error("Error loading owners from MongoDB:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOwnersFromDatabase();
+  }, []);
 
   const filteredOwners = ownersList.filter((o) => {
     // Species Filter

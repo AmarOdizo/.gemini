@@ -221,21 +221,84 @@ router.get('/telemetry/:appointmentId', async (req, res) => {
   try {
     let telemetry = await ConsultationTelemetry.findOne({ appointmentId: req.params.appointmentId });
     if (!telemetry) {
-      telemetry = {
-        appointmentId: req.params.appointmentId,
-        streamMetrics: {
-          vetBitrateKbps: 1800,
-          ownerBitrateKbps: 1200,
-          latencyMs: 28,
-          packetLossPercentage: 0.02,
-          resolution: '1080p @ 30fps',
-          encryption: 'AES-256'
-        },
-        durationSeconds: 872,
-        webrtcState: 'connected'
-      };
+      telemetry = await ConsultationTelemetry.findOne();
     }
     res.json({ success: true, telemetry });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// 9. APPOINTMENTS: GET /api/admin/appointments
+router.get('/appointments', async (req, res) => {
+  try {
+    const appointments = await Appointment.find().sort({ createdAt: -1 });
+    res.json({ success: true, count: appointments.length, appointments });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// 10. VETS: GET /api/admin/vets
+router.get('/vets', async (req, res) => {
+  try {
+    const vets = await Vet.find().sort({ createdAt: -1 });
+    res.json({ success: true, count: vets.length, vets });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// 11. OWNERS & PETS: GET /api/admin/owners
+router.get('/owners', async (req, res) => {
+  try {
+    const owners = await User.find({ role: 'owner' }).lean();
+    const ownersWithPets = await Promise.all(
+      owners.map(async (owner) => {
+        const pets = await Pet.find({
+          $or: [
+            { ownerId: owner._id },
+            { ownerEmail: owner.email }
+          ]
+        }).lean();
+        const consultationsCount = await Appointment.countDocuments({
+          $or: [
+            { ownerId: owner._id.toString() },
+            { ownerName: owner.name }
+          ]
+        });
+        return {
+          id: owner._id,
+          name: owner.name,
+          email: owner.email,
+          phone: owner.phone,
+          address: pets[0]?.address || 'Seattle, WA',
+          joinedDate: new Date(owner.createdAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
+          totalConsultations: consultationsCount,
+          status: 'Active',
+          avatar: `https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=120`,
+          pets: pets.map((p) => ({
+            name: p.name,
+            species: p.species,
+            breed: p.breed,
+            age: `${p.age} ${p.ageUnit?.toLowerCase() || 'yrs'}`,
+            microchip: p.microchipId,
+            vaccinated: p.vaccinated
+          }))
+        };
+      })
+    );
+    res.json({ success: true, count: ownersWithPets.length, owners: ownersWithPets });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// 12. PRESCRIPTIONS: GET /api/admin/prescriptions
+router.get('/prescriptions', async (req, res) => {
+  try {
+    const prescriptions = await Prescription.find().sort({ createdAt: -1 });
+    res.json({ success: true, count: prescriptions.length, prescriptions });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import LiveConsultationDrawer from '../../components/admin/LiveConsultationDrawer';
+import { adminApi } from '../../services/adminApi';
 
 const AdminAppointments = () => {
   const [activeTab, setActiveTab] = useState('all');
@@ -9,133 +10,33 @@ const AdminAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Initial standard appointments database
-  const seedAppointments = [
-    {
-      id: 'APT-1092',
-      pet: 'Barnaby',
-      breed: 'Golden Retriever',
-      owner: 'Eleanor Vance',
-      ownerEmail: 'eleanor.vance@example.com',
-      vet: 'Dr. Marcus Sterling',
-      specialty: 'Internal Medicine',
-      time: '10:00 AM EST • Today',
-      reason: 'Post-operative monitoring and appetite check',
-      triage: 'Urgent',
-      status: 'Live',
-      isLive: true,
-      notes: 'Post-op recovery tracking for abdominal surgery. Incision clean, dog drinking fluids regularly.'
-    },
-    {
-      id: 'APT-1093',
-      pet: 'Cleo & Mochi',
-      breed: 'Domestic Short Hair',
-      owner: 'Liam Henderson',
-      ownerEmail: 'liam.h@example.com',
-      vet: 'Dr. Chloe Aris',
-      specialty: 'Dermatology & Allergy',
-      time: '10:15 AM EST • Today',
-      reason: 'Chronic skin itching & ear inflammation',
-      triage: 'Routine',
-      status: 'In-Waiting',
-      isLive: true,
-      notes: 'Evaluation of seasonal allergies. Reviewing hypoallergenic diet and topical spray.'
-    },
-    {
-      id: 'APT-1094',
-      pet: 'Rory',
-      breed: 'French Bulldog',
-      owner: 'Sophia Chen',
-      ownerEmail: 'sophia.c@example.com',
-      vet: 'Dr. Neil Roberts',
-      specialty: 'Cardiology',
-      time: '10:30 AM EST • Today',
-      reason: 'Acute respiratory distress and rapid panting',
-      triage: 'Emergency',
-      status: 'Live',
-      isLive: true,
-      notes: 'Emergency tele-triage. Advising owner on upright positioning and immediate oxygen stabilization.'
-    },
-    {
-      id: 'APT-1095',
-      pet: 'Zeus',
-      breed: 'German Shepherd',
-      owner: 'David Miller',
-      ownerEmail: 'david.m@example.com',
-      vet: 'Dr. Sarah Jenkins',
-      specialty: 'Orthopedics & Spine',
-      time: '11:00 AM EST • Today',
-      reason: 'Hind leg limping after park exercise',
-      triage: 'Routine',
-      status: 'Scheduled',
-      isLive: false,
-      notes: 'Suspected mild cruciate ligament sprain. Awaiting gait video upload.'
-    },
-    {
-      id: 'APT-1096',
-      pet: 'Luna',
-      breed: 'Persian Cat',
-      owner: 'Maya Lin',
-      ownerEmail: 'maya.lin@example.com',
-      vet: 'Dr. Marcus Sterling',
-      specialty: 'Internal Medicine',
-      time: '09:00 AM EST • Today',
-      reason: 'Follow-up on renal support diet',
-      triage: 'Routine',
-      status: 'Completed',
-      isLive: false,
-      notes: 'Hydration levels stable. Blood urea nitrogen within acceptable home-care margins.'
-    },
-    {
-      id: 'APT-1097',
-      pet: 'Buster',
-      breed: 'Beagle',
-      owner: 'James Wilson',
-      ownerEmail: 'j.wilson@example.com',
-      vet: 'Dr. Chloe Aris',
-      specialty: 'Dermatology',
-      time: 'Yesterday',
-      reason: 'Suspected flea dermatitis & ear mite inspection',
-      triage: 'Routine',
-      status: 'Completed',
-      isLive: false,
-      notes: 'Prescribed ear drops and NexGard flea prevention chewables.'
-    }
-  ];
-
   useEffect(() => {
     const fetchApiAppointments = async () => {
       try {
-        const token = localStorage.getItem('userToken') || '';
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/appointments`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (res.ok) {
-          const json = await res.json();
-          if (json.success && json.appointments && json.appointments.length > 0) {
-            const formatted = json.appointments.map((a, idx) => ({
-              id: `APT-${a._id ? a._id.substring(a._id.length - 4) : 1000 + idx}`,
-              pet: a.petName || 'Pet',
-              breed: a.petBreed || a.petType || 'Canine',
-              owner: a.ownerName || 'Pet Owner',
-              ownerEmail: a.ownerEmail || 'owner@example.com',
-              vet: a.vetName || 'Assigned Veterinarian',
-              specialty: a.vetSpecialty || 'General Veterinary',
-              time: `${a.date || 'Today'} • ${a.time || '10:00 AM'}`,
-              reason: a.reason || 'General Consultation',
-              triage: a.triage || 'Routine',
-              status: a.status || 'Scheduled',
-              isLive: a.status === 'In-Progress' || a.status === 'Live',
-              notes: a.notes || 'Routine clinical appointment booked via PetCare online portal.'
-            }));
-            setAppointments([...formatted, ...seedAppointments]);
-            return;
-          }
+        setLoading(true);
+        const json = await adminApi.getAppointments();
+        if (json.success && json.appointments) {
+          const formatted = json.appointments.map((a, idx) => ({
+            id: a.id || `APT-${a._id ? a._id.substring(a._id.length - 4).toUpperCase() : 1000 + idx}`,
+            rawId: a._id,
+            pet: a.petName || 'Pet',
+            breed: a.petSpecies || a.breed || 'Canine',
+            owner: a.ownerName || 'Pet Owner',
+            ownerEmail: a.ownerEmail || `${(a.ownerName || 'owner').toLowerCase().replace(/\s+/g, '.')}@example.com`,
+            vet: a.vetName || 'Dr. Marcus Sterling',
+            specialty: a.specialty || 'Internal Medicine',
+            time: `${a.date || 'Today'} • ${a.time || '10:00 AM'}`,
+            reason: a.reason || 'Clinical Consultation',
+            triage: a.triage ? a.triage.charAt(0).toUpperCase() + a.triage.slice(1) : 'Routine',
+            status: a.isLive || a.status === 'live' ? 'Live' : a.status ? a.status.charAt(0).toUpperCase() + a.status.slice(1) : 'Scheduled',
+            isLive: a.isLive || a.status === 'live',
+            notes: a.notes || 'Clinical record synced from MongoDB appointments collection.'
+          }));
+          setAppointments(formatted);
         }
       } catch (err) {
-        console.warn("Using clinical seeds for appointments", err);
+        console.error("Error loading appointments from MongoDB:", err);
       } finally {
-        setAppointments(seedAppointments);
         setLoading(false);
       }
     };

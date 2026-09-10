@@ -1,153 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import VetVerificationModal from '../../components/admin/VetVerificationModal';
+import { adminApi } from '../../services/adminApi';
 
 const AdminVeterinarians = () => {
   const [activeTab, setActiveTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSpecialty, setSelectedSpecialty] = useState('all');
   const [selectedVetForReview, setSelectedVetForReview] = useState(null);
+  const [vetsList, setVetsList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const initialVets = [
-    {
-      id: 'VET-001',
-      name: 'Dr. Jonathan Blake, DVM',
-      license: 'VET-CA-90421',
-      specialty: 'Internal Medicine',
-      clinic: 'Oak Ridge Animal Hospital',
-      university: 'UC Davis School of Veterinary Medicine',
-      experience: '9 Years',
-      status: 'Pending',
-      rating: 4.88,
-      consultationsCount: 142,
-      avatar: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=150',
-      phone: '+1 (555) 234-5678',
-      email: 'dr.blake@oakridgevet.com'
-    },
-    {
-      id: 'VET-002',
-      name: 'Dr. Amanda Thorne, MRCVS',
-      license: 'VET-NY-81093',
-      specialty: 'Emergency & Critical Care',
-      clinic: 'Metropolitan Veterinary Center',
-      university: 'Cornell University College of Veterinary Medicine',
-      experience: '12 Years',
-      status: 'Pending',
-      rating: 4.95,
-      consultationsCount: 310,
-      avatar: 'https://images.unsplash.com/photo-1594824813583-05b135767b36?auto=format&fit=crop&q=80&w=150',
-      phone: '+1 (555) 345-6789',
-      email: 'dr.thorne@metrovet.com'
-    },
-    {
-      id: 'VET-003',
-      name: 'Dr. Marcus Sterling, DVM',
-      license: 'VET-TX-45210',
-      specialty: 'Orthopedics & Spine',
-      clinic: 'Sterling Animal Specialty Center',
-      university: 'Texas A&M College of Veterinary Medicine',
-      experience: '15 Years',
-      status: 'Active',
-      rating: 4.96,
-      consultationsCount: 890,
-      avatar: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=150',
-      phone: '+1 (555) 456-7890',
-      email: 'm.sterling@sterlingvet.com'
-    },
-    {
-      id: 'VET-004',
-      name: 'Dr. Chloe Aris, DVM',
-      license: 'VET-FL-67129',
-      specialty: 'Dermatology & Allergies',
-      clinic: 'Sunshine Pet Dermatology',
-      university: 'University of Florida Veterinary College',
-      experience: '7 Years',
-      status: 'Active',
-      rating: 4.92,
-      consultationsCount: 520,
-      avatar: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=150',
-      phone: '+1 (555) 567-8901',
-      email: 'chloe.aris@sunshinevet.com'
-    },
-    {
-      id: 'VET-005',
-      name: 'Dr. Neil Roberts, BVSc',
-      license: 'VET-IL-98124',
-      specialty: 'Cardiology',
-      clinic: 'Chicago Veterinary Specialists',
-      university: 'University of Illinois Veterinary Medicine',
-      experience: '11 Years',
-      status: 'Active',
-      rating: 4.91,
-      consultationsCount: 440,
-      avatar: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&q=80&w=150',
-      phone: '+1 (555) 678-9012',
-      email: 'neil.roberts@chicagovet.org'
-    },
-    {
-      id: 'VET-006',
-      name: 'Dr. Kenneth Cole, DVM',
-      license: 'VET-WA-12489',
-      specialty: 'General Practice',
-      clinic: 'Pacific Animal Care',
-      university: 'Washington State University',
-      experience: '4 Years',
-      status: 'Suspended',
-      rating: 4.35,
-      consultationsCount: 88,
-      avatar: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=150',
-      phone: '+1 (555) 789-0123',
-      email: 'k.cole@pacificvet.com'
-    }
-  ];
-
-  const [vetsList, setVetsList] = useState(initialVets);
-
-  useEffect(() => {
-    const fetchApiVets = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/vets`);
-        if (res.ok) {
-          const json = await res.json();
-          if (json.success && json.vets && json.vets.length > 0) {
-            const formatted = json.vets.map((v, i) => ({
-              id: `VET-${v._id ? v._id.substring(v._id.length - 4) : 100 + i}`,
-              name: v.name?.startsWith('Dr.') ? v.name : `Dr. ${v.name}`,
-              license: v.licenseNumber || `VET-REG-${9000 + i}`,
-              specialty: v.specialty || 'General Veterinary',
-              clinic: v.clinicAddress || v.clinicName || 'PetCare Clinical Network',
-              university: v.qualification || 'State Veterinary Medical College',
-              experience: `${v.experience || 5} Years`,
-              status: v.isVerified ? 'Active' : 'Pending',
-              rating: v.rating || 4.9,
-              consultationsCount: v.reviewsCount || 45,
-              avatar: v.avatar || 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=150',
-              phone: v.phone || '+1 (555) 000-PETS',
-              email: v.email || 'doctor@petcare.org'
-            }));
-            setVetsList([...initialVets, ...formatted]);
-          }
-        }
-      } catch (err) {
-        console.warn("Using clinical seeds for veterinarians", err);
+  const fetchVetsFromDatabase = async () => {
+    try {
+      setLoading(true);
+      const json = await adminApi.getVets();
+      if (json.success && json.vets) {
+        const formatted = json.vets.map((v, i) => ({
+          id: v._id,
+          name: v.name?.startsWith('Dr.') ? v.name : `Dr. ${v.name}`,
+          license: v.licenseNumber || v.vciNumber || `VET-REG-${9000 + i}`,
+          dea: v.deaNumber || 'DEA-PENDING',
+          specialty: Array.isArray(v.specialization) ? v.specialization.join(', ') : v.specialization || 'General Veterinary',
+          clinic: v.clinicName || 'PetCare Clinical Network',
+          university: v.university || v.qualification || 'State Veterinary Medical College',
+          experience: `${v.experienceYears || 5} Years`,
+          status: v.status ? v.status.charAt(0).toUpperCase() + v.status.slice(1) : (v.isVerified ? 'Active' : 'Pending'),
+          rating: 4.9,
+          consultationsCount: 120,
+          avatar: v.photoUrl || 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=150',
+          phone: v.phone || '+1 (555) 000-PETS',
+          email: v.email || 'doctor@petcare.org'
+        }));
+        setVetsList(formatted);
       }
-    };
-    fetchApiVets();
-  }, []);
-
-  const handleApprove = (vetId) => {
-    setVetsList((prev) =>
-      prev.map((v) => (v.id === vetId ? { ...v, status: 'Active' } : v))
-    );
-    setSelectedVetForReview(null);
-    alert(`Veterinarian ${vetId} credential verified and approved for clinical tele-practice.`);
+    } catch (err) {
+      console.error("Error loading vets from MongoDB:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleReject = (vetId, reason) => {
-    setVetsList((prev) =>
-      prev.map((v) => (v.id === vetId ? { ...v, status: 'Suspended' } : v))
-    );
-    setSelectedVetForReview(null);
-    alert(`Veterinarian ${vetId} credentials rejected. Notification sent with reason: ${reason || 'Incomplete documentation'}`);
+  useEffect(() => {
+    fetchVetsFromDatabase();
+  }, []);
+
+  const handleApprove = async (vetId) => {
+    try {
+      await adminApi.verifyVet(vetId, 'approve');
+      await fetchVetsFromDatabase();
+      setSelectedVetForReview(null);
+      alert(`Veterinarian credential verified and saved to MongoDB vets table.`);
+    } catch (err) {
+      alert("Error saving approval: " + err.message);
+    }
+  };
+
+  const handleReject = async (vetId, reason) => {
+    try {
+      await adminApi.verifyVet(vetId, 'reject', reason || 'State license documentation incomplete');
+      await fetchVetsFromDatabase();
+      setSelectedVetForReview(null);
+      alert(`Veterinarian status updated in MongoDB vets collection.`);
+    } catch (err) {
+      alert("Error saving rejection: " + err.message);
+    }
   };
 
   const filteredVets = vetsList.filter((v) => {

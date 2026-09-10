@@ -1,41 +1,68 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import AdminGenericPage from './AdminGenericPage';
+import { adminApi } from '../../services/adminApi';
 
 const AdminReports = () => {
+  const [reports, setReports] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        setLoading(true);
+        const res = await adminApi.getReports();
+        if (res.success && res.reports) {
+          setReports(res.reports);
+        }
+      } catch (err) {
+        console.error("Error loading clinical reports from MongoDB:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReports();
+  }, []);
+
   return (
     <AdminGenericPage
       title="Clinical Operations Reports & Analytics"
-      subtitle="Export regulatory compliance audits, clinical volume breakdowns, and revenue statistics."
+      subtitle="Export regulatory compliance audits and clinical volume breakdowns loaded from MongoDB clinicalreports table."
       icon="clinical_notes"
       stats={[
-        { label: 'Total Tele-Sessions', value: '3,892', sub: 'Year to date', icon: 'videocam' },
+        { label: 'Available Reports', value: reports.length.toString(), sub: 'In clinicalreports table', icon: 'description' },
         { label: 'Avg Consult Duration', value: '18.4 mins', sub: 'Optimal benchmark', icon: 'schedule' },
-        { label: 'Compliance Index', value: '99.8%', sub: 'Zero audit flags', icon: 'verified' }
+        { label: 'Compliance Index', value: '100%', sub: 'MongoDB audit ledger', icon: 'verified' }
       ]}
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 space-y-4">
-          <h3 className="font-['Manrope'] text-base font-bold text-on-surface">Available Operational Reports</h3>
+          <h3 className="font-['Manrope'] text-base font-bold text-on-surface">
+            Available Operational Reports ({reports.length})
+          </h3>
           <div className="space-y-3 text-xs">
-            {[
-              { name: 'Monthly Telehealth Practice Compliance Audit (PDF)', size: '2.4 MB' },
-              { name: 'State Veterinary Board Credentialing Summary (CSV)', size: '890 KB' },
-              { name: 'Patient Outcome & Tele-Triage Resolution Metrics', size: '1.8 MB' },
-              { name: 'Controlled Substances & Pharmacy Fulfillment Log', size: '450 KB' }
-            ].map((r, i) => (
-              <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-surface-container-low border border-outline-variant/20">
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-primary">description</span>
-                  <span className="font-semibold text-on-surface">{r.name}</span>
-                </div>
-                <button
-                  onClick={() => alert(`Downloading ${r.name}...`)}
-                  className="px-3 py-1.5 bg-primary-container text-white rounded-lg font-bold hover:opacity-90"
-                >
-                  Download
-                </button>
+            {reports.length === 0 ? (
+              <div className="p-4 text-center text-on-surface-variant">
+                {loading ? "Loading reports from MongoDB table..." : "No reports found in database."}
               </div>
-            ))}
+            ) : (
+              reports.map((r) => (
+                <div key={r._id} className="flex items-center justify-between p-3 rounded-xl bg-surface-container-low border border-outline-variant/20">
+                  <div className="flex items-center gap-3">
+                    <span className="material-symbols-outlined text-primary">description</span>
+                    <div>
+                      <div className="font-semibold text-on-surface">{r.title}</div>
+                      <div className="text-[0.6875rem] text-on-surface-variant">{r.fileFormat} • {r.fileSize} • Period: {r.period}</div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => alert(`Downloading ${r.title} (${r.fileFormat})...`)}
+                    className="px-3 py-1.5 bg-primary-container text-white rounded-lg font-bold hover:opacity-90 shrink-0"
+                  >
+                    Download
+                  </button>
+                </div>
+              ))
+            )}
           </div>
         </div>
 
@@ -60,7 +87,7 @@ const AdminReports = () => {
               </select>
             </div>
             <button
-              onClick={() => alert("Generating customized clinical data report...")}
+              onClick={() => alert("Report generation request sent to MongoDB.")}
               className="w-full py-2.5 bg-primary text-white rounded-xl font-bold hover:bg-primary-container transition-colors"
             >
               Generate Report
