@@ -34,9 +34,9 @@ const AdminReports = () => {
         { label: 'Compliance Index', value: '100%', sub: 'MongoDB audit ledger', icon: 'verified' }
       ]}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 space-y-4">
-          <h3 className="font-['Manrope'] text-base font-bold text-on-surface">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-outline-variant/20 space-y-4">
+          <h3 className="font-['Manrope'] text-sm sm:text-base font-bold text-on-surface">
             Available Operational Reports ({reports.length})
           </h3>
           <div className="space-y-3 text-xs">
@@ -46,9 +46,9 @@ const AdminReports = () => {
               </div>
             ) : (
               reports.map((r) => (
-                <div key={r._id} className="flex items-center justify-between p-3 rounded-xl bg-surface-container-low border border-outline-variant/20">
+                <div key={r._id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-3 rounded-xl bg-surface-container-low border border-outline-variant/20">
                   <div className="flex items-center gap-3">
-                    <span className="material-symbols-outlined text-primary">description</span>
+                    <span className="material-symbols-outlined text-primary shrink-0">description</span>
                     <div>
                       <div className="font-semibold text-on-surface">{r.title}</div>
                       <div className="text-[0.6875rem] text-on-surface-variant">{r.fileFormat} • {r.fileSize} • Period: {r.period}</div>
@@ -56,7 +56,7 @@ const AdminReports = () => {
                   </div>
                   <button
                     onClick={() => alert(`Downloading ${r.title} (${r.fileFormat})...`)}
-                    className="px-3 py-1.5 bg-primary-container text-white rounded-lg font-bold hover:opacity-90 shrink-0"
+                    className="px-3 py-1.5 bg-primary-container text-white rounded-lg font-bold hover:opacity-90 shrink-0 self-end sm:self-auto text-xs"
                   >
                     Download
                   </button>
@@ -66,7 +66,7 @@ const AdminReports = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 space-y-4">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-outline-variant/20 space-y-4">
           <h3 className="font-['Manrope'] text-base font-bold text-on-surface">Custom Report Generator</h3>
           <div className="space-y-3 text-xs">
             <div>

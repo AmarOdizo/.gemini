@@ -34,8 +34,8 @@ const AdminReviews = () => {
         { label: '5-Star Ratings', value: '100%', sub: 'MongoDB verified', icon: 'military_tech' }
       ]}
     >
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 space-y-4">
-        <h3 className="font-['Manrope'] text-base font-bold text-on-surface">
+      <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-outline-variant/20 space-y-4">
+        <h3 className="font-['Manrope'] text-sm sm:text-base font-bold text-on-surface">
           Recent Feedback Submissions ({reviews.length})
         </h3>
         <div className="space-y-3">
@@ -45,14 +45,14 @@ const AdminReviews = () => {
             </div>
           ) : (
             reviews.map((r) => (
-              <div key={r._id} className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 space-y-2 text-xs">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 font-bold text-on-surface">
+              <div key={r._id} className="p-3.5 sm:p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 space-y-2 text-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2">
+                  <div className="flex flex-wrap items-center gap-1.5 font-bold text-on-surface">
                     <span>{r.ownerName} (Pet: {r.petName})</span>
                     <span className="text-on-surface-variant font-normal">reviewed</span>
                     <span className="text-primary font-semibold">{r.vetName}</span>
                   </div>
-                  <div className="flex items-center gap-1 text-amber-500 font-bold">
+                  <div className="flex items-center gap-1 text-amber-500 font-bold self-start sm:self-auto">
                     {'★'.repeat(r.rating || 5)}
                     <span className="text-on-surface-variant text-[0.6875rem] font-normal ml-1">
                       {new Date(r.createdAt).toLocaleDateString()}

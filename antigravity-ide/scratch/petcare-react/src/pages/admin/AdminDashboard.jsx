@@ -106,34 +106,34 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="p-6 max-w-[100rem] mx-auto space-y-6">
+    <div className="p-3 sm:p-5 md:p-8 max-w-[100rem] mx-auto space-y-4 sm:space-y-6">
       {/* Welcome Clinical Header Bar */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-6">
+      <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-outline-variant/20 flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:gap-6">
         <div className="space-y-1.5 min-w-0">
-          <div className="flex flex-wrap items-center gap-3">
-            <h1 className="font-['Manrope'] text-2xl font-bold text-on-surface tracking-tight flex items-center gap-2">
-              <span>Welcome back, Clinical Admin</span>
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <h1 className="font-['Manrope'] text-xl sm:text-2xl font-bold text-on-surface tracking-tight flex items-center gap-2">
+              <span>Welcome back, Admin</span>
               <span className="inline-block hover:rotate-12 transition-transform select-none">👋</span>
             </h1>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant text-xs font-semibold">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-surface-container-high text-on-surface-variant text-[0.6875rem] sm:text-xs font-semibold">
               <span className="w-2 h-2 rounded-full bg-secondary"></span>
-              {currentTime || 'Tuesday • Live Database Connected'}
+              {currentTime || 'Tuesday • Live Connected'}
             </span>
           </div>
-          <p className="text-sm text-on-surface-variant">
-            Clinical Operations Dashboard • Serving Live Data from <span className="text-primary font-bold">MongoDB Atlas Database</span>
+          <p className="text-xs sm:text-sm text-on-surface-variant">
+            Clinical Operations Dashboard • Serving Live Data from <span className="text-primary font-bold">MongoDB Atlas</span>
           </p>
         </div>
 
         {/* Quick Action Controls */}
-        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 shrink-0">
           <button
             onClick={() => navigate('/admin/veterinarians')}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary-container text-white text-xs font-bold shadow-sm hover:opacity-95 active:scale-[0.98] transition-all"
+            className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-primary-container text-white text-xs font-bold shadow-sm hover:opacity-95 active:scale-[0.98] transition-all"
             type="button"
           >
             <span className="material-symbols-outlined text-[1.125rem]">verified_user</span>
-            <span>Verify Veterinarians</span>
+            <span>Verify Vets</span>
             <span className="px-1.5 py-0.5 bg-secondary-container text-on-secondary-container rounded-full text-[0.625rem] font-bold">
               {pendingVets.length}
             </span>
@@ -141,16 +141,16 @@ const AdminDashboard = () => {
 
           <button
             onClick={() => navigate('/admin/reports')}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-xs font-bold hover:bg-surface-container hover:text-primary transition-all border border-outline-variant/30"
+            className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-surface-container-low text-on-surface text-xs font-bold hover:bg-surface-container hover:text-primary transition-all border border-outline-variant/30"
             type="button"
           >
             <span className="material-symbols-outlined text-[1.125rem]">download</span>
-            <span>Export Clinical Report</span>
+            <span>Export Report</span>
           </button>
 
           <button
             onClick={() => setShowBroadcastModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-error-container/60 text-error text-xs font-bold hover:bg-error-container transition-all"
+            className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-error-container/60 text-error text-xs font-bold hover:bg-error-container transition-all"
             type="button"
           >
             <span className="material-symbols-outlined text-[1.125rem]">campaign</span>
@@ -160,7 +160,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* 6 Primary Metric Cards directly from Database Collections */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-2.5 sm:gap-4">
         <MetricCard
           title="Total Owners"
           value={metrics.totalOwners?.value?.toString() || '0'}
@@ -215,7 +215,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Clinical Department Status Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div className="bg-white rounded-2xl p-4 border border-outline-variant/20 shadow-sm flex items-center justify-between">
           <div>
             <span className="text-xs font-bold text-on-surface">General Medicine</span>
@@ -262,9 +262,9 @@ const AdminDashboard = () => {
       </div>
 
       {/* Main Grid: Live Tele-Consultations Stream & Quick Verification */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
         {/* Left (2 cols): Live Consultations & Recent Stream */}
-        <div className="xl:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 space-y-4">
+        <div className="xl:col-span-2 bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-outline-variant/20 space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="font-['Manrope'] text-lg font-bold text-on-surface flex items-center gap-2">

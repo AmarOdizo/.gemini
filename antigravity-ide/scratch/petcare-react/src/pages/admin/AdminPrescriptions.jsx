@@ -49,7 +49,7 @@ const AdminPrescriptions = () => {
           MongoDB Prescription Audit Log ({prescriptions.length} records)
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+          <table className="w-full text-left text-xs min-w-[650px]">
             <thead className="bg-surface-container-low text-on-surface-variant">
               <tr>
                 <th className="p-4 font-bold">RX ID</th>

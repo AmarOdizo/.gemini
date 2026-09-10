@@ -1,13 +1,14 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-const AdminSidebar = () => {
+const AdminSidebar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem('userToken');
     localStorage.removeItem('userRole');
     localStorage.removeItem('userData');
+    if (onClose) onClose();
     navigate('/login');
   };
 
@@ -18,15 +19,15 @@ const AdminSidebar = () => {
       name: 'Veterinarians', 
       path: '/admin/veterinarians', 
       icon: 'stethoscope', 
-      badge: '4 pending', 
-      badgeClass: 'bg-surface-container-high text-on-surface' 
+      badge: 'Review', 
+      badgeClass: 'bg-error-container text-on-error-container' 
     },
     { name: 'Appointments', path: '/admin/appointments', icon: 'calendar_clock' },
     { 
       name: 'Consultations', 
       path: '/admin/consultations', 
       icon: 'videocam', 
-      badge: '12 live', 
+      badge: 'Live', 
       isLive: true,
       badgeClass: 'bg-secondary-container text-on-secondary-container' 
     },
@@ -37,28 +38,44 @@ const AdminSidebar = () => {
       name: 'Notifications', 
       path: '/admin/notifications', 
       icon: 'notifications', 
-      badge: '3', 
+      badge: '4', 
       badgeClass: 'bg-error-container text-on-error-container' 
     },
     { name: 'Settings', path: '/admin/settings', icon: 'settings' },
   ];
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-[17.5rem] bg-white border-r border-outline-variant/30 z-50 flex flex-col justify-between overflow-y-auto shadow-sm">
+    <aside
+      className={`fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-outline-variant/30 flex flex-col justify-between overflow-y-auto shadow-xl lg:shadow-sm transform transition-transform duration-300 ease-in-out ${
+        isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+      }`}
+    >
       <div className="flex flex-col">
         {/* Brand Header */}
-        <div className="h-16 px-4 flex items-center gap-3 border-b border-outline-variant/20">
-          <div className="w-10 h-10 rounded-xl bg-primary-container text-white flex items-center justify-center font-bold text-xl shadow-sm">
-            <span className="material-symbols-outlined text-[1.5rem]">pets</span>
+        <div className="h-16 px-4 flex items-center justify-between border-b border-outline-variant/20">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-primary-container text-white flex items-center justify-center font-bold text-xl shadow-sm">
+              <span className="material-symbols-outlined text-[1.5rem]">pets</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="font-['Manrope'] text-lg text-primary tracking-tight font-bold">
+                PetCare
+              </span>
+              <span className="text-[0.6875rem] text-on-surface-variant uppercase tracking-wider font-semibold">
+                Clinical Admin
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col">
-            <span className="font-['Manrope'] text-lg text-primary tracking-tight font-bold">
-              PetCare
-            </span>
-            <span className="text-[0.6875rem] text-on-surface-variant uppercase tracking-wider font-semibold">
-              Clinical Admin
-            </span>
-          </div>
+
+          {/* Close button for Mobile / Tablet */}
+          <button
+            onClick={onClose}
+            type="button"
+            className="lg:hidden p-2 rounded-xl text-outline hover:text-on-surface hover:bg-surface-container transition-colors"
+            aria-label="Close sidebar"
+          >
+            <span className="material-symbols-outlined text-[1.25rem]">close</span>
+          </button>
         </div>
 
         {/* Navigation List */}
@@ -68,6 +85,7 @@ const AdminSidebar = () => {
               <NavLink
                 key={item.path}
                 to={item.path}
+                onClick={onClose}
                 className={({ isActive }) =>
                   `flex items-center justify-between px-3 py-2.5 rounded-xl transition-all font-medium text-sm ${
                     isActive
@@ -103,7 +121,7 @@ const AdminSidebar = () => {
         </div>
       </div>
 
-      {/* Footer Status & Logout */}
+      {/* Footer Status, Swagger Link & Logout */}
       <div className="p-3 space-y-2 border-t border-outline-variant/20">
         <a
           href="http://localhost:5001/api-docs"
@@ -124,7 +142,7 @@ const AdminSidebar = () => {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
           </span>
-          <span className="text-xs text-on-surface font-semibold">MongoDB Atlas: Online</span>
+          <span className="text-xs text-on-surface font-semibold truncate">MongoDB Atlas: Online</span>
         </div>
 
         <button

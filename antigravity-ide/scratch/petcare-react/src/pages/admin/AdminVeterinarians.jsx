@@ -88,26 +88,26 @@ const AdminVeterinarians = () => {
   const pendingCount = vetsList.filter((v) => v.status === 'Pending').length;
 
   return (
-    <div className="p-6 max-w-[100rem] mx-auto space-y-6">
+    <div className="p-3 sm:p-5 md:p-8 max-w-[100rem] mx-auto space-y-4 sm:space-y-6">
       {/* Top Title & Stats */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="font-['Manrope'] text-2xl font-bold text-on-surface tracking-tight flex items-center gap-2">
+          <h1 className="font-['Manrope'] text-xl sm:text-2xl font-bold text-on-surface tracking-tight flex items-center gap-2">
             <span>Veterinarian Clinical Management</span>
             {pendingCount > 0 && (
-              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-error-container text-error">
-                {pendingCount} Pending Verification
+              <span className="text-[0.6875rem] font-semibold px-2 py-0.5 rounded-full bg-error-container text-error">
+                {pendingCount} Pending
               </span>
             )}
           </h1>
-          <p className="text-xs text-on-surface-variant mt-1">
-            Authorized practitioner licensing, medical credential compliance, and active consultation performance.
+          <p className="text-xs text-on-surface-variant mt-0.5">
+            Authorized practitioner licensing, medical credential compliance, and active performance.
           </p>
         </div>
 
         <button
           onClick={() => alert("Launching manual doctor onboarding flow...")}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-primary-container text-white rounded-xl text-xs font-bold shadow-sm hover:opacity-95"
+          className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 bg-primary-container text-white rounded-xl text-xs font-bold shadow-xs hover:opacity-95 shrink-0"
         >
           <span className="material-symbols-outlined text-[1.125rem]">person_add</span>
           <span>Invite Veterinarian</span>
@@ -115,59 +115,59 @@ const AdminVeterinarians = () => {
       </div>
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+        <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
           <div>
-            <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Total Registered</span>
-            <div className="text-2xl font-bold font-['Manrope'] text-on-surface mt-1">{vetsList.length}</div>
-            <span className="text-xs text-secondary font-semibold">100% AVMA verified</span>
+            <span className="text-[0.625rem] sm:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Total Registered</span>
+            <div className="text-xl sm:text-2xl font-bold font-['Manrope'] text-on-surface mt-1">{vetsList.length}</div>
+            <span className="text-[0.6875rem] text-secondary font-semibold">100% AVMA verified</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-surface-container text-primary flex items-center justify-center">
-            <span className="material-symbols-outlined">stethoscope</span>
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-surface-container text-primary flex items-center justify-center shrink-0">
+            <span className="material-symbols-outlined text-[1.25rem]">stethoscope</span>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
+        <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
           <div>
-            <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Active Licensed</span>
-            <div className="text-2xl font-bold font-['Manrope'] text-secondary mt-1">
-              {vetsList.filter((v) => v.status === 'Active').length}
+            <span className="text-[0.625rem] sm:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Active Tele-Vets</span>
+            <div className="text-xl sm:text-2xl font-bold font-['Manrope'] text-on-surface mt-1">
+              {vetsList.filter(v => v.status === 'Active').length}
             </div>
-            <span className="text-xs text-on-surface-variant">Available for Telehealth</span>
+            <span className="text-[0.6875rem] text-on-surface-variant">Available for Telehealth</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center">
-            <span className="material-symbols-outlined">verified</span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
-          <div>
-            <span className="text-xs font-bold text-error uppercase tracking-wider">Pending Review</span>
-            <div className="text-2xl font-bold font-['Manrope'] text-error mt-1">{pendingCount}</div>
-            <span className="text-xs text-error font-semibold">Requires Approval</span>
-          </div>
-          <div className="w-10 h-10 rounded-xl bg-error-container text-error flex items-center justify-center">
-            <span className="material-symbols-outlined">pending_actions</span>
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+            <span className="material-symbols-outlined text-[1.25rem]">verified</span>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
+        <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
           <div>
-            <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Avg Platform Rating</span>
-            <div className="text-2xl font-bold font-['Manrope'] text-on-surface mt-1">4.92 ★</div>
-            <span className="text-xs text-on-surface-variant">Based on 2,840 reviews</span>
+            <span className="text-[0.625rem] sm:text-xs font-bold text-error uppercase tracking-wider">Pending Review</span>
+            <div className="text-xl sm:text-2xl font-bold font-['Manrope'] text-error mt-1">{pendingCount}</div>
+            <span className="text-[0.6875rem] text-error font-semibold">Requires Approval</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-surface-container text-primary flex items-center justify-center">
-            <span className="material-symbols-outlined">star</span>
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-error-container text-error flex items-center justify-center shrink-0">
+            <span className="material-symbols-outlined text-[1.25rem]">pending_actions</span>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
+          <div>
+            <span className="text-[0.625rem] sm:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Avg Platform Rating</span>
+            <div className="text-xl sm:text-2xl font-bold font-['Manrope'] text-on-surface mt-1">4.92 ★</div>
+            <span className="text-[0.6875rem] text-on-surface-variant">Patient reviews</span>
+          </div>
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-surface-container text-primary flex items-center justify-center shrink-0">
+            <span className="material-symbols-outlined text-[1.25rem]">star</span>
           </div>
         </div>
       </div>
 
       {/* Tabs Bar */}
-      <div className="flex items-center gap-2 border-b border-outline-variant/20 pb-2 overflow-x-auto">
+      <div className="flex items-center gap-2 border-b border-outline-variant/20 pb-2 overflow-x-auto no-scrollbar">
         <button
           onClick={() => setActiveTab('all')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all shrink-0 ${
             activeTab === 'all'
               ? 'bg-primary-container text-white shadow-sm'
               : 'text-on-surface-variant hover:bg-surface-container'
@@ -178,59 +178,59 @@ const AdminVeterinarians = () => {
 
         <button
           onClick={() => setActiveTab('pending')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 ${
             activeTab === 'pending'
               ? 'bg-error text-white shadow-sm'
               : 'text-error hover:bg-error-container/30'
           }`}
         >
           <span className="w-1.5 h-1.5 rounded-full bg-error animate-ping"></span>
-          <span>Pending Verification ({pendingCount})</span>
+          <span>Pending ({pendingCount})</span>
         </button>
 
         <button
           onClick={() => setActiveTab('active')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all shrink-0 ${
             activeTab === 'active'
               ? 'bg-primary-container text-white shadow-sm'
               : 'text-on-surface-variant hover:bg-surface-container'
           }`}
         >
-          Active Licensed ({vetsList.filter((v) => v.status === 'Active').length})
+          Active Practitioners
         </button>
 
         <button
           onClick={() => setActiveTab('suspended')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all shrink-0 ${
             activeTab === 'suspended'
               ? 'bg-primary-container text-white shadow-sm'
               : 'text-on-surface-variant hover:bg-surface-container'
           }`}
         >
-          Suspended / Action Needed
+          Suspended
         </button>
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white rounded-2xl p-4 shadow-sm border border-outline-variant/20 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="relative w-full md:w-80">
+      <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-outline-variant/20 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        <div className="relative w-full sm:w-80">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[1.125rem]">
             search
           </span>
           <input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by doctor, license number or clinic..."
+            placeholder="Search by doctor, license or clinic..."
             className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-surface-container-low border border-outline-variant/40 focus:outline-none focus:border-primary"
           />
         </div>
 
-        <div className="flex items-center gap-3 w-full md:w-auto">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           <span className="text-xs font-semibold text-on-surface-variant shrink-0">Specialty:</span>
           <select
             value={selectedSpecialty}
             onChange={(e) => setSelectedSpecialty(e.target.value)}
-            className="px-3 py-2 text-xs rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface font-medium focus:outline-none focus:border-primary"
+            className="w-full sm:w-auto px-3 py-2 text-xs rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface font-medium focus:outline-none focus:border-primary"
           >
             <option value="all">All Specialties</option>
             <option value="Internal Medicine">Internal Medicine</option>
@@ -243,7 +243,7 @@ const AdminVeterinarians = () => {
       </div>
 
       {/* Veterinarian Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
         {filteredVets.map((v) => (
           <div
             key={v.id}

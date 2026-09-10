@@ -68,25 +68,25 @@ const AdminAppointments = () => {
   });
 
   return (
-    <div className="p-6 max-w-[100rem] mx-auto space-y-6">
+    <div className="p-3 sm:p-5 md:p-8 max-w-[100rem] mx-auto space-y-4 sm:space-y-6">
       {/* Top Header & Page Title */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="font-['Manrope'] text-2xl font-bold text-on-surface tracking-tight flex items-center gap-2">
-            <span>Appointments & Tele-Consultations</span>
-            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container">
-              12 Live Streams
+          <h1 className="font-['Manrope'] text-xl sm:text-2xl font-bold text-on-surface tracking-tight flex items-center gap-2">
+            <span>Appointments & Consultations</span>
+            <span className="text-[0.6875rem] font-semibold px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container">
+              {appointments.filter(a => a.isLive).length} Live
             </span>
           </h1>
-          <p className="text-xs text-on-surface-variant mt-1">
-            Clinical management of tele-veterinary appointments, live WebRTC video rooms, and emergency triage.
+          <p className="text-xs text-on-surface-variant mt-0.5">
+            Clinical management of tele-veterinary appointments, live WebRTC video rooms, and triage.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={() => alert("Exporting all appointment schedules as CSV...")}
-            className="inline-flex items-center gap-2 px-3 py-2 bg-white border border-outline-variant/30 rounded-xl text-xs font-bold text-on-surface hover:bg-surface-container transition-colors shadow-sm"
+            className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-outline-variant/30 rounded-xl text-xs font-bold text-on-surface hover:bg-surface-container transition-colors shadow-xs"
           >
             <span className="material-symbols-outlined text-[1.125rem]">file_download</span>
             <span>Export CSV</span>
@@ -95,10 +95,10 @@ const AdminAppointments = () => {
       </div>
 
       {/* Segmented Navigation Tabs */}
-      <div className="flex items-center gap-2 border-b border-outline-variant/20 pb-2 overflow-x-auto">
+      <div className="flex items-center gap-2 border-b border-outline-variant/20 pb-2 overflow-x-auto no-scrollbar">
         <button
           onClick={() => setActiveTab('all')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 ${
             activeTab === 'all'
               ? 'bg-primary-container text-white shadow-sm'
               : 'text-on-surface-variant hover:bg-surface-container'
@@ -110,37 +110,31 @@ const AdminAppointments = () => {
 
         <button
           onClick={() => setActiveTab('live')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 ${
             activeTab === 'live'
               ? 'bg-primary-container text-white shadow-sm'
               : 'text-on-surface-variant hover:bg-surface-container'
           }`}
         >
           <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-          <span>Live Video Consultations</span>
-          <span className="px-1.5 py-0.2 rounded-full text-[0.625rem] bg-secondary-container text-on-secondary-container font-bold">
-            12
-          </span>
+          <span>Live Video</span>
         </button>
 
         <button
           onClick={() => setActiveTab('emergency')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 ${
             activeTab === 'emergency'
               ? 'bg-error text-white shadow-sm'
               : 'text-on-surface-variant hover:bg-surface-container'
           }`}
         >
-          <span className="material-symbols-outlined text-[1rem] text-error">emergency</span>
+          <span className="material-symbols-outlined text-[1rem]">emergency</span>
           <span>Emergency Triage</span>
-          <span className="px-1.5 py-0.2 rounded-full text-[0.625rem] bg-error-container text-error font-bold">
-            3
-          </span>
         </button>
 
         <button
           onClick={() => setActiveTab('completed')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 ${
             activeTab === 'completed'
               ? 'bg-primary-container text-white shadow-sm'
               : 'text-on-surface-variant hover:bg-surface-container'
@@ -151,9 +145,9 @@ const AdminAppointments = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white rounded-2xl p-4 shadow-sm border border-outline-variant/20 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-outline-variant/20 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         {/* Search */}
-        <div className="relative w-full md:w-80">
+        <div className="relative w-full sm:w-80">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[1.125rem]">
             search
           </span>
@@ -166,12 +160,12 @@ const AdminAppointments = () => {
         </div>
 
         {/* Doctor Dropdown */}
-        <div className="flex items-center gap-3 w-full md:w-auto">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           <span className="text-xs font-semibold text-on-surface-variant shrink-0">Doctor:</span>
           <select
             value={selectedDoctor}
             onChange={(e) => setSelectedDoctor(e.target.value)}
-            className="px-3 py-2 text-xs rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface font-medium focus:outline-none focus:border-primary"
+            className="w-full sm:w-auto px-3 py-2 text-xs rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface font-medium focus:outline-none focus:border-primary"
           >
             <option value="all">All Veterinarians</option>
             <option value="Marcus Sterling">Dr. Marcus Sterling</option>

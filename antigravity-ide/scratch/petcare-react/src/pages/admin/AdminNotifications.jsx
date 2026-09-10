@@ -37,9 +37,9 @@ const AdminNotifications = () => {
       subtitle="System advisories, urgent tele-triage escalations, and practitioner alerts from MongoDB adminnotifications table."
       icon="notifications"
     >
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 space-y-4">
+      <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-outline-variant/20 space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-outline-variant/20">
-          <span className="font-bold text-sm text-on-surface">Live Notification Stream ({alerts.length})</span>
+          <span className="font-bold text-xs sm:text-sm text-on-surface">Live Notification Stream ({alerts.length})</span>
           <button onClick={handleMarkAllAsRead} className="text-xs font-bold text-primary hover:underline">
             Mark all as read
           </button>
@@ -54,7 +54,7 @@ const AdminNotifications = () => {
             alerts.map((a) => (
               <div
                 key={a._id}
-                className={`p-4 rounded-xl border text-xs flex items-start justify-between gap-4 ${
+                className={`p-3.5 sm:p-4 rounded-xl border text-xs flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4 ${
                   a.type === 'error'
                     ? 'bg-error-container/20 border-error/30'
                     : a.type === 'warning'

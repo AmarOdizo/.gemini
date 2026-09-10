@@ -47,11 +47,11 @@ const AdminOwners = () => {
   });
 
   return (
-    <div className="p-6 max-w-[100rem] mx-auto space-y-6">
+    <div className="p-3 sm:p-6 max-w-[100rem] mx-auto space-y-4 sm:space-y-6">
       {/* Title Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="font-['Manrope'] text-2xl font-bold text-on-surface tracking-tight flex items-center gap-2">
+          <h1 className="font-['Manrope'] text-xl sm:text-2xl font-bold text-on-surface tracking-tight flex flex-wrap items-center gap-2">
             <span>Pet Owner & Patient Directory</span>
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-surface-container text-primary">
               14,820 Registered
@@ -64,7 +64,7 @@ const AdminOwners = () => {
 
         <button
           onClick={() => alert("Exporting full owner directory as CSV...")}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-outline-variant/30 text-on-surface rounded-xl text-xs font-bold hover:bg-surface-container transition-colors shadow-sm"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-white border border-outline-variant/30 text-on-surface rounded-xl text-xs font-bold hover:bg-surface-container transition-colors shadow-sm self-start sm:self-auto"
         >
           <span className="material-symbols-outlined text-[1.125rem]">download</span>
           <span>Export Directory</span>
@@ -72,61 +72,61 @@ const AdminOwners = () => {
       </div>
 
       {/* Summary Metrics */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
           <div>
-            <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Total Owners</span>
-            <div className="text-2xl font-bold font-['Manrope'] text-on-surface mt-1">14,820</div>
+            <span className="text-[0.6875rem] sm:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Total Owners</span>
+            <div className="text-xl sm:text-2xl font-bold font-['Manrope'] text-on-surface mt-0.5 sm:mt-1">14,820</div>
             <span className="text-xs text-secondary font-semibold">+312 this week</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-surface-container text-primary flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-surface-container text-primary flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined">supervisor_account</span>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
+        <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
           <div>
-            <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Registered Patients</span>
-            <div className="text-2xl font-bold font-['Manrope'] text-primary mt-1">19,410</div>
+            <span className="text-[0.6875rem] sm:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Registered Patients</span>
+            <div className="text-xl sm:text-2xl font-bold font-['Manrope'] text-primary mt-0.5 sm:mt-1">19,410</div>
             <span className="text-xs text-on-surface-variant">Dogs, Cats, Exotic</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined">pets</span>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
+        <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between sm:col-span-2 lg:col-span-1">
           <div>
-            <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Active Telehealth</span>
-            <div className="text-2xl font-bold font-['Manrope'] text-secondary mt-1">98.4%</div>
+            <span className="text-[0.6875rem] sm:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Active Telehealth</span>
+            <div className="text-xl sm:text-2xl font-bold font-['Manrope'] text-secondary mt-0.5 sm:mt-1">98.4%</div>
             <span className="text-xs text-on-surface-variant">Profile health score</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined">health_and_safety</span>
           </div>
         </div>
       </div>
 
       {/* Filters & Search */}
-      <div className="bg-white rounded-2xl p-4 shadow-sm border border-outline-variant/20 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="relative w-full md:w-96">
+      <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-outline-variant/20 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
+        <div className="relative flex-1 max-w-md">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[1.125rem]">
             search
           </span>
           <input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by owner name, pet, email, or microchip ID..."
+            placeholder="Search by owner, pet, email, or microchip..."
             className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-surface-container-low border border-outline-variant/40 focus:outline-none focus:border-primary"
           />
         </div>
 
-        <div className="flex items-center gap-3 w-full md:w-auto">
+        <div className="flex items-center gap-2 sm:gap-3 self-end sm:self-auto w-full sm:w-auto justify-between sm:justify-start">
           <span className="text-xs font-semibold text-on-surface-variant shrink-0">Species:</span>
           <select
             value={speciesFilter}
             onChange={(e) => setSpeciesFilter(e.target.value)}
-            className="px-3 py-2 text-xs rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface font-medium focus:outline-none focus:border-primary"
+            className="px-3 py-2 text-xs rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface font-medium focus:outline-none focus:border-primary flex-1 sm:flex-initial"
           >
             <option value="all">All Species</option>
             <option value="dog">Canine (Dogs)</option>
@@ -140,7 +140,7 @@ const AdminOwners = () => {
       {/* Owners Master Table */}
       <div className="bg-white rounded-2xl shadow-sm border border-outline-variant/20 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+          <table className="w-full text-left text-xs min-w-[720px]">
             <thead className="bg-surface-container-low text-on-surface-variant border-b border-outline-variant/20">
               <tr>
                 <th className="p-4 font-bold">Owner Profile</th>
@@ -237,7 +237,7 @@ const AdminOwners = () => {
       {/* Patient Record Drawer */}
       {selectedOwner && (
         <div className="fixed inset-0 z-50 overflow-hidden bg-black/40 backdrop-blur-sm flex justify-end animate-in fade-in">
-          <div className="w-full max-w-lg bg-white h-full shadow-2xl border-l border-outline-variant/30 p-6 overflow-y-auto flex flex-col justify-between">
+          <div className="w-full max-w-lg bg-white h-full shadow-2xl border-l border-outline-variant/30 p-4 sm:p-6 overflow-y-auto flex flex-col justify-between">
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b border-outline-variant/20 pb-4">
                 <div className="flex items-center gap-3">

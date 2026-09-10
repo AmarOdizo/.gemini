@@ -52,7 +52,7 @@ const AdminSettings = () => {
       subtitle="Configure clinical governance rules and hotline routing saved directly in MongoDB platformsettings table."
       icon="settings"
     >
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 max-w-2xl space-y-6">
+      <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-outline-variant/20 max-w-2xl space-y-6">
         <form onSubmit={handleSave} className="space-y-4 text-xs">
           {saved && (
             <div className="p-3 bg-secondary-container text-on-secondary-container rounded-xl font-bold">
@@ -88,7 +88,7 @@ const AdminSettings = () => {
             />
           </div>
 
-          <div className="flex items-center justify-between p-3 bg-surface-container-low rounded-xl border border-outline-variant/20">
+          <div className="flex items-center justify-between gap-3 p-3 bg-surface-container-low rounded-xl border border-outline-variant/20">
             <div>
               <div className="font-bold text-on-surface">Automatic AI-Assisted Triage Prioritization</div>
               <div className="text-on-surface-variant text-[0.6875rem]">
@@ -99,14 +99,14 @@ const AdminSettings = () => {
               type="checkbox"
               checked={autoTriage}
               onChange={(e) => setAutoTriage(e.target.checked)}
-              className="w-4 h-4 text-primary rounded"
+              className="w-4 h-4 text-primary rounded shrink-0 cursor-pointer"
             />
           </div>
 
           <div className="pt-2">
             <button
               type="submit"
-              className="px-6 py-2.5 bg-primary text-white font-bold rounded-xl hover:bg-primary-container shadow-sm"
+              className="w-full sm:w-auto px-6 py-2.5 bg-primary text-white font-bold rounded-xl hover:bg-primary-container shadow-sm transition-colors text-center"
             >
               Save Configuration to Database
             </button>

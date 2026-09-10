@@ -8,48 +8,48 @@ const VetVerificationModal = ({ vet, onClose, onApprove, onReject }) => {
   if (!vet) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-outline-variant/30 overflow-hidden animate-in fade-in zoom-in-95">
+    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+      <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-outline-variant/30 overflow-hidden animate-in fade-in zoom-in-95">
         {/* Modal Header */}
-        <div className="p-6 bg-surface-container-low border-b border-outline-variant/20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="p-4 sm:p-6 bg-surface-container-low border-b border-outline-variant/20 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-3 min-w-0">
             <img
               src={vet.avatar || 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=150'}
               alt={vet.name}
-              className="w-12 h-12 rounded-full object-cover ring-2 ring-primary/20"
+              className="w-10 sm:w-12 h-10 sm:h-12 rounded-full object-cover ring-2 ring-primary/20 shrink-0"
             />
-            <div>
-              <h3 className="font-['Manrope'] text-lg font-bold text-on-surface">
+            <div className="min-w-0">
+              <h3 className="font-['Manrope'] text-base sm:text-lg font-bold text-on-surface truncate">
                 {vet.name}
               </h3>
-              <p className="text-xs text-on-surface-variant">
-                License Reg: <span className="font-mono font-semibold text-primary">{vet.license}</span> • {vet.clinic}
+              <p className="text-[0.6875rem] sm:text-xs text-on-surface-variant truncate">
+                License: <span className="font-mono font-semibold text-primary">{vet.license}</span> • {vet.clinic}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container"
+            className="p-1 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container shrink-0 ml-2"
           >
             <span className="material-symbols-outlined">close</span>
           </button>
         </div>
 
         {/* Modal Body: Credentials Review */}
-        <div className="p-6 space-y-6">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 flex-1 overflow-y-auto">
           {/* Status Alert */}
-          <div className="flex items-center justify-between p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-amber-600 text-[1.25rem]">verified_user</span>
+              <span className="material-symbols-outlined text-amber-600 text-[1.25rem] shrink-0">verified_user</span>
               <span><strong>Action Required:</strong> Verification pending submission by state veterinary council.</span>
             </div>
-            <span className="px-2 py-0.5 rounded-full bg-amber-200 text-amber-900 font-bold text-[0.625rem]">
+            <span className="px-2 py-0.5 rounded-full bg-amber-200 text-amber-900 font-bold text-[0.625rem] self-start sm:self-auto shrink-0">
               Fast-Track
             </span>
           </div>
 
           {/* Key Qualifications Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 text-xs">
             <div className="p-3 bg-surface-container-low rounded-xl border border-outline-variant/20">
               <span className="text-[0.6875rem] text-on-surface-variant block">Specialization</span>
               <span className="font-bold text-on-surface">{vet.specialty || 'Small Animal Internal Medicine'}</span>
@@ -66,10 +66,10 @@ const VetVerificationModal = ({ vet, onClose, onApprove, onReject }) => {
 
           {/* Document Viewer Tabs */}
           <div className="space-y-3">
-            <div className="flex items-center gap-2 border-b border-outline-variant/20 pb-2">
+            <div className="flex items-center gap-2 border-b border-outline-variant/20 pb-2 overflow-x-auto no-scrollbar">
               <button
                 onClick={() => setActiveDocTab('license')}
-                className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors ${
+                className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap shrink-0 ${
                   activeDocTab === 'license' ? 'bg-primary-container text-white' : 'text-on-surface-variant hover:bg-surface-container'
                 }`}
               >
@@ -77,7 +77,7 @@ const VetVerificationModal = ({ vet, onClose, onApprove, onReject }) => {
               </button>
               <button
                 onClick={() => setActiveDocTab('dea')}
-                className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors ${
+                className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap shrink-0 ${
                   activeDocTab === 'dea' ? 'bg-primary-container text-white' : 'text-on-surface-variant hover:bg-surface-container'
                 }`}
               >
@@ -85,7 +85,7 @@ const VetVerificationModal = ({ vet, onClose, onApprove, onReject }) => {
               </button>
               <button
                 onClick={() => setActiveDocTab('insurance')}
-                className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors ${
+                className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap shrink-0 ${
                   activeDocTab === 'insurance' ? 'bg-primary-container text-white' : 'text-on-surface-variant hover:bg-surface-container'
                 }`}
               >
@@ -98,7 +98,7 @@ const VetVerificationModal = ({ vet, onClose, onApprove, onReject }) => {
               <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary mx-auto flex items-center justify-center">
                 <span className="material-symbols-outlined text-[1.75rem]">description</span>
               </div>
-              <div className="text-xs font-bold text-on-surface">
+              <div className="text-xs font-bold text-on-surface truncate">
                 {activeDocTab === 'license' && `State_Board_Verification_${vet.license}.pdf`}
                 {activeDocTab === 'dea' && `DEA_Controlled_Substance_Permit_2024.pdf`}
                 {activeDocTab === 'insurance' && `AVMA_PLIT_Professional_Liability.pdf`}
@@ -132,21 +132,21 @@ const VetVerificationModal = ({ vet, onClose, onApprove, onReject }) => {
         </div>
 
         {/* Modal Actions */}
-        <div className="p-4 bg-surface-container-low border-t border-outline-variant/20 flex items-center justify-between">
+        <div className="p-3 sm:p-4 bg-surface-container-low border-t border-outline-variant/20 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-2 shrink-0">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-xs font-bold text-on-surface-variant hover:bg-surface-container rounded-xl"
+            className="px-4 py-2 text-xs font-bold text-on-surface-variant hover:bg-surface-container rounded-xl text-center"
           >
             Cancel
           </button>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             {!showRejectForm ? (
               <button
                 type="button"
                 onClick={() => setShowRejectForm(true)}
-                className="px-4 py-2 text-xs font-bold text-error hover:bg-error-container/40 rounded-xl transition-colors"
+                className="px-4 py-2 text-xs font-bold text-error hover:bg-error-container/40 rounded-xl transition-colors text-center"
               >
                 Reject Credential
               </button>
@@ -154,7 +154,7 @@ const VetVerificationModal = ({ vet, onClose, onApprove, onReject }) => {
               <button
                 type="button"
                 onClick={() => onReject(vet.id, rejectReason)}
-                className="px-4 py-2 text-xs font-bold bg-error text-white rounded-xl hover:opacity-90 shadow-sm"
+                className="px-4 py-2 text-xs font-bold bg-error text-white rounded-xl hover:opacity-90 shadow-sm text-center"
               >
                 Confirm Rejection
               </button>
@@ -163,7 +163,7 @@ const VetVerificationModal = ({ vet, onClose, onApprove, onReject }) => {
             <button
               type="button"
               onClick={() => onApprove(vet.id)}
-              className="px-5 py-2 text-xs font-bold bg-primary text-white rounded-xl hover:bg-primary-container transition-colors shadow-sm flex items-center gap-1.5"
+              className="px-5 py-2 text-xs font-bold bg-primary text-white rounded-xl hover:bg-primary-container transition-colors shadow-sm flex items-center justify-center gap-1.5"
             >
               <span className="material-symbols-outlined text-[1.125rem]">verified</span>
               <span>Approve & Authorize Practice</span>
