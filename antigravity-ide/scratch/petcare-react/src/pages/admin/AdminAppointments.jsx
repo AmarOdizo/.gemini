@@ -167,11 +167,10 @@ const AdminAppointments = () => {
             onChange={(e) => setSelectedDoctor(e.target.value)}
             className="w-full sm:w-auto px-3 py-2 text-xs rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface font-medium focus:outline-none focus:border-primary"
           >
-            <option value="all">All Veterinarians</option>
-            <option value="Marcus Sterling">Dr. Marcus Sterling</option>
-            <option value="Chloe Aris">Dr. Chloe Aris</option>
-            <option value="Neil Roberts">Dr. Neil Roberts</option>
-            <option value="Sarah Jenkins">Dr. Sarah Jenkins</option>
+            <option value="all">All Veterinarians ({appointments.length})</option>
+            {Array.from(new Set(appointments.map((a) => a.vet).filter(Boolean))).map((vetName, idx) => (
+              <option key={idx} value={vetName}>{vetName}</option>
+            ))}
           </select>
         </div>
       </div>

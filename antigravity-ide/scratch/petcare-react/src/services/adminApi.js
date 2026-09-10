@@ -1,112 +1,133 @@
 const getBaseUrl = () => {
-  if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-    return 'http://localhost:5001';
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    // Localhost or loopback
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return 'http://localhost:5001';
+    }
+    // Mobile or Tablet on local Wi-Fi / LAN IP (192.168.x.x, 10.x.x.x, etc.)
+    if (/^192\.168\./.test(hostname) || /^10\./.test(hostname) || /^172\./.test(hostname)) {
+      return `http://${hostname}:5001`;
+    }
   }
-  return import.meta.env.VITE_API_URL || 'http://localhost:5001';
+
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl && !envUrl.includes('onrender.com')) {
+    return envUrl;
+  }
+  return 'http://localhost:5001';
 };
 
 export const API_BASE = getBaseUrl();
 
+// Resilient fetch helper: tries direct API port first, falls back to Vite proxy /api
+const request = async (path, options = {}) => {
+  const directUrl = `${API_BASE}${path}`;
+  try {
+    const res = await fetch(directUrl, options);
+    if (res.ok) {
+      return await res.json();
+    }
+    // If not ok (e.g. 404/500), try fallback to relative proxy path
+  } catch (err) {
+    console.warn(`[adminApi] Direct fetch to ${directUrl} failed, falling back to Vite proxy (${path}):`, err.message);
+  }
+
+  // Fallback via relative URL (handled by Vite proxy)
+  try {
+    const fallbackRes = await fetch(path, options);
+    return await fallbackRes.json();
+  } catch (fallbackErr) {
+    console.error(`[adminApi] Fallback fetch failed for ${path}:`, fallbackErr);
+    return { success: false, message: fallbackErr.message };
+  }
+};
+
 export const adminApi = {
   // 1. Metrics from Database Collections
   getMetrics: async () => {
-    const res = await fetch(`${API_BASE}/api/admin/metrics`);
-    return await res.json();
+    return await request('/api/admin/metrics');
   },
 
   // 2. Appointments collection
   getAppointments: async () => {
-    const res = await fetch(`${API_BASE}/api/admin/appointments`);
-    return await res.json();
+    return await request('/api/admin/appointments');
   },
 
   // 3. Vets collection
   getVets: async () => {
-    const res = await fetch(`${API_BASE}/api/admin/vets`);
-    return await res.json();
+    return await request('/api/admin/vets');
   },
 
   // 4. Verify/Reject Vet in Vets collection
   verifyVet: async (id, action, reason = '') => {
-    const res = await fetch(`${API_BASE}/api/admin/vets/${id}/verify`, {
+    return await request(`/api/admin/vets/${id}/verify`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action, reason, verifiedBy: 'Chief Clinical Admin' })
     });
-    return await res.json();
   },
 
   // 5. Users & Pets collections
   getOwners: async () => {
-    const res = await fetch(`${API_BASE}/api/admin/owners`);
-    return await res.json();
+    return await request('/api/admin/owners');
   },
 
   // 6. Prescriptions collection
   getPrescriptions: async () => {
-    const res = await fetch(`${API_BASE}/api/admin/prescriptions`);
-    return await res.json();
+    return await request('/api/admin/prescriptions');
   },
 
   // 7. Clinical Reports collection
   getReports: async () => {
-    const res = await fetch(`${API_BASE}/api/admin/reports`);
-    return await res.json();
+    return await request('/api/admin/reports');
   },
 
   // 8. Clinical Advisories collection
   getAdvisories: async () => {
-    const res = await fetch(`${API_BASE}/api/admin/advisories`);
-    return await res.json();
+    return await request('/api/admin/advisories');
   },
 
   // Post Advisory
   broadcastAdvisory: async (data) => {
-    const res = await fetch(`${API_BASE}/api/admin/advisories`, {
+    return await request('/api/admin/advisories', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
-    return await res.json();
   },
 
   // 9. Admin Notifications collection
   getNotifications: async () => {
-    const res = await fetch(`${API_BASE}/api/admin/notifications`);
-    return await res.json();
+    return await request('/api/admin/notifications');
   },
 
   markNotificationRead: async (id) => {
-    const res = await fetch(`${API_BASE}/api/admin/notifications/${id}/read`, {
+    return await request(`/api/admin/notifications/${id}/read`, {
       method: 'PUT'
     });
-    return await res.json();
   },
 
   // 10. Reviews collection
   getReviews: async () => {
-    const res = await fetch(`${API_BASE}/api/admin/reviews`);
-    return await res.json();
+    return await request('/api/admin/reviews');
   },
 
   // 11. Platform Settings collection
   getSettings: async () => {
-    const res = await fetch(`${API_BASE}/api/admin/settings`);
-    return await res.json();
+    return await request('/api/admin/settings');
   },
 
   updateSettings: async (settings) => {
-    const res = await fetch(`${API_BASE}/api/admin/settings`, {
+    return await request('/api/admin/settings', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(settings)
     });
-    return await res.json();
   },
 
   // 12. Consultation Telemetry collection
   getTelemetry: async (appointmentId) => {
-    const res = await fetch(`${API_BASE}/api/admin/telemetry/${appointmentId}`);
-    return await res.json();
+    return await request(`/api/admin/telemetry/${appointmentId}`);
   }
 };
