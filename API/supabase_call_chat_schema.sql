@@ -70,3 +70,20 @@ CREATE POLICY "Allow public read access to video calls" ON public.video_calls FO
 CREATE POLICY "Allow public insert/update to video calls" ON public.video_calls FOR ALL USING (true);
 
 CREATE POLICY "Allow public access to realtime notifications" ON public.realtime_notifications FOR ALL USING (true);
+
+-- 6. Demo Seed Data for Live Video Calling & Chat Testing
+INSERT INTO public.video_calls ("appointmentId", "roomName", "doctorId", "doctorName", "ownerId", "ownerName", "patientName", status, "durationSeconds")
+VALUES 
+  ('APT-1092', 'video-call-APT-1092', 'VET-003', 'Dr. Marcus Sterling', 'OWN-101', 'Eleanor Vance', 'Barnaby', 'active', 872),
+  ('APT-1094', 'video-call-APT-1094', 'VET-005', 'Dr. Neil Roberts', 'OWN-103', 'Sophia Chen', 'Rory', 'active', 430)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO public.chat_messages ("conversationId", "senderId", "senderName", "senderRole", message)
+VALUES
+  ('APT-1092', 'VET-003', 'Dr. Marcus Sterling', 'doctor', 'Hello Eleanor, I can see Barnaby moving around. How is his appetite this morning?'),
+  ('APT-1092', 'OWN-101', 'Eleanor Vance', 'owner', 'He drank about a bowl of water and had some boiled chicken, doctor!'),
+  ('APT-1092', 'VET-003', 'Dr. Marcus Sterling', 'doctor', 'That is great news. Keep monitoring his hydration and incision site.'),
+  ('APT-1094', 'OWN-103', 'Sophia Chen', 'owner', 'Doctor Neil, Rory is panting heavily and his gums look slightly pale!'),
+  ('APT-1094', 'VET-005', 'Dr. Neil Roberts', 'doctor', 'Keep him upright and cool immediately. I am escalating this to Emergency Priority 1.')
+ON CONFLICT DO NOTHING;
+

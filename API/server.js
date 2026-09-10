@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 
+dotenv.config(); // Load environment variables first
+
 const connectDB = require("./config/db");
 connectDB(); // Establish MongoDB connection
 
@@ -16,8 +18,6 @@ const prescriptionRoutes = require("./routes/prescriptions");
 const imagekitRoutes = require("./routes/imagekitRoutes");
 const favoriteVetsRoutes = require("./routes/favoriteVets");
 const adminRoutes = require("./routes/adminRoutes");
-
-dotenv.config();
 
 const app = express();
 
