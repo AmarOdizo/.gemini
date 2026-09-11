@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import TopNav from '../components/TopNav';
-import { isVetSuspended } from '../utils/suspensionUtils';
+import { isVetSuspended, isVetApproved } from '../utils/suspensionUtils';
 
 const VetProfile = () => {
   const [searchParams] = useSearchParams();
@@ -263,6 +263,11 @@ const VetProfile = () => {
                           <span className="material-symbols-outlined text-[14px]">block</span>
                           Suspended
                         </span>
+                      ) : !isVetApproved(vet) ? (
+                        <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500 text-white flex items-center gap-1 shadow-xs">
+                          <span className="material-symbols-outlined text-[14px]">hourglass_top</span>
+                          Pending Verification
+                        </span>
                       ) : (
                         <>
                           <span className="material-symbols-outlined text-primary filled-icon text-[22px]" title="Verified Veterinary Specialist">verified</span>
@@ -321,7 +326,7 @@ const VetProfile = () => {
             </div>
           </div>
 
-          {/* Right Column: Booking Widget or Suspended Notice */}
+          {/* Right Column: Booking Widget or Suspended/Pending Notice */}
           <div className="lg:col-span-5">
             {isVetSuspended(vet) ? (
               <div className="bg-surface-container-lowest border-2 border-red-200 rounded-2xl shadow-lg p-6 sm:p-8 text-center space-y-4 sticky top-24">
@@ -344,6 +349,30 @@ const VetProfile = () => {
                   >
                     <span className="material-symbols-outlined text-[18px]">search</span>
                     <span>Find Another Available Veterinarian</span>
+                  </Link>
+                </div>
+              </div>
+            ) : !isVetApproved(vet) ? (
+              <div className="bg-surface-container-lowest border-2 border-amber-300 rounded-2xl shadow-lg p-6 sm:p-8 text-center space-y-4 sticky top-24">
+                <div className="w-16 h-16 rounded-full bg-amber-100 text-amber-600 mx-auto flex items-center justify-center">
+                  <span className="material-symbols-outlined text-4xl">hourglass_top</span>
+                </div>
+                <div className="space-y-1">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500 text-white inline-block">
+                    Verification In Progress
+                  </span>
+                  <h3 className="font-headline-sm font-bold text-lg text-on-surface">Pending Administrator Verification</h3>
+                </div>
+                <p className="text-xs text-on-surface-variant leading-relaxed">
+                  {vet.name} has recently registered and is awaiting credential & VCI license review by the Clinical Board. Patient appointments will be enabled once approved.
+                </p>
+                <div className="pt-4 border-t border-outline-variant/30">
+                  <Link
+                    to="/find-vets"
+                    className="w-full inline-flex justify-center items-center gap-2 py-3 bg-primary text-white rounded-xl text-xs font-bold shadow-md hover:bg-primary-container transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">search</span>
+                    <span>Browse Verified Veterinarians</span>
                   </Link>
                 </div>
               </div>

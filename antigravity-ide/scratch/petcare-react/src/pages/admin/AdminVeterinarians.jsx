@@ -58,25 +58,26 @@ const AdminVeterinarians = () => {
     fetchVetsFromDatabase();
   }, []);
 
-  const handleApprove = async (vetId) => {
+  const handleApprove = async (vetId, vetName) => {
     try {
       await adminApi.verifyVet(vetId, 'approve');
       setVetSuspendedStatus(vetId, false);
-      notifyDoctorStatusChange(vetId, 'Doctor', false);
+      notifyDoctorStatusChange(vetId, vetName || 'Doctor', 'approve');
       await fetchVetsFromDatabase();
       setSelectedVetForReview(null);
-      alert(`Veterinarian credential verified and activated in MongoDB.`);
+      alert(`Dr. ${vetName || 'Doctor'} credential verified and activated in MongoDB.`);
     } catch (err) {
       alert("Error saving approval: " + err.message);
     }
   };
 
-  const handleReject = async (vetId, reason) => {
+  const handleReject = async (vetId, reason, vetName) => {
     try {
       await adminApi.verifyVet(vetId, 'reject', reason || 'State license documentation incomplete');
+      notifyDoctorStatusChange(vetId, vetName || 'Doctor', 'reject', reason);
       await fetchVetsFromDatabase();
       setSelectedVetForReview(null);
-      alert(`Veterinarian status updated to Rejected.`);
+      alert(`Dr. ${vetName || 'Doctor'} status updated to Disapproved.`);
     } catch (err) {
       alert("Error saving rejection: " + err.message);
     }

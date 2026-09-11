@@ -107,6 +107,16 @@ const VetRegister = () => {
       const data = await res.json();
       
       if (res.ok && data.success) {
+        // Broadcast custom notification event to alert Admin dashboard in real time
+        try {
+          window.dispatchEvent(new CustomEvent('petcare_admin_notification', {
+            detail: {
+              title: "New Veterinarian Verification Required",
+              description: `Dr. ${formData.name} submitted registration for VCI #${formData.vciNumber}. Added to Verification Queue.`,
+              urgency: "urgent"
+            }
+          }));
+        } catch (_) {}
         setSuccessModal(true);
       } else {
         alert(data.message || 'Registration failed');

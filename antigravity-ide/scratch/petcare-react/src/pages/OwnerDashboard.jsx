@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
-import { isVetSuspended } from '../utils/suspensionUtils';
+import { isVetSuspended, isVetApproved } from '../utils/suspensionUtils';
 
 const OwnerDashboard = () => {
   const [user, setUser] = useState(null);
@@ -59,12 +59,12 @@ const OwnerDashboard = () => {
         console.error("Error fetching appointments:", err);
       }
 
-      // Fetch Vets (Excluding suspended doctors)
+      // Fetch Vets (Only verified & approved doctors)
       try {
         const vetsRes = await fetch(`${API_BASE}/api/vets`);
         if (vetsRes.ok) {
           const vetsData = await vetsRes.json();
-          const activeVets = (vetsData.data || []).filter(v => !isVetSuspended(v));
+          const activeVets = (vetsData.data || []).filter(v => isVetApproved(v));
           setVets(activeVets);
           if (activeVets.length > 0) setSelectedVetId(activeVets[0]._id || activeVets[0].id);
         }

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MetricCard from '../../components/admin/MetricCard';
+import VetVerificationModal from '../../components/admin/VetVerificationModal';
 import { adminApi } from '../../services/adminApi';
+import { notifyDoctorStatusChange } from '../../utils/suspensionUtils';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -22,6 +24,7 @@ const AdminDashboard = () => {
   const [broadcastUrgency, setBroadcastUrgency] = useState('high');
   const [showBroadcastModal, setShowBroadcastModal] = useState(false);
   const [advisorySent, setAdvisorySent] = useState(false);
+  const [selectedVetForReview, setSelectedVetForReview] = useState(null);
 
   useEffect(() => {
     const updateTime = () => {
@@ -71,6 +74,17 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     loadDashboardFromDatabase();
+
+    const handleAdminSync = () => {
+      loadDashboardFromDatabase();
+    };
+
+    window.addEventListener('petcare_admin_notification', handleAdminSync);
+    window.addEventListener('petcare_vets_updated', handleAdminSync);
+    return () => {
+      window.removeEventListener('petcare_admin_notification', handleAdminSync);
+      window.removeEventListener('petcare_vets_updated', handleAdminSync);
+    };
   }, []);
 
   const handleBroadcast = async (e) => {
@@ -98,10 +112,35 @@ const AdminDashboard = () => {
   const handleQuickApproveVet = async (vetId, vetName) => {
     try {
       await adminApi.verifyVet(vetId, 'approve');
+      notifyDoctorStatusChange(vetId, vetName, 'approve');
       alert(`Dr. ${vetName} has been approved in MongoDB vets table!`);
       loadDashboardFromDatabase();
     } catch (err) {
       alert("Error approving vet: " + err.message);
+    }
+  };
+
+  const handleModalApprove = async (vetId, vetName) => {
+    try {
+      await adminApi.verifyVet(vetId, 'approve');
+      notifyDoctorStatusChange(vetId, vetName, 'approve');
+      alert(`Dr. ${vetName} credentials verified & approved! Notification delivered.`);
+      setSelectedVetForReview(null);
+      loadDashboardFromDatabase();
+    } catch (err) {
+      alert("Error approving vet: " + err.message);
+    }
+  };
+
+  const handleModalReject = async (vetId, reason, vetName) => {
+    try {
+      await adminApi.verifyVet(vetId, 'reject', reason || 'Missing accreditation documents');
+      notifyDoctorStatusChange(vetId, vetName, 'reject', reason);
+      alert(`Dr. ${vetName} has been marked as Disapproved.`);
+      setSelectedVetForReview(null);
+      loadDashboardFromDatabase();
+    } catch (err) {
+      alert("Error disapproving vet: " + err.message);
     }
   };
 
@@ -400,16 +439,18 @@ const AdminDashboard = () => {
                     </div>
                     <div className="flex items-center gap-2 pt-1">
                       <button
-                        onClick={() => navigate('/admin/veterinarians')}
-                        className="flex-1 py-1.5 bg-primary-container text-white rounded-lg font-bold text-xs hover:opacity-95 text-center"
+                        onClick={() => setSelectedVetForReview(v)}
+                        className="flex-1 py-1.5 bg-primary-container text-white rounded-lg font-bold text-xs hover:opacity-95 text-center flex items-center justify-center gap-1 shadow-xs"
                       >
-                        Review Docs
+                        <span className="material-symbols-outlined text-[15px]">description</span>
+                        <span>Details & Docs</span>
                       </button>
                       <button
                         onClick={() => handleQuickApproveVet(v._id, v.name)}
-                        className="px-3 py-1.5 bg-secondary-container text-on-secondary-container rounded-lg font-bold text-xs hover:opacity-90"
+                        className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg font-bold text-xs hover:opacity-90 shadow-xs flex items-center gap-1"
                       >
-                        Approve
+                        <span className="material-symbols-outlined text-[14px]">check</span>
+                        <span>Approve</span>
                       </button>
                     </div>
                   </div>
@@ -510,6 +551,14 @@ const AdminDashboard = () => {
           </div>
         </div>
       )}
+
+      {/* Vet Verification & Documents Modal */}
+      <VetVerificationModal
+        vet={selectedVetForReview}
+        onClose={() => setSelectedVetForReview(null)}
+        onApprove={handleModalApprove}
+        onReject={handleModalReject}
+      />
     </div>
   );
 };

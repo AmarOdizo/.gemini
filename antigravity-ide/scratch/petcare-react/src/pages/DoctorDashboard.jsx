@@ -46,10 +46,12 @@ const DoctorDashboard = () => {
 
     window.addEventListener('petcare_vets_updated', handleSync);
     window.addEventListener('petcare_doctor_notification', handleSync);
+    window.addEventListener('petcare_user_updated', handleSync);
 
     return () => {
       window.removeEventListener('petcare_vets_updated', handleSync);
       window.removeEventListener('petcare_doctor_notification', handleSync);
+      window.removeEventListener('petcare_user_updated', handleSync);
       supabase.removeChannel(channel);
     };
   }, [navigate]);
@@ -141,7 +143,7 @@ const DoctorDashboard = () => {
 
         <TopNav title={`Welcome, Dr. ${user.name ? user.name.split(' ')[0] : 'Doctor'}! 👋`} subtitle="Here is your clinical schedule for today." />
 
-        {isVetSuspended(user) && (
+        {isVetSuspended(user) ? (
           <div className="p-4 sm:p-5 rounded-2xl bg-red-50 border-2 border-red-300 text-red-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm animate-fade-in">
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0 border border-red-200 mt-0.5">
@@ -163,7 +165,51 @@ const DoctorDashboard = () => {
               View Status Details
             </Link>
           </div>
-        )}
+        ) : (user.status === 'pending' || user.isVerified === false) ? (
+          <div className="p-4 sm:p-5 rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm animate-fade-in">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 border border-amber-200 mt-0.5">
+                <span className="material-symbols-outlined text-2xl">hourglass_top</span>
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full bg-amber-500 text-white font-black text-[10px] uppercase tracking-wider">
+                    Pending Verification
+                  </span>
+                  <span className="text-xs font-bold text-amber-800">Admin Verification Queue</span>
+                </div>
+                <p className="text-xs text-amber-800 font-medium mt-1">
+                  Your account is awaiting document verification by the Clinical Administrator. Until approved, your profile will not appear on the Owner Dashboard.
+                </p>
+              </div>
+            </div>
+            <Link to="/doctor-profile" className="px-4 py-2 bg-amber-600 text-white rounded-xl text-xs font-bold hover:opacity-95 shadow-xs shrink-0 whitespace-nowrap">
+              Review Profile
+            </Link>
+          </div>
+        ) : user.status === 'rejected' ? (
+          <div className="p-4 sm:p-5 rounded-2xl bg-rose-50 border-2 border-rose-300 text-rose-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm animate-fade-in">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0 border border-rose-200 mt-0.5">
+                <span className="material-symbols-outlined text-2xl">cancel</span>
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full bg-rose-700 text-white font-black text-[10px] uppercase tracking-wider">
+                    Verification Disapproved
+                  </span>
+                  <span className="text-xs font-bold text-rose-800">Review Required</span>
+                </div>
+                <p className="text-xs text-rose-800 font-medium mt-1">
+                  {user.rejectionReason ? `Reason: ${user.rejectionReason}` : 'Your credentials could not be verified. Please update your registration documents.'}
+                </p>
+              </div>
+            </div>
+            <Link to="/doctor-profile" className="px-4 py-2 bg-rose-700 text-white rounded-xl text-xs font-bold hover:opacity-95 shadow-xs shrink-0 whitespace-nowrap">
+              Update Profile
+            </Link>
+          </div>
+        ) : null}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           <div className="bg-surface-container-lowest border border-outline-variant/40 p-5 rounded-2xl flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow group">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import TopNav from '../components/TopNav';
-import { isVetSuspended } from '../utils/suspensionUtils';
+import { isVetSuspended, isVetApproved } from '../utils/suspensionUtils';
 
 const FindVets = () => {
   const [vets, setVets] = useState([]);
@@ -12,8 +12,8 @@ const FindVets = () => {
       const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/vets`);
       if (res.ok) {
         const data = await res.json();
-        // Exclude suspended doctors completely from Owner Find Vets
-        const availableVets = (data.data || []).filter(vet => !isVetSuspended(vet));
+        // Only show approved and verified veterinarians to pet owners
+        const availableVets = (data.data || []).filter(vet => isVetApproved(vet));
         setVets(availableVets);
       }
     } catch (err) {

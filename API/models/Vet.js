@@ -114,12 +114,12 @@ if (mongoose) {
         },
         isVerified: {
           type: Boolean,
-          default: true
+          default: false
         },
         status: {
           type: String,
           enum: ["active", "pending", "suspended", "rejected"],
-          default: "active"
+          default: "pending"
         },
         role: {
           type: String,

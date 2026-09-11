@@ -43,6 +43,26 @@ export const isVetSuspended = (vet) => {
 };
 
 /**
+ * Check if a veterinarian is verified and authorized to practice
+ * Returns false if vet is pending verification, suspended, or rejected
+ */
+export const isVetApproved = (vet) => {
+  if (!vet) return false;
+  if (isVetSuspended(vet)) return false;
+
+  const statusStr = (vet.status || '').toString().toLowerCase();
+  if (statusStr === 'pending' || statusStr === 'rejected' || statusStr === 'suspended') {
+    return false;
+  }
+
+  if (vet.isVerified === false) {
+    return false;
+  }
+
+  return true;
+};
+
+/**
  * Mark a veterinarian as suspended or active in synchronization storage
  */
 export const setVetSuspendedStatus = (vetId, isSuspended) => {
@@ -129,33 +149,75 @@ export const clearDoctorNotifications = (vetId) => {
 };
 
 /**
- * Send notification to doctor when suspended or unsuspended by Admin
+ * Send notification to doctor when approved, rejected, suspended, or unsuspended by Admin
  */
-export const notifyDoctorStatusChange = (vetId, vetName, isSuspended) => {
+export const notifyDoctorStatusChange = (vetId, vetName, actionOrIsSuspended, extraReason = '') => {
   if (!vetId) return;
   const targetId = String(vetId);
   const cleanName = (vetName || 'Doctor').replace(/^Dr\.\s*/, '');
 
+  let title = 'Account Status Update';
+  let message = '';
+  let type = 'info';
+  let status = 'active';
+
+  if (actionOrIsSuspended === 'approve') {
+    title = 'Account Verification Approved! 🎉';
+    message = `Congratulations Dr. ${cleanName}! Your veterinary credentials and medical license have been verified and approved by the Chief Clinical Administrator. Your profile is now live for pet parents.`;
+    type = 'success';
+    status = 'active';
+  } else if (actionOrIsSuspended === 'reject') {
+    title = 'Account Verification Disapproved';
+    message = `Dr. ${cleanName}, your profile verification was not approved. ${extraReason ? `Reason: ${extraReason}` : 'Please review and submit updated credentials.'}`;
+    type = 'error';
+    status = 'rejected';
+  } else if (actionOrIsSuspended === 'suspend' || actionOrIsSuspended === true) {
+    title = 'Account Suspended by Admin';
+    message = `Dr. ${cleanName}, your practice account has been suspended by the Clinical Administrator. Your profile is hidden and bookings are disabled.`;
+    type = 'error';
+    status = 'suspended';
+  } else {
+    // unsuspend / activate / false
+    title = 'Account Re-activated by Admin';
+    message = `Dr. ${cleanName}, your practice account has been activated and restored by the Clinical Administrator. You are now accepting appointments.`;
+    type = 'success';
+    status = 'active';
+  }
+
   const notif = {
     id: `status_${Date.now()}`,
-    type: isSuspended ? 'error' : 'success',
-    title: isSuspended ? 'Account Suspended by Admin' : 'Account Re-activated by Admin',
-    message: isSuspended
-      ? `Dr. ${cleanName}, your practice account has been suspended by the Clinical Administrator. Your profile is hidden and bookings are disabled.`
-      : `Dr. ${cleanName}, your practice account has been activated and restored by the Clinical Administrator. You are now accepting appointments.`,
-    status: isSuspended ? 'suspended' : 'active',
+    type,
+    title,
+    message,
+    status,
     timestamp: new Date().toISOString()
   };
 
   // 1. Store in doctor's persistent notification list
   addDoctorNotification(targetId, notif);
 
-  // 2. Broadcast via Supabase realtime channel so the doctor gets instant popup if online
+  // 2. Synchronize currentUser in localStorage if currently logged in as this doctor
+  try {
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      const currentUserId = String(user._id || user.id);
+      if (currentUserId === targetId || user.licenseNumber === targetId || user.vciNumber === targetId) {
+        user.status = status;
+        user.isVerified = (status === 'active');
+        user.isSuspended = (status === 'suspended');
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        window.dispatchEvent(new CustomEvent('petcare_user_updated', { detail: user }));
+      }
+    }
+  } catch (_) {}
+
+  // 3. Broadcast via Supabase realtime channel so the doctor gets instant popup if online
   try {
     if (supabase && supabase.channel) {
       const channel = supabase.channel(`notifications-${targetId}`);
-      channel.subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
+      channel.subscribe((subStatus) => {
+        if (subStatus === 'SUBSCRIBED') {
           channel.send({
             type: 'broadcast',
             event: 'status-changed',

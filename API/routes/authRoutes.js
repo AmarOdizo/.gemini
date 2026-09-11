@@ -211,8 +211,8 @@ router.post("/vets/register", async function (req, res) {
       about: body.about || "Dedicated veterinarian registered with VCI.",
       photoUrl: body.photoUrl || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&auto=format&fit=crop",
       licenseCertUrl: body.licenseCertUrl || "",
-      isVerified: true,
-      status: "active",
+      isVerified: false,
+      status: "pending",
       role: "doctor"
     };
 
@@ -230,6 +230,22 @@ router.post("/vets/register", async function (req, res) {
 
     const newDbVet = new Vet(vetData);
     await newDbVet.save();
+
+    // Notify Admin via AdminNotification collection in MongoDB
+    try {
+      const AdminNotification = require("../models/AdminNotification");
+      await AdminNotification.create({
+        title: "New Veterinarian Verification Required",
+        description: `Dr. ${name} (${newDbVet.qualification || "B.V.Sc & A.H."}) registered with VCI #${normVci}. Account is in the Verification Queue pending document review.`,
+        type: "warning",
+        urgency: "urgent",
+        link: "/admin/dashboard",
+        relatedId: newDbVet._id.toString(),
+        relatedModel: "Vet"
+      });
+    } catch (notifErr) {
+      console.error("Failed to create admin notification for new vet:", notifErr.message);
+    }
 
     const safeVet = newDbVet.toObject();
     delete safeVet.password;

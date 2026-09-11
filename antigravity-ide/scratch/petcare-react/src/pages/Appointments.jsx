@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
-import { isVetSuspended } from '../utils/suspensionUtils';
+import { isVetSuspended, isVetApproved } from '../utils/suspensionUtils';
 
 const Appointments = () => {
   const [user, setUser] = useState(null);
@@ -80,7 +80,7 @@ const Appointments = () => {
       const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/vets`);
       const data = await res.json();
       if (data.success && data.data) {
-        const activeVets = data.data.filter(v => !isVetSuspended(v));
+        const activeVets = data.data.filter(v => isVetApproved(v));
         setVets(activeVets);
         if (activeVets.length > 0) setSelectedVetId(activeVets[0]._id || activeVets[0].id);
       }
