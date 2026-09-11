@@ -183,15 +183,17 @@ router.post('/reviews', async (req, res) => {
 // 7. VET VERIFICATION: PUT /api/admin/vets/:id/verify
 router.put('/vets/:id/verify', async (req, res) => {
   try {
-    const { action, reason, verifiedBy } = req.body; // action: 'approve' | 'reject' | 'suspend'
+    const { action, reason, verifiedBy } = req.body; // action: 'approve' | 'reject' | 'suspend' | 'activate' | 'unsuspend'
     const statusMap = {
       approve: 'active',
+      activate: 'active',
+      unsuspend: 'active',
       reject: 'rejected',
       suspend: 'suspended'
     };
 
     const newStatus = statusMap[action] || 'active';
-    const isVerified = action === 'approve';
+    const isVerified = action === 'approve' || action === 'activate' || action === 'unsuspend';
 
     const updateData = {
       status: newStatus,

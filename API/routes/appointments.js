@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Appointment = require("../models/Appointment");
 const Consultation = require("../models/Consultation");
+const Vet = require("../models/Vet");
 const supabase = require("../config/supabase");
 
 // GET /api/appointments
@@ -30,6 +31,21 @@ router.get("/", async function (req, res) {
 router.post("/", async function (req, res) {
   try {
     const body = req.body;
+
+    // Check if the veterinarian is suspended
+    if (body.vetId && Vet && Vet.findById) {
+      try {
+        const vetRecord = await Vet.findById(body.vetId);
+        if (vetRecord && (vetRecord.status === 'suspended' || vetRecord.isSuspended)) {
+          return res.status(403).json({
+            success: false,
+            message: "This veterinarian is currently suspended and unavailable for appointments."
+          });
+        }
+      } catch (vetErr) {
+        console.warn("Could not verify vet suspension status:", vetErr.message);
+      }
+    }
     
     const newAppt = new Appointment(body);
     await newAppt.save();

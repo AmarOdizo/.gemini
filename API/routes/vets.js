@@ -37,6 +37,10 @@ router.get("/", async function (req, res) {
       query.specialization = req.query.specialization; // Match if array contains it
     }
 
+    if (!req.query.includeSuspended) {
+      query.status = { $ne: 'suspended' };
+    }
+
     const dbVets = await Vet.find(query).sort({ createdAt: -1 });
 
     const safeVets = dbVets.map(v => {

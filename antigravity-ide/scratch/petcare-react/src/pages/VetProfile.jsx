@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import TopNav from '../components/TopNav';
+import { isVetSuspended } from '../utils/suspensionUtils';
 
 const VetProfile = () => {
   const [searchParams] = useSearchParams();
@@ -81,6 +82,11 @@ const VetProfile = () => {
 
   const handleBooking = async (e) => {
     e.preventDefault();
+    if (isVetSuspended(vet)) {
+      alert("Dr. " + (vet?.name || 'this veterinarian') + " is currently suspended by clinical administration and cannot accept appointments.");
+      return;
+    }
+
     if (!date || !time || !type) {
       alert("Please select date, time, and type of consultation.");
       return;
@@ -252,10 +258,19 @@ const VetProfile = () => {
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <h2 className="font-headline-lg text-xl md:text-2xl text-on-surface font-bold">{vet.name}</h2>
-                      <span className="material-symbols-outlined text-primary filled-icon text-[22px]" title="Verified Veterinary Specialist">verified</span>
-                      <span className="font-mono text-xs text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full font-bold border border-emerald-200">
-                        {vet.vciNumber || 'VCI Verified'}
-                      </span>
+                      {isVetSuspended(vet) ? (
+                        <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-error text-white flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[14px]">block</span>
+                          Suspended
+                        </span>
+                      ) : (
+                        <>
+                          <span className="material-symbols-outlined text-primary filled-icon text-[22px]" title="Verified Veterinary Specialist">verified</span>
+                          <span className="font-mono text-xs text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full font-bold border border-emerald-200">
+                            {vet.vciNumber || 'VCI Verified'}
+                          </span>
+                        </>
+                      )}
                     </div>
                     <button 
                       onClick={handleFavoriteToggle} 
@@ -306,111 +321,137 @@ const VetProfile = () => {
             </div>
           </div>
 
-          {/* Right Column: Booking Widget */}
+          {/* Right Column: Booking Widget or Suspended Notice */}
           <div className="lg:col-span-5">
-            <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl shadow-lg ambient-shadow overflow-hidden sticky top-24">
-              <div className="bg-primary p-4 text-on-primary">
-                <h3 className="font-headline-sm font-bold text-lg flex items-center gap-2">
-                  <span className="material-symbols-outlined">edit_calendar</span> Book Consultation
-                </h3>
-                <p className="text-xs text-primary-fixed opacity-90 mt-1">Instant confirmation & secure payment.</p>
+            {isVetSuspended(vet) ? (
+              <div className="bg-surface-container-lowest border-2 border-red-200 rounded-2xl shadow-lg p-6 sm:p-8 text-center space-y-4 sticky top-24">
+                <div className="w-16 h-16 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center">
+                  <span className="material-symbols-outlined text-4xl">block</span>
+                </div>
+                <div className="space-y-1">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-error text-white inline-block">
+                    Unavailable
+                  </span>
+                  <h3 className="font-headline-sm font-bold text-lg text-on-surface">Doctor Suspended</h3>
+                </div>
+                <p className="text-xs text-on-surface-variant leading-relaxed">
+                  {vet.name} is currently suspended by clinical administration and cannot accept new patient consultations or appointments.
+                </p>
+                <div className="pt-4 border-t border-outline-variant/30">
+                  <Link
+                    to="/find-vets"
+                    className="w-full inline-flex justify-center items-center gap-2 py-3 bg-primary text-white rounded-xl text-xs font-bold shadow-md hover:bg-primary-container transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">search</span>
+                    <span>Find Another Available Veterinarian</span>
+                  </Link>
+                </div>
               </div>
-              
-              <div className="p-6">
-                <form onSubmit={handleBooking} className="flex flex-col gap-6">
-                  {/* Select Pet */}
-                  <div className="flex flex-col gap-2">
-                    <label className="font-label-md text-xs font-bold text-on-surface uppercase tracking-wider">1. Select Pet</label>
-                    {pets.length > 0 ? (
-                      <div className="flex gap-3 overflow-x-auto pb-2 pt-1 px-1 -mx-1 custom-scrollbar">
-                        {pets.map(p => {
-                          const petId = p._id || p.id;
-                          return (
-                          <label key={petId} className={`shrink-0 cursor-pointer border rounded-xl p-2 flex items-center gap-3 transition-all min-w-[150px] ${selectedPetId === petId ? 'bg-primary/5 border-primary text-primary shadow-md transform -translate-y-0.5' : 'border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container-low'}`}>
-                            <input type="radio" name="selectedPet" value={petId} checked={selectedPetId === petId} onChange={() => setSelectedPetId(petId)} className="hidden" />
-                            <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-outline-variant/30 flex items-center justify-center bg-surface-container">
-                              {p.image ? (
-                                <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
-                              ) : (
-                                <span className="material-symbols-outlined text-[20px] text-on-surface-variant">pets</span>
-                              )}
-                            </div>
-                            <div className="flex flex-col">
-                              <span className="font-bold text-sm leading-tight">{p.name}</span>
-                              <span className="text-[10px] opacity-80 uppercase tracking-wider font-bold">{p.species || 'Pet'}</span>
-                            </div>
-                          </label>
-                        )})}
+            ) : (
+              <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl shadow-lg ambient-shadow overflow-hidden sticky top-24">
+                <div className="bg-primary p-4 text-on-primary">
+                  <h3 className="font-headline-sm font-bold text-lg flex items-center gap-2">
+                    <span className="material-symbols-outlined">edit_calendar</span> Book Consultation
+                  </h3>
+                  <p className="text-xs text-primary-fixed opacity-90 mt-1">Instant confirmation & secure payment.</p>
+                </div>
+                
+                <div className="p-6">
+                  <form onSubmit={handleBooking} className="flex flex-col gap-6">
+                    {/* Select Pet */}
+                    <div className="flex flex-col gap-2">
+                      <label className="font-label-md text-xs font-bold text-on-surface uppercase tracking-wider">1. Select Pet</label>
+                      {pets.length > 0 ? (
+                        <div className="flex gap-3 overflow-x-auto pb-2 pt-1 px-1 -mx-1 custom-scrollbar">
+                          {pets.map(p => {
+                            const petId = p._id || p.id;
+                            return (
+                            <label key={petId} className={`shrink-0 cursor-pointer border rounded-xl p-2 flex items-center gap-3 transition-all min-w-[150px] ${selectedPetId === petId ? 'bg-primary/5 border-primary text-primary shadow-md transform -translate-y-0.5' : 'border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container-low'}`}>
+                              <input type="radio" name="selectedPet" value={petId} checked={selectedPetId === petId} onChange={() => setSelectedPetId(petId)} className="hidden" />
+                              <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-outline-variant/30 flex items-center justify-center bg-surface-container">
+                                {p.image ? (
+                                  <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+                                ) : (
+                                  <span className="material-symbols-outlined text-[20px] text-on-surface-variant">pets</span>
+                                )}
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="font-bold text-sm leading-tight">{p.name}</span>
+                                <span className="text-[10px] opacity-80 uppercase tracking-wider font-bold">{p.species || 'Pet'}</span>
+                              </div>
+                            </label>
+                          )})}
+                        </div>
+                      ) : (
+                        <div className="text-sm text-error font-bold p-3 border border-error/50 rounded-xl bg-error/10">
+                          Please register a pet in your Dashboard first!
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Select Consultation Type */}
+                    <div className="flex flex-col gap-2">
+                      <label className="font-label-md text-xs font-bold text-on-surface uppercase tracking-wider">2. Consultation Type</label>
+                      <div className="grid grid-cols-2 gap-3">
+                        <label className={`border rounded-xl p-3 cursor-pointer transition-all flex flex-col items-center gap-1 text-center ${type === 'video' ? 'bg-primary/5 border-primary text-primary shadow-sm' : 'border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container-low'}`}>
+                          <input type="radio" name="cons_type" value="video" checked={type === 'video'} onChange={() => setType('video')} className="hidden" />
+                          <span className="material-symbols-outlined text-[24px]">videocam</span>
+                          <span className="font-bold text-xs">Video Call</span>
+                        </label>
+                        <label className={`border rounded-xl p-3 cursor-pointer transition-all flex flex-col items-center gap-1 text-center ${type === 'clinic' ? 'bg-primary/5 border-primary text-primary shadow-sm' : 'border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container-low'}`}>
+                          <input type="radio" name="cons_type" value="clinic" checked={type === 'clinic'} onChange={() => setType('clinic')} className="hidden" />
+                          <span className="material-symbols-outlined text-[24px]">storefront</span>
+                          <span className="font-bold text-xs">Clinic Visit</span>
+                        </label>
                       </div>
-                    ) : (
-                      <div className="text-sm text-error font-bold p-3 border border-error/50 rounded-xl bg-error/10">
-                        Please register a pet in your Dashboard first!
+                    </div>
+
+                    {/* Select Date & Time */}
+                    <div className="flex flex-col gap-2">
+                      <label className="font-label-md text-xs font-bold text-on-surface uppercase tracking-wider">3. Date & Time</label>
+                      <div className="grid grid-cols-2 gap-3">
+                        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required className="border border-outline-variant rounded-xl p-2.5 text-sm font-semibold text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
+                        <input type="time" value={time} onChange={(e) => setTime(e.target.value)} required className="border border-outline-variant rounded-xl p-2.5 text-sm font-semibold text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
                       </div>
-                    )}
-                  </div>
-
-                  {/* Select Consultation Type */}
-                  <div className="flex flex-col gap-2">
-                    <label className="font-label-md text-xs font-bold text-on-surface uppercase tracking-wider">2. Consultation Type</label>
-                    <div className="grid grid-cols-2 gap-3">
-                      <label className={`border rounded-xl p-3 cursor-pointer transition-all flex flex-col items-center gap-1 text-center ${type === 'video' ? 'bg-primary/5 border-primary text-primary shadow-sm' : 'border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container-low'}`}>
-                        <input type="radio" name="cons_type" value="video" checked={type === 'video'} onChange={() => setType('video')} className="hidden" />
-                        <span className="material-symbols-outlined text-[24px]">videocam</span>
-                        <span className="font-bold text-xs">Video Call</span>
-                      </label>
-                      <label className={`border rounded-xl p-3 cursor-pointer transition-all flex flex-col items-center gap-1 text-center ${type === 'clinic' ? 'bg-primary/5 border-primary text-primary shadow-sm' : 'border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container-low'}`}>
-                        <input type="radio" name="cons_type" value="clinic" checked={type === 'clinic'} onChange={() => setType('clinic')} className="hidden" />
-                        <span className="material-symbols-outlined text-[24px]">storefront</span>
-                        <span className="font-bold text-xs">Clinic Visit</span>
-                      </label>
                     </div>
-                  </div>
 
-                  {/* Select Date & Time */}
-                  <div className="flex flex-col gap-2">
-                    <label className="font-label-md text-xs font-bold text-on-surface uppercase tracking-wider">3. Date & Time</label>
-                    <div className="grid grid-cols-2 gap-3">
-                      <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required className="border border-outline-variant rounded-xl p-2.5 text-sm font-semibold text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
-                      <input type="time" value={time} onChange={(e) => setTime(e.target.value)} required className="border border-outline-variant rounded-xl p-2.5 text-sm font-semibold text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
+                    {/* Reason for Visit */}
+                    <div className="flex flex-col gap-2">
+                      <label className="font-label-md text-xs font-bold text-on-surface uppercase tracking-wider">4. Reason for Visit</label>
+                      <textarea value={reason} onChange={(e) => setReason(e.target.value)} rows="2" className="border border-outline-variant rounded-xl p-3 text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none" placeholder="Briefly describe the issue..."></textarea>
                     </div>
-                  </div>
 
-                  {/* Reason for Visit */}
-                  <div className="flex flex-col gap-2">
-                    <label className="font-label-md text-xs font-bold text-on-surface uppercase tracking-wider">4. Reason for Visit</label>
-                    <textarea value={reason} onChange={(e) => setReason(e.target.value)} rows="2" className="border border-outline-variant rounded-xl p-3 text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none" placeholder="Briefly describe the issue..."></textarea>
-                  </div>
+                    {/* Price Breakdown */}
+                    <div className="bg-surface-container-low p-4 rounded-xl border border-outline-variant/50">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm text-on-surface-variant">Consultation Fee</span>
+                        <span className="font-bold text-on-surface">₹{vet.consultationFee || 499}</span>
+                      </div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm text-on-surface-variant">Platform Fee (Inc. GST)</span>
+                        <span className="font-bold text-on-surface">₹50</span>
+                      </div>
+                      <div className="flex justify-between items-center pt-2 border-t border-outline-variant font-bold text-primary text-lg">
+                        <span>Total Payable</span>
+                        <span>₹{(vet.consultationFee || 499) + 50}</span>
+                      </div>
+                    </div>
 
-                  {/* Price Breakdown */}
-                  <div className="bg-surface-container-low p-4 rounded-xl border border-outline-variant/50">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm text-on-surface-variant">Consultation Fee</span>
-                      <span className="font-bold text-on-surface">₹{vet.consultationFee || 499}</span>
-                    </div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm text-on-surface-variant">Platform Fee (Inc. GST)</span>
-                      <span className="font-bold text-on-surface">₹50</span>
-                    </div>
-                    <div className="flex justify-between items-center pt-2 border-t border-outline-variant font-bold text-primary text-lg">
-                      <span>Total Payable</span>
-                      <span>₹{(vet.consultationFee || 499) + 50}</span>
-                    </div>
-                  </div>
-
-                  {/* Submit */}
-                  <button type="submit" disabled={bookingLoading} className="w-full bg-primary text-on-primary py-3.5 rounded-xl font-bold shadow-md hover:bg-surface-tint hover:-translate-y-0.5 transition-all flex justify-center items-center gap-2">
-                    {bookingLoading ? (
-                      <><span className="material-symbols-outlined animate-spin text-[20px]">sync</span> Processing...</>
-                    ) : (
-                      <><span className="material-symbols-outlined">event_available</span> Confirm & Pay ₹{(vet.consultationFee || 499) + 50}</>
-                    )}
-                  </button>
-                  <p className="text-[10px] text-center text-on-surface-variant font-medium mt-[-8px]">
-                    By booking, you agree to PawsIndia&apos;s Telehealth Terms of Service.
-                  </p>
-                </form>
+                    {/* Submit */}
+                    <button type="submit" disabled={bookingLoading} className="w-full bg-primary text-on-primary py-3.5 rounded-xl font-bold shadow-md hover:bg-surface-tint hover:-translate-y-0.5 transition-all flex justify-center items-center gap-2">
+                      {bookingLoading ? (
+                        <><span className="material-symbols-outlined animate-spin text-[20px]">sync</span> Processing...</>
+                      ) : (
+                        <><span className="material-symbols-outlined">event_available</span> Confirm & Pay ₹{(vet.consultationFee || 499) + 50}</>
+                      )}
+                    </button>
+                    <p className="text-[10px] text-center text-on-surface-variant font-medium mt-[-8px]">
+                      By booking, you agree to PawsIndia&apos;s Telehealth Terms of Service.
+                    </p>
+                  </form>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
     </main>

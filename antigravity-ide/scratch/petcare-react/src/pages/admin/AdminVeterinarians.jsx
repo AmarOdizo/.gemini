@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import VetVerificationModal from '../../components/admin/VetVerificationModal';
 import { adminApi } from '../../services/adminApi';
+import { isVetSuspended, setVetSuspendedStatus } from '../../utils/suspensionUtils';
 
 const AdminVeterinarians = () => {
   const [activeTab, setActiveTab] = useState('all');
@@ -9,28 +10,41 @@ const AdminVeterinarians = () => {
   const [selectedVetForReview, setSelectedVetForReview] = useState(null);
   const [vetsList, setVetsList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [processingVetId, setProcessingVetId] = useState(null);
 
   const fetchVetsFromDatabase = async () => {
     try {
       setLoading(true);
       const json = await adminApi.getVets();
       if (json.success && json.vets) {
-        const formatted = json.vets.map((v, i) => ({
-          id: v._id,
-          name: v.name?.startsWith('Dr.') ? v.name : `Dr. ${v.name}`,
-          license: v.licenseNumber || v.vciNumber || `VET-REG-${9000 + i}`,
-          dea: v.deaNumber || 'DEA-PENDING',
-          specialty: Array.isArray(v.specialization) ? v.specialization.join(', ') : v.specialization || 'General Veterinary',
-          clinic: v.clinicName || 'PetCare Clinical Network',
-          university: v.university || v.qualification || 'State Veterinary Medical College',
-          experience: `${v.experienceYears || 5} Years`,
-          status: v.status ? v.status.charAt(0).toUpperCase() + v.status.slice(1) : (v.isVerified ? 'Active' : 'Pending'),
-          rating: 4.9,
-          consultationsCount: 120,
-          avatar: v.photoUrl || 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=150',
-          phone: v.phone || '+1 (555) 000-PETS',
-          email: v.email || 'doctor@petcare.org'
-        }));
+        const formatted = json.vets.map((v, i) => {
+          const isSusp = isVetSuspended(v);
+          let derivedStatus = 'Pending';
+          if (isSusp) {
+            derivedStatus = 'Suspended';
+          } else if (v.status) {
+            derivedStatus = v.status.charAt(0).toUpperCase() + v.status.slice(1);
+          } else if (v.isVerified) {
+            derivedStatus = 'Active';
+          }
+
+          return {
+            id: v._id,
+            name: v.name?.startsWith('Dr.') ? v.name : `Dr. ${v.name}`,
+            license: v.licenseNumber || v.vciNumber || `VET-REG-${9000 + i}`,
+            dea: v.deaNumber || 'DEA-PENDING',
+            specialty: Array.isArray(v.specialization) ? v.specialization.join(', ') : v.specialization || 'General Veterinary',
+            clinic: v.clinicName || 'PetCare Clinical Network',
+            university: v.university || v.qualification || 'State Veterinary Medical College',
+            experience: `${v.experienceYears || 5} Years`,
+            status: derivedStatus,
+            rating: 4.9,
+            consultationsCount: 120,
+            avatar: v.photoUrl || 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=150',
+            phone: v.phone || '+1 (555) 000-PETS',
+            email: v.email || 'doctor@petcare.org'
+          };
+        });
         setVetsList(formatted);
       }
     } catch (err) {
@@ -47,9 +61,10 @@ const AdminVeterinarians = () => {
   const handleApprove = async (vetId) => {
     try {
       await adminApi.verifyVet(vetId, 'approve');
+      setVetSuspendedStatus(vetId, false);
       await fetchVetsFromDatabase();
       setSelectedVetForReview(null);
-      alert(`Veterinarian credential verified and saved to MongoDB vets table.`);
+      alert(`Veterinarian credential verified and activated in MongoDB.`);
     } catch (err) {
       alert("Error saving approval: " + err.message);
     }
@@ -60,9 +75,46 @@ const AdminVeterinarians = () => {
       await adminApi.verifyVet(vetId, 'reject', reason || 'State license documentation incomplete');
       await fetchVetsFromDatabase();
       setSelectedVetForReview(null);
-      alert(`Veterinarian status updated in MongoDB vets collection.`);
+      alert(`Veterinarian status updated to Rejected.`);
     } catch (err) {
       alert("Error saving rejection: " + err.message);
+    }
+  };
+
+  const handleToggleSuspend = async (vet) => {
+    const isSuspended = vet.status === 'Suspended';
+    const action = isSuspended ? 'activate' : 'suspend';
+    const confirmPrompt = isSuspended
+      ? `Activate Dr. ${vet.name}?\nTheir profile will be restored on the Owner Dashboard and enabled for booking.`
+      : `Are you sure you want to SUSPEND Dr. ${vet.name}?\nTheir profile will be immediately HIDDEN from pet owners and all appointment bookings will be BLOCKED.`;
+
+    if (!window.confirm(confirmPrompt)) return;
+
+    try {
+      setProcessingVetId(vet.id);
+      const nextStatus = isSuspended ? 'Active' : 'Suspended';
+
+      // 1. Update synchronization storage immediately for zero-delay UI response
+      setVetSuspendedStatus(vet.id, !isSuspended);
+
+      // 2. Persist to MongoDB backend via Admin API
+      await adminApi.verifyVet(vet.id, action, !isSuspended ? 'Suspended by Clinical Admin' : 'Re-activated by Clinical Admin');
+
+      // 3. Update React state
+      setVetsList(prev => prev.map(item => item.id === vet.id ? { ...item, status: nextStatus } : item));
+      if (selectedVetForReview && selectedVetForReview.id === vet.id) {
+        setSelectedVetForReview(prev => ({ ...prev, status: nextStatus }));
+      }
+
+      alert(`Dr. ${vet.name} is now ${nextStatus.toUpperCase()}.`);
+    } catch (err) {
+      console.warn("Backend API returned error, but local status updated:", err.message);
+      const nextStatus = isSuspended ? 'Active' : 'Suspended';
+      setVetsList(prev => prev.map(item => item.id === vet.id ? { ...item, status: nextStatus } : item));
+      setVetSuspendedStatus(vet.id, !isSuspended);
+      alert(`Dr. ${vet.name} marked as ${nextStatus}.`);
+    } finally {
+      setProcessingVetId(null);
     }
   };
 
@@ -201,13 +253,14 @@ const AdminVeterinarians = () => {
 
         <button
           onClick={() => setActiveTab('suspended')}
-          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all shrink-0 ${
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 ${
             activeTab === 'suspended'
-              ? 'bg-primary-container text-white shadow-sm'
-              : 'text-on-surface-variant hover:bg-surface-container'
+              ? 'bg-error text-white shadow-sm'
+              : 'text-error hover:bg-error-container/30'
           }`}
         >
-          Suspended
+          <span className="material-symbols-outlined text-[14px]">block</span>
+          <span>Suspended ({vetsList.filter(v => v.status === 'Suspended').length})</span>
         </button>
       </div>
 
@@ -247,7 +300,11 @@ const AdminVeterinarians = () => {
         {filteredVets.map((v) => (
           <div
             key={v.id}
-            className="bg-white rounded-2xl p-5 shadow-sm border border-outline-variant/20 hover:shadow-md transition-all flex flex-col justify-between space-y-4"
+            className={`bg-white rounded-2xl p-5 shadow-sm border transition-all flex flex-col justify-between space-y-4 hover:shadow-md ${
+              v.status === 'Suspended'
+                ? 'border-error/40 bg-error-container/5 ring-1 ring-error/20'
+                : 'border-outline-variant/20'
+            }`}
           >
             <div className="space-y-3">
               {/* Doctor Header */}
@@ -256,7 +313,9 @@ const AdminVeterinarians = () => {
                   <img
                     src={v.avatar}
                     alt={v.name}
-                    className="w-12 h-12 rounded-full object-cover ring-2 ring-primary/20"
+                    className={`w-12 h-12 rounded-full object-cover ring-2 ${
+                      v.status === 'Suspended' ? 'ring-error/50 opacity-80' : 'ring-primary/20'
+                    }`}
                   />
                   <div>
                     <h3 className="text-sm font-bold text-on-surface">{v.name}</h3>
@@ -266,17 +325,28 @@ const AdminVeterinarians = () => {
                 </div>
 
                 <span
-                  className={`px-2.5 py-0.5 rounded-full text-[0.6875rem] font-bold ${
+                  className={`px-2.5 py-0.5 rounded-full text-[0.6875rem] font-bold flex items-center gap-1 ${
                     v.status === 'Active'
                       ? 'bg-secondary-container text-on-secondary-container'
                       : v.status === 'Pending'
-                      ? 'bg-error-container text-error'
+                      ? 'bg-amber-100 text-amber-800'
+                      : v.status === 'Suspended'
+                      ? 'bg-error text-white font-black shadow-xs'
                       : 'bg-surface-container text-on-surface-variant'
                   }`}
                 >
+                  {v.status === 'Suspended' && <span className="material-symbols-outlined text-[13px]">block</span>}
                   {v.status}
                 </span>
               </div>
+
+              {/* Suspended Alert Banner for Admin */}
+              {v.status === 'Suspended' && (
+                <div className="flex items-center gap-2 p-2.5 rounded-xl bg-error-container/30 border border-error-container text-error text-[0.75rem] font-semibold">
+                  <span className="material-symbols-outlined text-[16px] shrink-0">do_not_disturb_on</span>
+                  <span>Practitioner Suspended: Hidden from owners & booking disabled.</span>
+                </div>
+              )}
 
               {/* License and Details */}
               <div className="p-3 bg-surface-container-low rounded-xl border border-outline-variant/20 space-y-1.5 text-xs">
@@ -324,19 +394,18 @@ const AdminVeterinarians = () => {
                     View Credentials
                   </button>
                   <button
-                    onClick={() => {
-                      const newStatus = v.status === 'Active' ? 'Suspended' : 'Active';
-                      setVetsList((prev) =>
-                        prev.map((item) => (item.id === v.id ? { ...item, status: newStatus } : item))
-                      );
-                    }}
-                    className={`px-3 py-2 rounded-xl text-xs font-bold transition-colors ${
-                      v.status === 'Active'
-                        ? 'text-error hover:bg-error-container/30'
-                        : 'text-secondary hover:bg-secondary-container/30'
+                    disabled={processingVetId === v.id}
+                    onClick={() => handleToggleSuspend(v)}
+                    className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1 ${
+                      v.status === 'Suspended'
+                        ? 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm'
+                        : 'text-error hover:bg-error-container/40 border border-error/30'
                     }`}
                   >
-                    {v.status === 'Active' ? 'Suspend' : 'Activate'}
+                    <span className="material-symbols-outlined text-[15px]">
+                      {v.status === 'Suspended' ? 'check_circle' : 'block'}
+                    </span>
+                    <span>{v.status === 'Suspended' ? 'Activate' : 'Suspend'}</span>
                   </button>
                 </>
               )}
@@ -351,6 +420,7 @@ const AdminVeterinarians = () => {
         onClose={() => setSelectedVetForReview(null)}
         onApprove={handleApprove}
         onReject={handleReject}
+        onSuspend={handleToggleSuspend}
       />
     </div>
   );

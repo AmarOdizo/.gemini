@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
+import { isVetSuspended } from '../utils/suspensionUtils';
 
 const OwnerDashboard = () => {
   const [user, setUser] = useState(null);
@@ -26,6 +27,10 @@ const OwnerDashboard = () => {
     const parsedUser = JSON.parse(storedUser);
     setUser(parsedUser);
     fetchData(parsedUser);
+
+    const handleSync = () => fetchData(parsedUser);
+    window.addEventListener('petcare_vets_updated', handleSync);
+    return () => window.removeEventListener('petcare_vets_updated', handleSync);
   }, [navigate]);
 
   const fetchData = async (currentUser) => {
@@ -54,13 +59,14 @@ const OwnerDashboard = () => {
         console.error("Error fetching appointments:", err);
       }
 
-      // Fetch Vets
+      // Fetch Vets (Excluding suspended doctors)
       try {
         const vetsRes = await fetch(`${API_BASE}/api/vets`);
         if (vetsRes.ok) {
           const vetsData = await vetsRes.json();
-          setVets(vetsData.data || []);
-          if (vetsData.data && vetsData.data.length > 0) setSelectedVetId(vetsData.data[0]._id || vetsData.data[0].id);
+          const activeVets = (vetsData.data || []).filter(v => !isVetSuspended(v));
+          setVets(activeVets);
+          if (activeVets.length > 0) setSelectedVetId(activeVets[0]._id || activeVets[0].id);
         }
       } catch (err) {
         console.error("Error fetching vets:", err);
@@ -96,6 +102,12 @@ const OwnerDashboard = () => {
     try {
       const selectedPet = pets.find(p => p._id === selectedPetId);
       const selectedVet = vets.find(v => v._id === selectedVetId);
+      
+      if (!selectedVet || isVetSuspended(selectedVet)) {
+        alert("This veterinarian is currently suspended and unavailable for booking.");
+        setBookingLoading(false);
+        return;
+      }
       
       const payload = {
         vetId: selectedVet._id,

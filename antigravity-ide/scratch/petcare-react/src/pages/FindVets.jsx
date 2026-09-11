@@ -1,26 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import TopNav from '../components/TopNav';
+import { isVetSuspended } from '../utils/suspensionUtils';
 
 const FindVets = () => {
   const [vets, setVets] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchVets = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/vets`);
-        if (res.ok) {
-          const data = await res.json();
-          setVets(data.data || []);
-        }
-      } catch (err) {
-        console.error("Error fetching vets", err);
-      } finally {
-        setLoading(false);
+  const fetchVets = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/vets`);
+      if (res.ok) {
+        const data = await res.json();
+        // Exclude suspended doctors completely from Owner Find Vets
+        const availableVets = (data.data || []).filter(vet => !isVetSuspended(vet));
+        setVets(availableVets);
       }
-    };
+    } catch (err) {
+      console.error("Error fetching vets", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchVets();
+
+    // Listen for live suspension updates from Admin in real-time
+    const handleSync = () => fetchVets();
+    window.addEventListener('petcare_vets_updated', handleSync);
+    return () => window.removeEventListener('petcare_vets_updated', handleSync);
   }, []);
 
   return (

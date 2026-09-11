@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
+import { isVetSuspended } from '../utils/suspensionUtils';
 
 const Appointments = () => {
   const [user, setUser] = useState(null);
@@ -33,6 +34,10 @@ const Appointments = () => {
     fetchAppointments(userId);
     fetchPets(userId);
     fetchVets();
+
+    const handleSync = () => fetchVets();
+    window.addEventListener('petcare_vets_updated', handleSync);
+    return () => window.removeEventListener('petcare_vets_updated', handleSync);
   }, [navigate]);
 
   const fetchAppointments = async (userId) => {
@@ -75,8 +80,9 @@ const Appointments = () => {
       const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/vets`);
       const data = await res.json();
       if (data.success && data.data) {
-        setVets(data.data);
-        if (data.data.length > 0) setSelectedVetId(data.data[0]._id || data.data[0].id);
+        const activeVets = data.data.filter(v => !isVetSuspended(v));
+        setVets(activeVets);
+        if (activeVets.length > 0) setSelectedVetId(activeVets[0]._id || activeVets[0].id);
       }
     } catch (err) {
       console.error("Error fetching vets", err);
@@ -134,8 +140,8 @@ const Appointments = () => {
       const selectedVet = vets.find(v => v._id === selectedVetId || v.id === selectedVetId);
       const selectedPet = pets.find(p => p._id === selectedPetId || p.id === selectedPetId);
 
-      if (!selectedVet || !selectedPet) {
-        alert("Invalid vet or pet selection.");
+      if (!selectedVet || isVetSuspended(selectedVet) || !selectedPet) {
+        alert("This veterinarian is suspended or unavailable. Please select an active doctor.");
         setBookingLoading(false);
         return;
       }

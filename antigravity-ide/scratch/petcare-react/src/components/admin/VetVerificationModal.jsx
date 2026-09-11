@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const VetVerificationModal = ({ vet, onClose, onApprove, onReject }) => {
+const VetVerificationModal = ({ vet, onClose, onApprove, onReject, onSuspend }) => {
   const [activeDocTab, setActiveDocTab] = useState('license');
   const [rejectReason, setRejectReason] = useState('');
   const [showRejectForm, setShowRejectForm] = useState(false);
@@ -19,8 +19,14 @@ const VetVerificationModal = ({ vet, onClose, onApprove, onReject }) => {
               className="w-10 sm:w-12 h-10 sm:h-12 rounded-full object-cover ring-2 ring-primary/20 shrink-0"
             />
             <div className="min-w-0">
-              <h3 className="font-['Manrope'] text-base sm:text-lg font-bold text-on-surface truncate">
-                {vet.name}
+              <h3 className="font-['Manrope'] text-base sm:text-lg font-bold text-on-surface truncate flex items-center gap-2">
+                <span>{vet.name}</span>
+                {vet.status === 'Suspended' && (
+                  <span className="px-2 py-0.5 rounded-full bg-error text-white font-black text-[0.625rem] tracking-wider uppercase flex items-center gap-0.5">
+                    <span className="material-symbols-outlined text-[10px]">block</span>
+                    Suspended
+                  </span>
+                )}
               </h3>
               <p className="text-[0.6875rem] sm:text-xs text-on-surface-variant truncate">
                 License: <span className="font-mono font-semibold text-primary">{vet.license}</span> • {vet.clinic}
@@ -38,15 +44,25 @@ const VetVerificationModal = ({ vet, onClose, onApprove, onReject }) => {
         {/* Modal Body: Credentials Review */}
         <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 flex-1 overflow-y-auto">
           {/* Status Alert */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs">
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-amber-600 text-[1.25rem] shrink-0">verified_user</span>
-              <span><strong>Action Required:</strong> Verification pending submission by state veterinary council.</span>
+          {vet.status === 'Suspended' ? (
+            <div className="flex items-center gap-2.5 p-3 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs font-semibold">
+              <span className="material-symbols-outlined text-red-600 text-[1.25rem] shrink-0">block</span>
+              <div>
+                <p className="font-bold">Practitioner Account is Currently Suspended</p>
+                <p className="text-[0.6875rem] text-red-700">This doctor is completely hidden from Owner Find Vets and cannot accept any appointments.</p>
+              </div>
             </div>
-            <span className="px-2 py-0.5 rounded-full bg-amber-200 text-amber-900 font-bold text-[0.625rem] self-start sm:self-auto shrink-0">
-              Fast-Track
-            </span>
-          </div>
+          ) : (
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-amber-600 text-[1.25rem] shrink-0">verified_user</span>
+                <span><strong>Status:</strong> {vet.status} • Verification review and licensing compliance.</span>
+              </div>
+              <span className="px-2 py-0.5 rounded-full bg-amber-200 text-amber-900 font-bold text-[0.625rem] self-start sm:self-auto shrink-0">
+                Compliance
+              </span>
+            </div>
+          )}
 
           {/* Key Qualifications Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 text-xs">
@@ -142,6 +158,23 @@ const VetVerificationModal = ({ vet, onClose, onApprove, onReject }) => {
           </button>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+            {onSuspend && (
+              <button
+                type="button"
+                onClick={() => onSuspend(vet)}
+                className={`px-4 py-2 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+                  vet.status === 'Suspended'
+                    ? 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm'
+                    : 'text-error hover:bg-error-container/40 border border-error/40'
+                }`}
+              >
+                <span className="material-symbols-outlined text-[1rem]">
+                  {vet.status === 'Suspended' ? 'check_circle' : 'block'}
+                </span>
+                <span>{vet.status === 'Suspended' ? 'Unsuspend / Activate' : 'Suspend Practitioner'}</span>
+              </button>
+            )}
+
             {!showRejectForm ? (
               <button
                 type="button"
