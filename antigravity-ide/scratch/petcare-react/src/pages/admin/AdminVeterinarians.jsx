@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import VetVerificationModal from '../../components/admin/VetVerificationModal';
 import { adminApi } from '../../services/adminApi';
-import { isVetSuspended, setVetSuspendedStatus } from '../../utils/suspensionUtils';
+import { isVetSuspended, setVetSuspendedStatus, notifyDoctorStatusChange } from '../../utils/suspensionUtils';
 
 const AdminVeterinarians = () => {
   const [activeTab, setActiveTab] = useState('all');
@@ -62,6 +62,7 @@ const AdminVeterinarians = () => {
     try {
       await adminApi.verifyVet(vetId, 'approve');
       setVetSuspendedStatus(vetId, false);
+      notifyDoctorStatusChange(vetId, 'Doctor', false);
       await fetchVetsFromDatabase();
       setSelectedVetForReview(null);
       alert(`Veterinarian credential verified and activated in MongoDB.`);
@@ -97,21 +98,25 @@ const AdminVeterinarians = () => {
       // 1. Update synchronization storage immediately for zero-delay UI response
       setVetSuspendedStatus(vet.id, !isSuspended);
 
-      // 2. Persist to MongoDB backend via Admin API
+      // 2. Notify doctor immediately via realtime broadcast and persistent notification
+      notifyDoctorStatusChange(vet.id, vet.name, !isSuspended);
+
+      // 3. Persist to MongoDB backend via Admin API
       await adminApi.verifyVet(vet.id, action, !isSuspended ? 'Suspended by Clinical Admin' : 'Re-activated by Clinical Admin');
 
-      // 3. Update React state
+      // 4. Update React state
       setVetsList(prev => prev.map(item => item.id === vet.id ? { ...item, status: nextStatus } : item));
       if (selectedVetForReview && selectedVetForReview.id === vet.id) {
         setSelectedVetForReview(prev => ({ ...prev, status: nextStatus }));
       }
 
-      alert(`Dr. ${vet.name} is now ${nextStatus.toUpperCase()}.`);
+      alert(`Dr. ${vet.name} is now ${nextStatus.toUpperCase()} and notification has been delivered.`);
     } catch (err) {
       console.warn("Backend API returned error, but local status updated:", err.message);
       const nextStatus = isSuspended ? 'Active' : 'Suspended';
       setVetsList(prev => prev.map(item => item.id === vet.id ? { ...item, status: nextStatus } : item));
       setVetSuspendedStatus(vet.id, !isSuspended);
+      notifyDoctorStatusChange(vet.id, vet.name, !isSuspended);
       alert(`Dr. ${vet.name} marked as ${nextStatus}.`);
     } finally {
       setProcessingVetId(null);

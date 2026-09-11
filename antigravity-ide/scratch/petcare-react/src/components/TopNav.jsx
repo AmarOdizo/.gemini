@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import supabase from '../supabaseClient';
+import { getDoctorNotifications, clearDoctorNotifications } from '../utils/suspensionUtils';
 
 const TopNav = ({ title, subtitle, backLink }) => {
   const [user, setUser] = useState({ name: 'User' });
@@ -14,6 +15,16 @@ const TopNav = ({ title, subtitle, backLink }) => {
     if (storedUser) {
       parsedUser = JSON.parse(storedUser);
       setUser(parsedUser);
+    }
+
+    const userId = parsedUser ? (parsedUser._id || parsedUser.id) : null;
+
+    // Load persistent notifications for user / doctor
+    if (userId) {
+      const stored = getDoctorNotifications(userId);
+      if (stored && stored.length > 0) {
+        setNotifications(stored);
+      }
     }
 
     // Function to load the favorite pet image
@@ -32,28 +43,37 @@ const TopNav = ({ title, subtitle, backLink }) => {
     // Listen for custom event from MyPets.jsx when favorite changes
     window.addEventListener('favoritePetChanged', loadFavoriteImage);
 
+    // Listen for real-time doctor notifications across tabs
+    const handleDoctorNotif = (e) => {
+      if (e.detail && (!e.detail.vetId || e.detail.vetId === String(userId))) {
+        setNotifications(prev => [e.detail.notification, ...prev]);
+      }
+    };
+    window.addEventListener('petcare_doctor_notification', handleDoctorNotif);
+
     let channel;
-    if (parsedUser && (parsedUser._id || parsedUser.id)) {
-      const channelId = `notifications-${parsedUser._id || parsedUser.id}`;
-      console.log('Subscribing to channel:', channelId);
+    if (userId) {
+      const channelId = `notifications-${userId}`;
       // Setup real-time notifications globally for this user
       channel = supabase.channel(channelId)
         .on('broadcast', { event: '*' }, (payload) => {
-          console.log('Received broadcast:', payload);
-          setNotifications(prev => [payload.payload, ...prev]);
+          console.log('Received broadcast in TopNav:', payload);
+          if (payload.payload) {
+            setNotifications(prev => [payload.payload, ...prev]);
+          }
         })
-        .subscribe((status) => {
-          console.log('Channel subscription status:', status);
-        });
+        .subscribe();
     }
 
     return () => {
       window.removeEventListener('favoritePetChanged', loadFavoriteImage);
+      window.removeEventListener('petcare_doctor_notification', handleDoctorNotif);
       if (channel) supabase.removeChannel(channel);
     };
   }, []);
 
-  const firstName = user.name.split(' ')[0];
+  const firstName = user.name ? user.name.split(' ')[0] : 'User';
+  const userId = user ? (user._id || user.id) : null;
 
   return (
     <header className="sticky top-0 z-30 flex justify-between items-center w-full no-print mb-lg bg-surface/80 backdrop-blur-md py-4 border-b border-outline-variant/20 -mx-4 px-4 md:-mx-8 md:px-8 shadow-sm">
@@ -82,24 +102,56 @@ const TopNav = ({ title, subtitle, backLink }) => {
         >
           <span className="material-symbols-outlined">notifications</span>
           {notifications.length > 0 && (
-            <span className="w-2.5 h-2.5 bg-error rounded-full absolute top-2 right-2 border-2 border-surface"></span>
+            <span className="min-w-[1.125rem] h-[1.125rem] px-1 bg-error text-white text-[10px] font-black rounded-full absolute -top-1 -right-1 border-2 border-surface flex items-center justify-center shadow-xs">
+              {notifications.length}
+            </span>
           )}
         </button>
 
         {showDropdown && (
-          <div className="absolute top-14 right-0 w-72 bg-surface-container-lowest border border-outline-variant/30 rounded-2xl shadow-xl z-50 overflow-hidden animate-fade-in">
+          <div className="absolute top-14 right-0 w-80 bg-surface-container-lowest border border-outline-variant/30 rounded-2xl shadow-xl z-50 overflow-hidden animate-fade-in">
             <div className="p-3 border-b border-outline-variant/30 bg-surface-container-low flex justify-between items-center">
-              <h4 className="font-bold text-sm">Notifications</h4>
+              <h4 className="font-bold text-sm text-on-surface flex items-center gap-1.5">
+                <span>Notifications</span>
+                {notifications.length > 0 && (
+                  <span className="text-[10px] bg-primary/10 text-primary font-bold px-1.5 py-0.5 rounded-full">
+                    {notifications.length}
+                  </span>
+                )}
+              </h4>
               {notifications.length > 0 && (
-                <button onClick={() => setNotifications([])} className="text-[10px] uppercase font-bold text-primary hover:underline">Clear</button>
+                <button
+                  onClick={() => {
+                    setNotifications([]);
+                    clearDoctorNotifications(userId);
+                  }}
+                  className="text-[10px] uppercase font-bold text-primary hover:underline"
+                >
+                  Clear All
+                </button>
               )}
             </div>
-            <div className="max-h-64 overflow-y-auto custom-scrollbar">
+            <div className="max-h-72 overflow-y-auto custom-scrollbar">
               {notifications.length > 0 ? (
                 notifications.map((notif, idx) => (
-                  <div key={idx} className="p-3 border-b border-outline-variant/20 hover:bg-surface-container-low/50 transition-colors">
-                    <p className="text-xs font-bold text-on-surface mb-0.5">Appointment Update</p>
-                    <p className="text-xs text-on-surface-variant">{notif.message}</p>
+                  <div key={idx} className="p-3 border-b border-outline-variant/20 hover:bg-surface-container-low/50 transition-colors space-y-1">
+                    <div className="flex items-center justify-between gap-1">
+                      <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full tracking-wider ${
+                        notif.type === 'error' || notif.status === 'suspended'
+                          ? 'bg-error text-white'
+                          : notif.type === 'success' || notif.status === 'active'
+                          ? 'bg-emerald-600 text-white'
+                          : 'bg-primary/10 text-primary font-bold'
+                      }`}>
+                        {notif.title || (notif.status === 'suspended' ? 'Suspended' : 'Update')}
+                      </span>
+                      {notif.timestamp && (
+                        <span className="text-[9px] text-on-surface-variant font-mono">
+                          {new Date(notif.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-on-surface font-medium leading-snug">{notif.message}</p>
                   </div>
                 ))
               ) : (

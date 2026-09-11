@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 import supabase from '../supabaseClient';
+import { isVetSuspended } from '../utils/suspensionUtils';
 
 const DoctorDashboard = () => {
   const [user, setUser] = useState(null);
@@ -17,21 +18,38 @@ const DoctorDashboard = () => {
       return;
     }
     const parsedUser = JSON.parse(storedUser);
-    // In a real app we'd verify the role, but here we just assume it's the vet
     setUser(parsedUser);
     const vetId = parsedUser._id || parsedUser.id;
     fetchAppointments(vetId);
 
-    // Setup real-time notifications
+    // Setup real-time notifications for bookings and admin status updates
     const channel = supabase.channel(`notifications-${vetId}`)
-      .on('broadcast', { event: 'new-booking' }, (payload) => {
-        setNotification(payload.payload.message);
-        fetchAppointments(vetId); // refresh list automatically
-        setTimeout(() => setNotification(null), 6000); // hide after 6s
+      .on('broadcast', { event: '*' }, (payload) => {
+        if (payload.payload) {
+          setNotification(payload.payload.message || payload.payload.title);
+          setTimeout(() => setNotification(null), 8000);
+        }
+        fetchAppointments(vetId);
       })
       .subscribe();
 
+    const handleSync = (e) => {
+      const stored = localStorage.getItem('currentUser');
+      if (stored) {
+        setUser(JSON.parse(stored));
+      }
+      if (e?.detail?.notification) {
+        setNotification(e.detail.notification.message);
+        setTimeout(() => setNotification(null), 8000);
+      }
+    };
+
+    window.addEventListener('petcare_vets_updated', handleSync);
+    window.addEventListener('petcare_doctor_notification', handleSync);
+
     return () => {
+      window.removeEventListener('petcare_vets_updated', handleSync);
+      window.removeEventListener('petcare_doctor_notification', handleSync);
       supabase.removeChannel(channel);
     };
   }, [navigate]);
@@ -122,6 +140,30 @@ const DoctorDashboard = () => {
         )}
 
         <TopNav title={`Welcome, Dr. ${user.name ? user.name.split(' ')[0] : 'Doctor'}! 👋`} subtitle="Here is your clinical schedule for today." />
+
+        {isVetSuspended(user) && (
+          <div className="p-4 sm:p-5 rounded-2xl bg-red-50 border-2 border-red-300 text-red-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm animate-fade-in">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0 border border-red-200 mt-0.5">
+                <span className="material-symbols-outlined text-2xl">block</span>
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full bg-error text-white font-black text-[10px] uppercase tracking-wider">
+                    Account Suspended
+                  </span>
+                  <span className="text-xs font-bold text-red-800">Clinical Administration Compliance</span>
+                </div>
+                <p className="text-xs text-red-700 font-medium mt-1">
+                  Your veterinary practice profile is currently hidden from pet owners and appointment booking is blocked.
+                </p>
+              </div>
+            </div>
+            <Link to="/doctor-profile" className="px-4 py-2 bg-error text-white rounded-xl text-xs font-bold hover:opacity-95 shadow-xs shrink-0 whitespace-nowrap">
+              View Status Details
+            </Link>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           <div className="bg-surface-container-lowest border border-outline-variant/40 p-5 rounded-2xl flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow group">
