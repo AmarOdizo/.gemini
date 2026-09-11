@@ -335,20 +335,10 @@ const AdminLogin = () => {
       </div>
 
       {/* Footer Navigation */}
-      <div className="mt-6 flex items-center gap-4 text-xs text-slate-500 z-10">
+      <div className="mt-6 flex items-center justify-center text-xs text-slate-500 z-10">
         <Link to="/login" className="hover:text-slate-300 transition-colors">
           Pet Parent & Doctor Login
         </Link>
-        <span>•</span>
-        <a
-          href="https://odizopetcare.onrender.com/api-docs"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-emerald-400 transition-colors flex items-center gap-1"
-        >
-          <span className="material-symbols-outlined text-[0.875rem]">api</span>
-          <span>Swagger API Spec</span>
-        </a>
       </div>
     </div>
   );

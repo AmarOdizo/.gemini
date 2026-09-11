@@ -66,18 +66,6 @@ const AdminHeader = ({ onToggleSidebar }) => {
           <span className="w-2 h-2 rounded-full bg-error animate-ping"></span>
         </div>
 
-        {/* Swagger API Docs Button */}
-        <a
-          href="https://odizopetcare.onrender.com/api-docs"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-1 sm:gap-1.5 text-[0.6875rem] sm:text-xs font-bold px-2.5 sm:px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-700 border border-emerald-500/30 hover:bg-emerald-500/20 transition-all shadow-xs"
-          title="Open Swagger OpenAPI Documentation"
-        >
-          <span className="material-symbols-outlined text-[1rem] sm:text-[1.125rem]">api</span>
-          <span className="hidden sm:inline">Swagger Docs</span>
-        </a>
-
         {/* Portal Switcher */}
         <Link
           to="/owner-dashboard"
@@ -138,16 +126,6 @@ const AdminHeader = ({ onToggleSidebar }) => {
                   <span className="material-symbols-outlined text-[1.125rem] text-outline">settings</span>
                   <span>Platform Settings</span>
                 </Link>
-
-                <a
-                  href="https://odizopetcare.onrender.com/api-docs"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2.5 px-4 py-2 text-xs text-on-surface hover:bg-surface-container"
-                >
-                  <span className="material-symbols-outlined text-[1.125rem] text-emerald-600">api</span>
-                  <span>API Docs (Swagger)</span>
-                </a>
 
                 <Link
                   to="/owner-dashboard"
