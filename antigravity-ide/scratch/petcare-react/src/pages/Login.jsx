@@ -171,11 +171,19 @@ const Login = () => {
             </button>
           </form>
 
-          <div className="text-center text-xs font-body-sm text-on-surface-variant pt-2">
-            Don't have an account?{' '}
-            <Link to={role === 'vet' ? '/vet-register' : '/register'} className="font-bold text-primary hover:underline">
-              Create one here
-            </Link>
+          <div className="text-center text-xs font-body-sm text-on-surface-variant pt-2 flex flex-col gap-1.5">
+            <div>
+              Don't have an account?{' '}
+              <Link to={role === 'vet' ? '/vet-register' : '/register'} className="font-bold text-primary hover:underline">
+                Create one here
+              </Link>
+            </div>
+            <div className="pt-2 border-t border-outline-variant/30 mt-1">
+              <Link to="/admin" className="text-outline hover:text-primary font-medium inline-flex items-center gap-1">
+                <span className="material-symbols-outlined text-[15px]">admin_panel_settings</span>
+                Clinical Admin Portal
+              </Link>
+            </div>
           </div>
         </div>
       </main>

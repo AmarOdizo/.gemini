@@ -24,6 +24,8 @@ import MainLayout from './layouts/MainLayout'
 import DoctorVideoCall from './pages/doctor/VideoCall'
 import OwnerVideoCall from './pages/owner/VideoCall'
 import AdminLayout from './layouts/AdminLayout'
+import AdminLogin from './pages/admin/AdminLogin'
+import AdminProtectedRoute from './components/admin/AdminProtectedRoute'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminAppointments from './pages/admin/AdminAppointments'
 import AdminVeterinarians from './pages/admin/AdminVeterinarians'
@@ -71,18 +73,30 @@ function App() {
       <Route path="/owner-dashboard/video-call/:appointmentId" element={<ProtectedRoute allowedRoles={['owner']}><OwnerVideoCall /></ProtectedRoute>} />
 
       {/* Clinical Admin Portal */}
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<Navigate to="/admin/dashboard" replace />} />
-        <Route path="dashboard" element={<AdminDashboard />} />
-        <Route path="appointments" element={<AdminAppointments />} />
-        <Route path="consultations" element={<AdminAppointments />} />
-        <Route path="veterinarians" element={<AdminVeterinarians />} />
-        <Route path="owners" element={<AdminOwners />} />
-        <Route path="prescriptions" element={<AdminPrescriptions />} />
-        <Route path="reviews" element={<AdminReviews />} />
-        <Route path="reports" element={<AdminReports />} />
-        <Route path="notifications" element={<AdminNotifications />} />
-        <Route path="settings" element={<AdminSettings />} />
+      <Route path="/admin">
+        {/* Admin Login: opens on /admin (http://localhost:5173/admin & https://petcarecomodizo.vercel.app/admin) */}
+        <Route index element={<AdminLogin />} />
+        <Route path="login" element={<Navigate to="/admin" replace />} />
+
+        {/* Protected Clinical Admin Control Center */}
+        <Route
+          element={
+            <AdminProtectedRoute>
+              <AdminLayout />
+            </AdminProtectedRoute>
+          }
+        >
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="appointments" element={<AdminAppointments />} />
+          <Route path="consultations" element={<AdminAppointments />} />
+          <Route path="veterinarians" element={<AdminVeterinarians />} />
+          <Route path="owners" element={<AdminOwners />} />
+          <Route path="prescriptions" element={<AdminPrescriptions />} />
+          <Route path="reviews" element={<AdminReviews />} />
+          <Route path="reports" element={<AdminReports />} />
+          <Route path="notifications" element={<AdminNotifications />} />
+          <Route path="settings" element={<AdminSettings />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />

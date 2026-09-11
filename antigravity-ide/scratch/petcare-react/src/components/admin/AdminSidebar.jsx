@@ -8,8 +8,9 @@ const AdminSidebar = ({ isOpen, onClose }) => {
     localStorage.removeItem('userToken');
     localStorage.removeItem('userRole');
     localStorage.removeItem('userData');
+    localStorage.removeItem('currentUser');
     if (onClose) onClose();
-    navigate('/login');
+    navigate('/admin');
   };
 
   const navItems = [

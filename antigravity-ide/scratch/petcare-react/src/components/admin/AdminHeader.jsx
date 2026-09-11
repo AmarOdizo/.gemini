@@ -4,7 +4,25 @@ import { Link, useNavigate } from 'react-router-dom';
 const AdminHeader = ({ onToggleSidebar }) => {
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const storedUser = (() => {
+    try {
+      return JSON.parse(localStorage.getItem('currentUser') || '{}');
+    } catch {
+      return {};
+    }
+  })();
+  const adminName = storedUser.name || 'Dr. Sarah Jenkins';
+  const adminRoleTitle = storedUser.title || 'Chief Clinical Admin';
+  const adminEmail = storedUser.email || 'admin@odizo.com';
+
+  const handleLogout = () => {
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('userData');
+    setShowUserMenu(false);
+    navigate('/admin');
+  };
 
   return (
     <header className="fixed top-0 left-0 lg:left-72 right-0 h-16 bg-white/95 backdrop-blur-md border-b border-outline-variant/20 z-30 px-3 sm:px-6 flex items-center justify-between transition-all duration-300">
@@ -94,8 +112,8 @@ const AdminHeader = ({ onToggleSidebar }) => {
               className="w-8 h-8 rounded-full object-cover ring-2 ring-primary/20"
             />
             <div className="hidden lg:flex flex-col text-left">
-              <span className="text-xs font-bold text-on-surface leading-tight">Dr. Sarah Jenkins</span>
-              <span className="text-[0.6875rem] text-on-surface-variant leading-tight">Chief Clinical Admin</span>
+              <span className="text-xs font-bold text-on-surface leading-tight">{adminName}</span>
+              <span className="text-[0.6875rem] text-on-surface-variant leading-tight">{adminRoleTitle}</span>
             </div>
             <span className="hidden lg:inline material-symbols-outlined text-outline text-[1.125rem]">
               expand_more
@@ -106,8 +124,8 @@ const AdminHeader = ({ onToggleSidebar }) => {
           {showUserMenu && (
             <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white shadow-xl border border-outline-variant/30 py-2 z-50 animate-in fade-in zoom-in-95">
               <div className="px-4 py-2 border-b border-outline-variant/20">
-                <p className="text-xs font-bold text-on-surface">Dr. Sarah Jenkins, DVM</p>
-                <p className="text-[0.6875rem] text-on-surface-variant">admin@petcare.org</p>
+                <p className="text-xs font-bold text-on-surface">{adminName}</p>
+                <p className="text-[0.6875rem] text-on-surface-variant">{adminEmail}</p>
               </div>
 
               <div className="py-1">
@@ -142,14 +160,11 @@ const AdminHeader = ({ onToggleSidebar }) => {
 
               <div className="pt-1 border-t border-outline-variant/20">
                 <button
-                  onClick={() => {
-                    localStorage.removeItem('userToken');
-                    navigate('/login');
-                  }}
+                  onClick={handleLogout}
                   className="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-error hover:bg-error-container/30 text-left font-medium"
                 >
                   <span className="material-symbols-outlined text-[1.125rem]">logout</span>
-                  <span>Log Out</span>
+                  <span>Log Out Admin</span>
                 </button>
               </div>
             </div>
