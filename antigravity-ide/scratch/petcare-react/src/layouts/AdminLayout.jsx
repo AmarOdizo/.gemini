@@ -3,6 +3,37 @@ import { Outlet } from 'react-router-dom';
 import AdminSidebar from '../components/admin/AdminSidebar';
 import AdminHeader from '../components/admin/AdminHeader';
 
+class AdminErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error, info) {
+    console.error("Admin Page Error:", error, info);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-8 max-w-xl mx-auto mt-12 bg-white rounded-2xl border border-error/20 shadow-sm text-center">
+          <span className="material-symbols-outlined text-error text-4xl mb-2">error</span>
+          <h2 className="text-lg font-bold text-on-surface">Unable to load admin view</h2>
+          <p className="text-xs text-on-surface-variant mt-1 mb-4">{this.state.error?.message || 'An unexpected error occurred.'}</p>
+          <button
+            onClick={() => { this.setState({ hasError: false }); window.location.reload(); }}
+            className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-xl hover:opacity-90 transition-opacity"
+          >
+            Reload Admin View
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -30,9 +61,11 @@ const AdminLayout = () => {
           onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
         />
 
-        {/* Dynamic Nested Route Content */}
+        {/* Dynamic Nested Route Content wrapped in Error Boundary */}
         <main className="relative pt-16 flex-1 w-full overflow-x-hidden">
-          <Outlet />
+          <AdminErrorBoundary>
+            <Outlet />
+          </AdminErrorBoundary>
         </main>
       </div>
     </div>

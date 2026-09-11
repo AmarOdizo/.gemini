@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const AdminHeader = ({ onToggleSidebar }) => {
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const storedUser = (() => {
     try {
       return JSON.parse(localStorage.getItem('currentUser') || '{}');

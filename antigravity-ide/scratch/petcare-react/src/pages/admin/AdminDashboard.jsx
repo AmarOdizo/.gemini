@@ -46,19 +46,19 @@ const AdminDashboard = () => {
       setLoading(true);
       // 1. Fetch Metrics from MongoDB Collections
       const metricsRes = await adminApi.getMetrics();
-      if (metricsRes.success && metricsRes.metrics) {
+      if (metricsRes?.success && metricsRes?.metrics) {
         setMetrics(metricsRes.metrics);
       }
 
       // 2. Fetch Live & Scheduled Appointments from MongoDB appointments table
       const apptRes = await adminApi.getAppointments();
-      if (apptRes.success && apptRes.appointments) {
+      if (apptRes?.success && apptRes?.appointments) {
         setAppointments(apptRes.appointments.slice(0, 6));
       }
 
       // 3. Fetch Pending Vets from MongoDB vets table
       const vetRes = await adminApi.getVets();
-      if (vetRes.success && vetRes.vets) {
+      if (vetRes?.success && vetRes?.vets) {
         const pending = vetRes.vets.filter((v) => v.status === 'pending');
         setPendingVets(pending);
       }
