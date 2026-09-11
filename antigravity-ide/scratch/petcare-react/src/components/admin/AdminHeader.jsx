@@ -66,15 +66,6 @@ const AdminHeader = ({ onToggleSidebar }) => {
           <span className="w-2 h-2 rounded-full bg-error animate-ping"></span>
         </div>
 
-        {/* Portal Switcher */}
-        <Link
-          to="/owner-dashboard"
-          className="hidden md:flex items-center gap-1.5 text-xs font-semibold text-primary px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors"
-        >
-          <span className="material-symbols-outlined text-[1rem]">swap_horiz</span>
-          <span>View App</span>
-        </Link>
-
         {/* Notifications Icon */}
         <button
           aria-label="Notifications"
@@ -127,14 +118,6 @@ const AdminHeader = ({ onToggleSidebar }) => {
                   <span>Platform Settings</span>
                 </Link>
 
-                <Link
-                  to="/owner-dashboard"
-                  onClick={() => setShowUserMenu(false)}
-                  className="flex items-center gap-2.5 px-4 py-2 text-xs text-primary font-semibold hover:bg-surface-container"
-                >
-                  <span className="material-symbols-outlined text-[1.125rem]">swap_horiz</span>
-                  <span>Switch to Pet Parent App</span>
-                </Link>
               </div>
 
               <div className="pt-1 border-t border-outline-variant/20">
