@@ -1,21 +1,5 @@
 const getBaseUrl = () => {
-  if (typeof window !== 'undefined') {
-    const hostname = window.location.hostname;
-    // Localhost or loopback
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      return 'http://localhost:5001';
-    }
-    // Mobile or Tablet on local Wi-Fi / LAN IP (192.168.x.x, 10.x.x.x, etc.)
-    if (/^192\.168\./.test(hostname) || /^10\./.test(hostname) || /^172\./.test(hostname)) {
-      return `http://${hostname}:5001`;
-    }
-  }
-
-  const envUrl = import.meta.env.VITE_API_URL;
-  if (envUrl && !envUrl.includes('onrender.com')) {
-    return envUrl;
-  }
-  return 'http://localhost:5001';
+  return import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com';
 };
 
 export const API_BASE = getBaseUrl();

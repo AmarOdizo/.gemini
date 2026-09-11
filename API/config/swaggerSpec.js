@@ -17,10 +17,6 @@ This Swagger documentation provides interactive testing and reference for all ba
   },
   servers: [
     {
-      url: "http://localhost:5001",
-      description: "Local Development Server"
-    },
-    {
       url: "https://odizopetcare.onrender.com",
       description: "Production Cloud Server (Render)"
     }

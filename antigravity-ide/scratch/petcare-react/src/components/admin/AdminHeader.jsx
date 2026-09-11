@@ -49,7 +49,7 @@ const AdminHeader = ({ onToggleSidebar }) => {
 
         {/* Swagger API Docs Button */}
         <a
-          href="http://localhost:5001/api-docs"
+          href="https://odizopetcare.onrender.com/api-docs"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1 sm:gap-1.5 text-[0.6875rem] sm:text-xs font-bold px-2.5 sm:px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-700 border border-emerald-500/30 hover:bg-emerald-500/20 transition-all shadow-xs"
@@ -121,7 +121,7 @@ const AdminHeader = ({ onToggleSidebar }) => {
                 </Link>
 
                 <a
-                  href="http://localhost:5001/api-docs"
+                  href="https://odizopetcare.onrender.com/api-docs"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2.5 px-4 py-2 text-xs text-on-surface hover:bg-surface-container"

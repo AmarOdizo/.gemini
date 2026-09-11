@@ -124,7 +124,7 @@ const AdminSidebar = ({ isOpen, onClose }) => {
       {/* Footer Status, Swagger Link & Logout */}
       <div className="p-3 space-y-2 border-t border-outline-variant/20">
         <a
-          href="http://localhost:5001/api-docs"
+          href="https://odizopetcare.onrender.com/api-docs"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-between px-3 py-2 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 text-xs font-bold transition-colors"
