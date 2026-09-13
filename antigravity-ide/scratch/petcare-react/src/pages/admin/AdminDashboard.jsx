@@ -198,8 +198,8 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* 6 Primary Metric Cards directly from Database Collections */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-2.5 sm:gap-4">
+      {/* 5 Primary Metric Cards directly from Database Collections */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-2.5 sm:gap-4">
         <MetricCard
           title="Total Owners"
           value={metrics.totalOwners?.value?.toString() || '0'}
@@ -243,61 +243,6 @@ const AdminDashboard = () => {
           badgeColor="bg-secondary-container text-on-secondary-container"
           subtext="telemetry logged"
         />
-        <MetricCard
-          title="Satisfaction"
-          value={`${metrics.satisfaction?.rating || '4.9'} ★`}
-          icon="star"
-          badge="reviews table"
-          badgeColor="bg-surface-container text-primary"
-          subtext="Patient rated"
-        />
-      </div>
-
-      {/* Clinical Department Status Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-white rounded-2xl p-4 border border-outline-variant/20 shadow-sm flex items-center justify-between">
-          <div>
-            <span className="text-xs font-bold text-on-surface">General Medicine</span>
-            <div className="text-lg font-bold text-primary mt-1">Live Queue</div>
-            <span className="text-[0.6875rem] text-on-surface-variant">Connected to MongoDB</span>
-          </div>
-          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-            <span className="material-symbols-outlined">medication</span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl p-4 border border-outline-variant/20 shadow-sm flex items-center justify-between">
-          <div>
-            <span className="text-xs font-bold text-on-surface">Emergency Triage</span>
-            <div className="text-lg font-bold text-error mt-1">Auto-Triage Active</div>
-            <span className="text-[0.6875rem] text-error font-medium">Critical Fast-track</span>
-          </div>
-          <div className="w-10 h-10 rounded-xl bg-error-container text-error flex items-center justify-center">
-            <span className="material-symbols-outlined">emergency</span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl p-4 border border-outline-variant/20 shadow-sm flex items-center justify-between">
-          <div>
-            <span className="text-xs font-bold text-on-surface">Surgery Tele-Advisory</span>
-            <div className="text-lg font-bold text-secondary mt-1">Active Cases</div>
-            <span className="text-[0.6875rem] text-on-surface-variant">Board Certified</span>
-          </div>
-          <div className="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center">
-            <span className="material-symbols-outlined">surgical</span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl p-4 border border-outline-variant/20 shadow-sm flex items-center justify-between">
-          <div>
-            <span className="text-xs font-bold text-on-surface">Dermatology & Diet</span>
-            <div className="text-lg font-bold text-primary mt-1">Prescription Sync</div>
-            <span className="text-[0.6875rem] text-on-surface-variant">prescriptions table</span>
-          </div>
-          <div className="w-10 h-10 rounded-xl bg-surface-container text-primary flex items-center justify-center">
-            <span className="material-symbols-outlined">pets</span>
-          </div>
-        </div>
       </div>
 
       {/* Main Grid: Live Tele-Consultations Stream & Quick Verification */}
