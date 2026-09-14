@@ -1,8 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { adminApi } from '../../services/adminApi';
 
 const AdminSidebar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  const fetchUnreadCount = async () => {
+    try {
+      const res = await adminApi.getNotifications();
+      if (res.success && res.notifications) {
+        const count = res.notifications.filter(n => !n.isRead).length;
+        setUnreadCount(count);
+      }
+    } catch (err) {
+      console.error("Error fetching unread count for sidebar:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUnreadCount();
+    window.addEventListener('notifications-updated', fetchUnreadCount);
+    return () => {
+      window.removeEventListener('notifications-updated', fetchUnreadCount);
+    };
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('userToken');
@@ -39,7 +61,7 @@ const AdminSidebar = ({ isOpen, onClose }) => {
       name: 'Notifications', 
       path: '/admin/notifications', 
       icon: 'notifications', 
-      badge: '4', 
+      badge: unreadCount > 0 ? (unreadCount > 9 ? '9+' : unreadCount.toString()) : null, 
       badgeClass: 'bg-error-container text-on-error-container' 
     },
     { name: 'Settings', path: '/admin/settings', icon: 'settings' },
