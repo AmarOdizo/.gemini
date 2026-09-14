@@ -72,7 +72,7 @@ const AdminOwners = () => {
       </div>
 
       {/* Summary Metrics */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
           <div>
             <span className="text-[0.6875rem] sm:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Total Owners</span>
@@ -92,17 +92,6 @@ const AdminOwners = () => {
           </div>
           <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined">pets</span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between sm:col-span-2 lg:col-span-1">
-          <div>
-            <span className="text-[0.6875rem] sm:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Active Telehealth</span>
-            <div className="text-xl sm:text-2xl font-bold font-['Manrope'] text-secondary mt-0.5 sm:mt-1">98.4%</div>
-            <span className="text-xs text-on-surface-variant">Profile health score</span>
-          </div>
-          <div className="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined">health_and_safety</span>
           </div>
         </div>
       </div>
