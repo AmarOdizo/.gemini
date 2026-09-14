@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { adminApi } from '../../services/adminApi';
 
 const AdminHeader = ({ onToggleSidebar }) => {
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [unreadCount, setUnreadCount] = useState(0);
   
   const [storedUser, setStoredUser] = useState(() => {
     try {
@@ -14,7 +16,21 @@ const AdminHeader = ({ onToggleSidebar }) => {
     }
   });
 
+  const fetchUnreadCount = async () => {
+    try {
+      const res = await adminApi.getNotifications();
+      if (res.success && res.notifications) {
+        const count = res.notifications.filter(n => !n.isRead).length;
+        setUnreadCount(count);
+      }
+    } catch (err) {
+      console.error("Error fetching unread count:", err);
+    }
+  };
+
   useEffect(() => {
+    fetchUnreadCount();
+
     const handleStorageChange = () => {
       try {
         setStoredUser(JSON.parse(localStorage.getItem('currentUser') || '{}'));
@@ -23,7 +39,12 @@ const AdminHeader = ({ onToggleSidebar }) => {
       }
     };
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    window.addEventListener('notifications-updated', fetchUnreadCount);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('notifications-updated', fetchUnreadCount);
+    };
   }, []);
 
   const adminName = storedUser.name || 'Admin User';
@@ -89,9 +110,11 @@ const AdminHeader = ({ onToggleSidebar }) => {
           onClick={() => navigate('/admin/notifications')}
         >
           <span className="material-symbols-outlined text-[1.25rem]">notifications</span>
-          <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-error text-[0.625rem] text-white font-bold">
-            4
-          </span>
+          {unreadCount > 0 && (
+            <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-error text-[0.625rem] text-white font-bold">
+              {unreadCount > 9 ? '9+' : unreadCount}
+            </span>
+          )}
         </button>
 
         {/* User Profile Menu */}

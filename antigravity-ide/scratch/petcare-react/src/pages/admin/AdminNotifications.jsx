@@ -24,10 +24,14 @@ const AdminNotifications = () => {
     fetchNotifications();
   }, []);
 
+  const unreadAlerts = alerts.filter(a => !a.isRead);
+
   const handleMarkAllAsRead = async () => {
     try {
-      await Promise.all(alerts.map((a) => adminApi.markNotificationRead(a._id)));
+      await Promise.all(unreadAlerts.map((a) => adminApi.markNotificationRead(a._id)));
       fetchNotifications();
+      // Notify header that notifications have been updated
+      window.dispatchEvent(new Event('notifications-updated'));
     } catch (_) {}
   };
 
@@ -39,19 +43,21 @@ const AdminNotifications = () => {
     >
       <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-outline-variant/20 space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-outline-variant/20">
-          <span className="font-bold text-xs sm:text-sm text-on-surface">Live Notification Stream ({alerts.length})</span>
-          <button onClick={handleMarkAllAsRead} className="text-xs font-bold text-primary hover:underline">
-            Mark all as read
-          </button>
+          <span className="font-bold text-xs sm:text-sm text-on-surface">Live Notification Stream ({unreadAlerts.length})</span>
+          {unreadAlerts.length > 0 && (
+            <button onClick={handleMarkAllAsRead} className="text-xs font-bold text-primary hover:underline">
+              Mark all as read
+            </button>
+          )}
         </div>
 
         <div className="space-y-3">
-          {alerts.length === 0 ? (
+          {unreadAlerts.length === 0 ? (
             <div className="p-6 text-center text-xs text-on-surface-variant">
               {loading ? "Loading notifications from MongoDB..." : "No unread alerts in database."}
             </div>
           ) : (
-            alerts.map((a) => (
+            unreadAlerts.map((a) => (
               <div
                 key={a._id}
                 className={`p-3.5 sm:p-4 rounded-xl border text-xs flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4 ${
@@ -73,9 +79,6 @@ const AdminNotifications = () => {
                   <div>
                     <div className="font-bold text-on-surface flex items-center gap-2">
                       <span>{a.title}</span>
-                      {a.isRead && (
-                        <span className="text-[0.625rem] px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant">Read</span>
-                      )}
                     </div>
                     <p className="text-on-surface-variant mt-0.5">{a.description}</p>
                   </div>
