@@ -173,7 +173,7 @@ const AdminVeterinarians = () => {
       </div>
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4">
         <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
           <div>
             <span className="text-[0.625rem] sm:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Total Registered</span>
@@ -206,17 +206,6 @@ const AdminVeterinarians = () => {
           </div>
           <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-error-container text-error flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[1.25rem]">pending_actions</span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
-          <div>
-            <span className="text-[0.625rem] sm:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Avg Platform Rating</span>
-            <div className="text-xl sm:text-2xl font-bold font-['Manrope'] text-on-surface mt-1">4.92 ★</div>
-            <span className="text-[0.6875rem] text-on-surface-variant">Patient reviews</span>
-          </div>
-          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-surface-container text-primary flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[1.25rem]">star</span>
           </div>
         </div>
       </div>
