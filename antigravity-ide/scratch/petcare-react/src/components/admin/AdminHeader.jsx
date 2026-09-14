@@ -1,20 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const AdminHeader = ({ onToggleSidebar }) => {
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const storedUser = (() => {
+  
+  const [storedUser, setStoredUser] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem('currentUser') || '{}');
     } catch {
       return {};
     }
-  })();
-  const adminName = storedUser.name || 'Dr. Sarah Jenkins';
-  const adminRoleTitle = storedUser.title || 'Chief Clinical Admin';
-  const adminEmail = storedUser.email || 'admin@odizo.com';
+  });
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      try {
+        setStoredUser(JSON.parse(localStorage.getItem('currentUser') || '{}'));
+      } catch {
+        // ignore
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  const adminName = storedUser.name || 'Admin User';
+  const adminRoleTitle = storedUser.title || 'System Administrator';
+  const adminEmail = storedUser.email || 'admin@example.com';
+  const adminAvatar = storedUser.avatar;
 
   const handleLogout = () => {
     localStorage.removeItem('userToken');
@@ -86,11 +101,18 @@ const AdminHeader = ({ onToggleSidebar }) => {
             className="flex items-center gap-2 p-1 sm:p-1.5 rounded-xl hover:bg-surface-container-low transition-colors"
             type="button"
           >
-            <img
-              src="https://images.unsplash.com/photo-1594824813583-05b135767b36?auto=format&fit=crop&q=80&w=150"
-              alt="Admin Profile"
-              className="w-8 h-8 rounded-full object-cover ring-2 ring-primary/20"
-            />
+            {adminAvatar ? (
+              <img
+                src={adminAvatar}
+                alt="Admin Profile"
+                className="w-8 h-8 rounded-full object-cover ring-2 ring-primary/20"
+              />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-primary-container text-primary flex items-center justify-center font-bold text-sm ring-2 ring-primary/20">
+                {adminName.charAt(0).toUpperCase()}
+              </div>
+            )}
+            
             <div className="hidden lg:flex flex-col text-left">
               <span className="text-xs font-bold text-on-surface leading-tight">{adminName}</span>
               <span className="text-[0.6875rem] text-on-surface-variant leading-tight">{adminRoleTitle}</span>
@@ -114,8 +136,8 @@ const AdminHeader = ({ onToggleSidebar }) => {
                   onClick={() => setShowUserMenu(false)}
                   className="flex items-center gap-2.5 px-4 py-2 text-xs text-on-surface hover:bg-surface-container"
                 >
-                  <span className="material-symbols-outlined text-[1.125rem] text-outline">settings</span>
-                  <span>Platform Settings</span>
+                  <span className="material-symbols-outlined text-[1.125rem] text-outline">manage_accounts</span>
+                  <span>Admin Profile</span>
                 </Link>
 
               </div>
