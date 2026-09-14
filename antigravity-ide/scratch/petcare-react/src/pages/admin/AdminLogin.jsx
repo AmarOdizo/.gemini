@@ -158,24 +158,25 @@ const AdminLogin = () => {
       <div className="w-full max-w-md bg-slate-900/90 backdrop-blur-xl border border-slate-800/90 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/60 relative z-10">
         {/* Header with Emblem */}
         <div className="flex flex-col items-center text-center mb-6">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-400 p-0.5 shadow-lg shadow-emerald-500/25 mb-4">
-            <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
-              <span className="material-symbols-outlined text-3xl text-emerald-400">
-                admin_panel_settings
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-600 p-[2px] shadow-lg shadow-emerald-500/30 mb-5 relative group overflow-hidden">
+            <div className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+            <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center relative z-10">
+              <span className="material-symbols-outlined text-3xl text-transparent bg-clip-text bg-gradient-to-tr from-emerald-400 to-teal-200">
+                pets
               </span>
             </div>
           </div>
 
-          <div className="inline-flex items-center gap-1 text-[0.6875rem] font-bold tracking-wider uppercase text-emerald-400 bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-800/40 mb-2">
+          <div className="inline-flex items-center gap-1.5 text-[0.6875rem] font-bold tracking-wider uppercase text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-800/40 mb-3 shadow-inner">
             <span className="material-symbols-outlined text-[0.875rem]">verified_user</span>
             Restricted Clinical Access
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-            PawsIndia 🇮🇳 Admin
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-emerald-50 to-teal-100 flex items-center gap-2">
+            PawsIndia <span className="text-2xl grayscale-[0.2]">🇮🇳</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1 max-w-xs">
-            PawsIndia Clinical Governance & Network Management System
+          <p className="text-[0.6875rem] uppercase tracking-[0.2em] font-extrabold text-emerald-500/80 mt-1.5 max-w-xs">
+            Admin Control Center
           </p>
         </div>
 

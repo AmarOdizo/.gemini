@@ -75,16 +75,17 @@ const AdminSidebar = ({ isOpen, onClose }) => {
     >
       <div className="flex flex-col">
         {/* Brand Header */}
-        <div className="h-16 px-4 flex items-center justify-between border-b border-outline-variant/20">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary-container text-white flex items-center justify-center font-bold text-xl shadow-sm">
-              <span className="material-symbols-outlined text-[1.5rem]">pets</span>
+        <div className="h-20 px-5 flex items-center justify-between border-b border-outline-variant/20 bg-surface-container-lowest/50">
+          <div className="flex items-center gap-3.5 group cursor-pointer">
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary via-primary to-teal-500 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-primary/30 relative overflow-hidden transition-transform duration-300 group-hover:scale-105 group-hover:shadow-primary/40 group-hover:shadow-lg">
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 translate-y-full group-hover:-translate-y-full transition-transform duration-700 ease-in-out"></div>
+              <span className="material-symbols-outlined text-[1.5rem] relative z-10 drop-shadow-sm">pets</span>
             </div>
             <div className="flex flex-col">
-              <span className="font-['Manrope'] text-lg text-primary tracking-tight font-bold flex items-center gap-1">
-                PawsIndia <span>🇮🇳</span>
+              <span className="font-['Manrope'] text-xl tracking-tight font-black flex items-center gap-1.5 bg-gradient-to-r from-primary to-teal-600 bg-clip-text text-transparent">
+                PawsIndia <span className="text-base drop-shadow-sm grayscale-[0.2]">🇮🇳</span>
               </span>
-              <span className="text-[0.6875rem] text-on-surface-variant uppercase tracking-wider font-semibold">
+              <span className="text-[0.65rem] text-on-surface-variant uppercase tracking-[0.2em] font-extrabold mt-0.5">
                 Clinical Admin
               </span>
             </div>
