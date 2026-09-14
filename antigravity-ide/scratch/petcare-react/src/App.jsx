@@ -31,7 +31,7 @@ import AdminAppointments from './pages/admin/AdminAppointments'
 import AdminVeterinarians from './pages/admin/AdminVeterinarians'
 import AdminOwners from './pages/admin/AdminOwners'
 import AdminPrescriptions from './pages/admin/AdminPrescriptions'
-import AdminReports from './pages/admin/AdminReports'
+
 import AdminNotifications from './pages/admin/AdminNotifications'
 import AdminSettings from './pages/admin/AdminSettings'
 import AdminReviews from './pages/admin/AdminReviews'
@@ -93,7 +93,7 @@ function App() {
           <Route path="owners" element={<AdminOwners />} />
           <Route path="prescriptions" element={<AdminPrescriptions />} />
           <Route path="reviews" element={<AdminReviews />} />
-          <Route path="reports" element={<AdminReports />} />
+
           <Route path="notifications" element={<AdminNotifications />} />
           <Route path="settings" element={<AdminSettings />} />
         </Route>

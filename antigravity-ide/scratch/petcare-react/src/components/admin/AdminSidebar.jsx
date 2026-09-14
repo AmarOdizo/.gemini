@@ -34,7 +34,7 @@ const AdminSidebar = ({ isOpen, onClose }) => {
     },
     { name: 'Prescriptions', path: '/admin/prescriptions', icon: 'prescriptions' },
     { name: 'Reviews & Ratings', path: '/admin/reviews', icon: 'grade' },
-    { name: 'Reports', path: '/admin/reports', icon: 'clinical_notes' },
+
     { 
       name: 'Notifications', 
       path: '/admin/notifications', 

@@ -178,14 +178,7 @@ const AdminDashboard = () => {
             </span>
           </button>
 
-          <button
-            onClick={() => navigate('/admin/reports')}
-            className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-surface-container-low text-on-surface text-xs font-bold hover:bg-surface-container hover:text-primary transition-all border border-outline-variant/30"
-            type="button"
-          >
-            <span className="material-symbols-outlined text-[1.125rem]">download</span>
-            <span>Export Report</span>
-          </button>
+
 
           <button
             onClick={() => setShowBroadcastModal(true)}
