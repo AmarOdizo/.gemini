@@ -172,10 +172,10 @@ const AdminLogin = () => {
           </div>
 
           <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-            Admin Control Center
+            PawsIndia 🇮🇳 Admin
           </h1>
           <p className="text-xs text-slate-400 mt-1 max-w-xs">
-            PetCare Clinical Governance & Network Management System
+            PawsIndia Clinical Governance & Network Management System
           </p>
         </div>
 

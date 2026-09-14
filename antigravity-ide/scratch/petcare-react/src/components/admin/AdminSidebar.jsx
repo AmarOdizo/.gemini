@@ -81,8 +81,8 @@ const AdminSidebar = ({ isOpen, onClose }) => {
               <span className="material-symbols-outlined text-[1.5rem]">pets</span>
             </div>
             <div className="flex flex-col">
-              <span className="font-['Manrope'] text-lg text-primary tracking-tight font-bold">
-                PetCare
+              <span className="font-['Manrope'] text-lg text-primary tracking-tight font-bold flex items-center gap-1">
+                PawsIndia <span>🇮🇳</span>
               </span>
               <span className="text-[0.6875rem] text-on-surface-variant uppercase tracking-wider font-semibold">
                 Clinical Admin
