@@ -216,7 +216,7 @@ const VetAppointments = () => {
                 <span className="material-symbols-outlined text-6xl mb-2 opacity-50">calendar_month</span>
                 <p className="font-bold">No appointments found.</p>
               </div>
-            )}
+            ); })()}
           </div>
         </div>
     </main>
