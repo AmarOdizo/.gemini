@@ -159,7 +159,7 @@ const AdminVeterinarians = () => {
             )}
           </h1>
           <p className="text-xs text-on-surface-variant mt-0.5">
-            Authorized practitioner licensing, medical credential compliance, and active performance.
+            Authorized practitioner licensing and active performance.
           </p>
         </div>
 
@@ -178,7 +178,6 @@ const AdminVeterinarians = () => {
           <div>
             <span className="text-[0.625rem] sm:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Total Registered</span>
             <div className="text-xl sm:text-2xl font-bold font-['Manrope'] text-on-surface mt-1">{vetsList.length}</div>
-            <span className="text-[0.6875rem] text-secondary font-semibold">100% AVMA verified</span>
           </div>
           <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-surface-container text-primary flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[1.25rem]">stethoscope</span>
