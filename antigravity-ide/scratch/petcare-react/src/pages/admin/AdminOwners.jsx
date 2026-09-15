@@ -34,12 +34,12 @@ const AdminOwners = () => {
       if (!hasSpecies) return false;
     }
 
-    // Search Query (Owner, Pet, or Microchip)
+    // Search Query (Owner or Pet)
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       const matchOwner = o.name.toLowerCase().includes(q) || o.email.toLowerCase().includes(q) || o.id.toLowerCase().includes(q);
       const matchPet = o.pets.some(
-        (p) => p.name.toLowerCase().includes(q) || p.breed.toLowerCase().includes(q) || p.microchip.includes(q)
+        (p) => p.name.toLowerCase().includes(q) || p.breed.toLowerCase().includes(q)
       );
       return matchOwner || matchPet;
     }
@@ -58,7 +58,7 @@ const AdminOwners = () => {
             </span>
           </h1>
           <p className="text-xs text-on-surface-variant mt-1">
-            Search pet owners, patient health records, microchip IDs, and consultation histories.
+            Search pet owners, patient health records, and consultation histories.
           </p>
         </div>
 
@@ -105,7 +105,7 @@ const AdminOwners = () => {
           <input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by owner, pet, email, or microchip..."
+            placeholder="Search by owner, pet, or email..."
             className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-surface-container-low border border-outline-variant/40 focus:outline-none focus:border-primary"
           />
         </div>
@@ -188,7 +188,6 @@ const AdminOwners = () => {
                   {/* Consultations */}
                   <td className="p-4">
                     <div className="font-bold text-on-surface">{owner.totalConsultations} completed</div>
-                    <div className="text-[0.6875rem] text-secondary font-semibold">100% attendance</div>
                   </td>
 
                   {/* Member Since */}
