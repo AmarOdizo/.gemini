@@ -163,13 +163,7 @@ const AdminVeterinarians = () => {
           </p>
         </div>
 
-        <button
-          onClick={() => alert("Launching manual doctor onboarding flow...")}
-          className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 bg-primary-container text-white rounded-xl text-xs font-bold shadow-xs hover:opacity-95 shrink-0"
-        >
-          <span className="material-symbols-outlined text-[1.125rem]">person_add</span>
-          <span>Invite Veterinarian</span>
-        </button>
+
       </div>
 
       {/* Metrics Row */}
@@ -213,22 +207,20 @@ const AdminVeterinarians = () => {
       <div className="flex items-center gap-2 border-b border-outline-variant/20 pb-2 overflow-x-auto no-scrollbar">
         <button
           onClick={() => setActiveTab('all')}
-          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all shrink-0 ${
-            activeTab === 'all'
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all shrink-0 ${activeTab === 'all'
               ? 'bg-primary-container text-white shadow-sm'
               : 'text-on-surface-variant hover:bg-surface-container'
-          }`}
+            }`}
         >
           All Veterinarians ({vetsList.length})
         </button>
 
         <button
           onClick={() => setActiveTab('pending')}
-          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 ${
-            activeTab === 'pending'
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 ${activeTab === 'pending'
               ? 'bg-error text-white shadow-sm'
               : 'text-error hover:bg-error-container/30'
-          }`}
+            }`}
         >
           <span className="w-1.5 h-1.5 rounded-full bg-error animate-ping"></span>
           <span>Pending ({pendingCount})</span>
@@ -236,22 +228,20 @@ const AdminVeterinarians = () => {
 
         <button
           onClick={() => setActiveTab('active')}
-          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all shrink-0 ${
-            activeTab === 'active'
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all shrink-0 ${activeTab === 'active'
               ? 'bg-primary-container text-white shadow-sm'
               : 'text-on-surface-variant hover:bg-surface-container'
-          }`}
+            }`}
         >
           Active Practitioners
         </button>
 
         <button
           onClick={() => setActiveTab('suspended')}
-          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 ${
-            activeTab === 'suspended'
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 ${activeTab === 'suspended'
               ? 'bg-error text-white shadow-sm'
               : 'text-error hover:bg-error-container/30'
-          }`}
+            }`}
         >
           <span className="material-symbols-outlined text-[14px]">block</span>
           <span>Suspended ({vetsList.filter(v => v.status === 'Suspended').length})</span>
@@ -294,11 +284,10 @@ const AdminVeterinarians = () => {
         {filteredVets.map((v) => (
           <div
             key={v.id}
-            className={`bg-white rounded-2xl p-5 shadow-sm border transition-all flex flex-col justify-between space-y-4 hover:shadow-md ${
-              v.status === 'Suspended'
+            className={`bg-white rounded-2xl p-5 shadow-sm border transition-all flex flex-col justify-between space-y-4 hover:shadow-md ${v.status === 'Suspended'
                 ? 'border-error/40 bg-error-container/5 ring-1 ring-error/20'
                 : 'border-outline-variant/20'
-            }`}
+              }`}
           >
             <div className="space-y-3">
               {/* Doctor Header */}
@@ -307,9 +296,8 @@ const AdminVeterinarians = () => {
                   <img
                     src={v.avatar}
                     alt={v.name}
-                    className={`w-12 h-12 rounded-full object-cover ring-2 ${
-                      v.status === 'Suspended' ? 'ring-error/50 opacity-80' : 'ring-primary/20'
-                    }`}
+                    className={`w-12 h-12 rounded-full object-cover ring-2 ${v.status === 'Suspended' ? 'ring-error/50 opacity-80' : 'ring-primary/20'
+                      }`}
                   />
                   <div>
                     <h3 className="text-sm font-bold text-on-surface">{v.name}</h3>
@@ -319,15 +307,14 @@ const AdminVeterinarians = () => {
                 </div>
 
                 <span
-                  className={`px-2.5 py-0.5 rounded-full text-[0.6875rem] font-bold flex items-center gap-1 ${
-                    v.status === 'Active'
+                  className={`px-2.5 py-0.5 rounded-full text-[0.6875rem] font-bold flex items-center gap-1 ${v.status === 'Active'
                       ? 'bg-secondary-container text-on-secondary-container'
                       : v.status === 'Pending'
-                      ? 'bg-amber-100 text-amber-800'
-                      : v.status === 'Suspended'
-                      ? 'bg-error text-white font-black shadow-xs'
-                      : 'bg-surface-container text-on-surface-variant'
-                  }`}
+                        ? 'bg-amber-100 text-amber-800'
+                        : v.status === 'Suspended'
+                          ? 'bg-error text-white font-black shadow-xs'
+                          : 'bg-surface-container text-on-surface-variant'
+                    }`}
                 >
                   {v.status === 'Suspended' && <span className="material-symbols-outlined text-[13px]">block</span>}
                   {v.status}
@@ -390,11 +377,10 @@ const AdminVeterinarians = () => {
                   <button
                     disabled={processingVetId === v.id}
                     onClick={() => handleToggleSuspend(v)}
-                    className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1 ${
-                      v.status === 'Suspended'
+                    className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1 ${v.status === 'Suspended'
                         ? 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm'
                         : 'text-error hover:bg-error-container/40 border border-error/30'
-                    }`}
+                      }`}
                   >
                     <span className="material-symbols-outlined text-[15px]">
                       {v.status === 'Suspended' ? 'check_circle' : 'block'}
