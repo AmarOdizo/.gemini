@@ -1,6 +1,9 @@
 export const checkVetOnlineStatus = (vet) => {
   if (!vet) return false;
   
+  // Emergency Duty overrides everything - forces online 24/7
+  if (vet.emergencyDuty === true) return true;
+  
   // Doctor's manual master switch
   if (vet.telehealthMode === false) return false;
   

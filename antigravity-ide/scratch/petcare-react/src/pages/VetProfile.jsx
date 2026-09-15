@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 import { isVetSuspended, isVetApproved } from '../utils/suspensionUtils';
+import { checkVetOnlineStatus } from '../utils/availabilityUtils';
 
 const VetProfile = () => {
   const [searchParams] = useSearchParams();
@@ -392,7 +393,16 @@ const VetProfile = () => {
                 </div>
                 
                 <div className="p-6">
-                  <form onSubmit={handleBooking} className="flex flex-col gap-6">
+                  {!checkVetOnlineStatus(vet) ? (
+                    <div className="flex flex-col items-center justify-center py-8 text-center bg-surface-container-low border border-dashed border-outline-variant rounded-2xl">
+                      <span className="material-symbols-outlined text-5xl text-outline-variant mb-3">schedule_busy</span>
+                      <h4 className="font-bold text-lg text-on-surface mb-1">Doctor is Offline</h4>
+                      <p className="text-sm text-on-surface-variant max-w-[250px]">
+                        This doctor is not available right now. Please try again during their scheduled hours.
+                      </p>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleBooking} className="flex flex-col gap-6">
                     {/* Select Pet */}
                     <div className="flex flex-col gap-2">
                       <label className="font-label-md text-xs font-bold text-on-surface uppercase tracking-wider">1. Select Pet</label>
@@ -538,6 +548,7 @@ const VetProfile = () => {
                       By booking, you agree to PawsIndia&apos;s Telehealth Terms of Service.
                     </p>
                   </form>
+                  )}
                 </div>
               </div>
             )}

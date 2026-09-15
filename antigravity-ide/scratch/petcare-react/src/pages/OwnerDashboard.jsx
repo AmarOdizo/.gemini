@@ -66,6 +66,15 @@ const OwnerDashboard = () => {
         if (vetsRes.ok) {
           const vetsData = await vetsRes.json();
           const activeVets = (vetsData.data || []).filter(v => isVetApproved(v));
+          
+          // Sort so online vets appear first
+          activeVets.sort((a, b) => {
+            const aOnline = checkVetOnlineStatus(a);
+            const bOnline = checkVetOnlineStatus(b);
+            if (aOnline === bOnline) return 0;
+            return aOnline ? -1 : 1;
+          });
+          
           setVets(activeVets);
           if (activeVets.length > 0) setSelectedVetId(activeVets[0]._id || activeVets[0].id);
         }
