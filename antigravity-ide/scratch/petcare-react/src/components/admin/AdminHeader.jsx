@@ -95,12 +95,6 @@ const AdminHeader = ({ onToggleSidebar }) => {
 
       {/* Right Action Icons & Profile */}
       <div className="flex items-center gap-1.5 sm:gap-3 shrink-0 ml-2">
-        {/* Urgent Escalations Banner (Visible on Desktop / Large Tablet) */}
-        <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full bg-error-container/50 border border-error-container text-on-error-container">
-          <span className="material-symbols-outlined text-error text-[1rem]">emergency</span>
-          <span className="text-xs font-semibold text-error">Urgent Escalations</span>
-          <span className="w-2 h-2 rounded-full bg-error animate-ping"></span>
-        </div>
 
         {/* Notifications Icon */}
         <button
