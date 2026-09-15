@@ -17,7 +17,7 @@ const LiveConsultationDrawer = ({ consultation, onClose }) => {
               </div>
               <div className="min-w-0">
                 <h3 className="font-['Manrope'] text-sm sm:text-base font-bold text-on-surface truncate">
-                  Live Consultation Telemetry
+                  Live Consultation Details
                 </h3>
                 <p className="text-xs text-on-surface-variant truncate">Session ID: {consultation.id}</p>
               </div>
@@ -31,64 +31,7 @@ const LiveConsultationDrawer = ({ consultation, onClose }) => {
           </div>
 
           <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
-            {/* Live Video Preview Mockup / Status */}
-            <div className="rounded-2xl bg-[#121c2d] p-3.5 sm:p-4 text-white relative overflow-hidden shadow-md">
-              <div className="flex items-center justify-between text-xs mb-3 border-b border-white/10 pb-2">
-                <span className="flex items-center gap-2 font-semibold text-[0.6875rem] sm:text-xs">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <span>WebRTC P2P Active</span>
-                </span>
-                <span className="font-mono text-emerald-300 text-xs">00:14:32</span>
-              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-                {/* Vet Feed Tile */}
-                <div className="bg-white/10 rounded-xl p-3 relative h-24 sm:h-28 flex flex-col justify-between border border-white/10">
-                  <div className="flex items-center justify-between text-[0.625rem] text-white/80">
-                    <span className="truncate max-w-[120px]">{consultation.vet}</span>
-                    <span className="text-emerald-400 shrink-0">Mic ON</span>
-                  </div>
-                  <div className="text-center font-bold text-xs text-white/70">
-                    Veterinarian Stream
-                  </div>
-                  <div className="text-[0.625rem] text-white/60 flex items-center justify-between">
-                    <span>1080p @ 30fps</span>
-                    <span>1.8 Mbps</span>
-                  </div>
-                </div>
-
-                {/* Owner/Patient Feed Tile */}
-                <div className="bg-white/10 rounded-xl p-3 relative h-24 sm:h-28 flex flex-col justify-between border border-white/10">
-                  <div className="flex items-center justify-between text-[0.625rem] text-white/80">
-                    <span className="truncate max-w-[120px]">{consultation.owner} ({consultation.pet})</span>
-                    <span className="text-emerald-400 shrink-0">Mic ON</span>
-                  </div>
-                  <div className="text-center font-bold text-xs text-white/70">
-                    Patient/Owner Feed
-                  </div>
-                  <div className="text-[0.625rem] text-white/60 flex items-center justify-between">
-                    <span>720p @ 30fps</span>
-                    <span>1.1 Mbps</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Network Stats */}
-              <div className="grid grid-cols-3 gap-1.5 sm:gap-2 text-center text-[0.625rem] sm:text-[0.6875rem] bg-white/5 rounded-xl p-2 font-mono">
-                <div>
-                  <span className="text-white/60 block">Latency</span>
-                  <span className="text-emerald-300 font-bold">28 ms</span>
-                </div>
-                <div>
-                  <span className="text-white/60 block">Packet Loss</span>
-                  <span className="text-emerald-300 font-bold">0.02%</span>
-                </div>
-                <div>
-                  <span className="text-white/60 block">Encryption</span>
-                  <span className="text-emerald-300 font-bold">AES-256</span>
-                </div>
-              </div>
-            </div>
 
             {/* Patient & Owner Details */}
             <div className="bg-surface-container-low rounded-2xl p-4 border border-outline-variant/20 space-y-3">
@@ -105,14 +48,6 @@ const LiveConsultationDrawer = ({ consultation, onClose }) => {
                 <div>
                   <span className="text-on-surface-variant block text-[0.6875rem]">Clinical Reason</span>
                   <span className="font-semibold text-primary">{consultation.reason || 'Routine Tele-checkup'}</span>
-                </div>
-                <div>
-                  <span className="text-on-surface-variant block text-[0.6875rem]">Triage Severity</span>
-                  <span className={`px-2 py-0.5 rounded-full text-[0.625rem] font-bold ${
-                    consultation.triage === 'Emergency' ? 'bg-error-container text-error' : 'bg-surface-container text-on-surface'
-                  }`}>
-                    {consultation.triage || 'Standard'}
-                  </span>
                 </div>
               </div>
             </div>

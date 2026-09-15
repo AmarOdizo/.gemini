@@ -47,7 +47,6 @@ const AdminAppointments = () => {
   const filteredAppointments = appointments.filter((item) => {
     // Tab Filter
     if (activeTab === 'live' && !item.isLive) return false;
-    if (activeTab === 'emergency' && item.triage !== 'Emergency') return false;
     if (activeTab === 'completed' && item.status !== 'Completed') return false;
 
     // Doctor Filter
@@ -79,7 +78,7 @@ const AdminAppointments = () => {
             </span>
           </h1>
           <p className="text-xs text-on-surface-variant mt-0.5">
-            Clinical management of tele-veterinary appointments, live WebRTC video rooms, and triage.
+            Clinical management of tele-veterinary appointments and live WebRTC video rooms.
           </p>
         </div>
 
@@ -118,18 +117,6 @@ const AdminAppointments = () => {
         >
           <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
           <span>Live Video</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab('emergency')}
-          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 ${
-            activeTab === 'emergency'
-              ? 'bg-error text-white shadow-sm'
-              : 'text-on-surface-variant hover:bg-surface-container'
-          }`}
-        >
-          <span className="material-symbols-outlined text-[1rem]">emergency</span>
-          <span>Emergency Triage</span>
         </button>
 
         <button
@@ -186,7 +173,6 @@ const AdminAppointments = () => {
                 <th className="p-4 font-bold">Owner Contact</th>
                 <th className="p-4 font-bold">Veterinarian</th>
                 <th className="p-4 font-bold">Clinical Reason</th>
-                <th className="p-4 font-bold">Triage</th>
                 <th className="p-4 font-bold">Status</th>
                 <th className="p-4 font-bold text-right">Actions</th>
               </tr>
@@ -230,18 +216,6 @@ const AdminAppointments = () => {
                       <div className="text-on-surface truncate" title={apt.reason}>{apt.reason}</div>
                     </td>
 
-                    {/* Triage */}
-                    <td className="p-4">
-                      <span className={`px-2.5 py-0.5 rounded-full text-[0.625rem] font-bold ${
-                        apt.triage === 'Emergency'
-                          ? 'bg-error-container text-error'
-                          : apt.triage === 'Urgent'
-                          ? 'bg-amber-100 text-amber-800'
-                          : 'bg-surface-container text-on-surface'
-                      }`}>
-                        {apt.triage}
-                      </span>
-                    </td>
 
                     {/* Status */}
                     <td className="p-4">
