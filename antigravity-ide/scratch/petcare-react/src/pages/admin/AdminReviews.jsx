@@ -29,9 +29,7 @@ const AdminReviews = () => {
       subtitle="Monitor clinical satisfaction ratings and client testimonials loaded from MongoDB reviews table."
       icon="grade"
       stats={[
-        { label: 'Overall Rating', value: '4.92 ★', sub: '98.6% positive', icon: 'star' },
-        { label: 'Total in DB', value: reviews.length.toString(), sub: 'In reviews table', icon: 'rate_review' },
-        { label: '5-Star Ratings', value: '100%', sub: 'MongoDB verified', icon: 'military_tech' }
+        { label: 'Total in DB', value: reviews.length.toString(), sub: 'In reviews table', icon: 'rate_review' }
       ]}
     >
       <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-outline-variant/20 space-y-4">
