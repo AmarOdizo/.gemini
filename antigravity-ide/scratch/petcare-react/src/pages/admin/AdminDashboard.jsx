@@ -19,11 +19,6 @@ const AdminDashboard = () => {
     satisfaction: { rating: '...', score: '...', totalRatings: 0 }
   });
   const [loading, setLoading] = useState(true);
-  const [broadcastMsg, setBroadcastMsg] = useState('');
-  const [broadcastTitle, setBroadcastTitle] = useState('');
-  const [broadcastUrgency, setBroadcastUrgency] = useState('high');
-  const [showBroadcastModal, setShowBroadcastModal] = useState(false);
-  const [advisorySent, setAdvisorySent] = useState(false);
   const [selectedVetForReview, setSelectedVetForReview] = useState(null);
 
   useEffect(() => {
@@ -86,28 +81,6 @@ const AdminDashboard = () => {
       window.removeEventListener('petcare_vets_updated', handleAdminSync);
     };
   }, []);
-
-  const handleBroadcast = async (e) => {
-    e.preventDefault();
-    if (!broadcastMsg.trim()) return;
-    try {
-      await adminApi.broadcastAdvisory({
-        title: broadcastTitle || 'Emergency Clinical Protocol Alert',
-        message: broadcastMsg,
-        urgency: broadcastUrgency,
-        targetAudience: 'all'
-      });
-      setAdvisorySent(true);
-      setTimeout(() => {
-        setShowBroadcastModal(false);
-        setAdvisorySent(false);
-        setBroadcastMsg('');
-        setBroadcastTitle('');
-      }, 1200);
-    } catch (err) {
-      alert("Error broadcasting: " + err.message);
-    }
-  };
 
   const handleQuickApproveVet = async (vetId, vetName) => {
     try {
@@ -178,21 +151,11 @@ const AdminDashboard = () => {
             </span>
           </button>
 
-
-
-          <button
-            onClick={() => setShowBroadcastModal(true)}
-            className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-error-container/60 text-error text-xs font-bold hover:bg-error-container transition-all"
-            type="button"
-          >
-            <span className="material-symbols-outlined text-[1.125rem]">campaign</span>
-            <span>Broadcast Advisory</span>
-          </button>
         </div>
       </div>
 
-      {/* 5 Primary Metric Cards directly from Database Collections */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-2.5 sm:gap-4">
+      {/* Primary Metric Cards directly from Database Collections */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 gap-2.5 sm:gap-4">
         <MetricCard
           title="Total Owners"
           value={metrics.totalOwners?.value?.toString() || '0'}
@@ -227,14 +190,6 @@ const AdminDashboard = () => {
           trend="trending_up"
           badgeColor="bg-secondary-container text-on-secondary-container"
           subtext="appointments table"
-        />
-        <MetricCard
-          title="Live Consults"
-          value={metrics.liveConsultations?.value?.toString() || '0'}
-          icon="videocam"
-          badge="100% active"
-          badgeColor="bg-secondary-container text-on-secondary-container"
-          subtext="telemetry logged"
         />
       </div>
 
@@ -404,91 +359,6 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
-
-      {/* Broadcast Advisory Modal */}
-      {showBroadcastModal && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-outline-variant/20 space-y-4 animate-in fade-in zoom-in-95">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-error font-bold font-['Manrope'] text-lg">
-                <span className="material-symbols-outlined">campaign</span>
-                <span>Broadcast Clinical Advisory</span>
-              </div>
-              <button
-                onClick={() => setShowBroadcastModal(false)}
-                className="text-outline hover:text-on-surface"
-              >
-                <span className="material-symbols-outlined">close</span>
-              </button>
-            </div>
-
-            <p className="text-xs text-on-surface-variant">
-              This advisory will be saved to the MongoDB <strong>clinicaladvisories</strong> collection and broadcasted to all practitioners.
-            </p>
-
-            <form onSubmit={handleBroadcast} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold text-on-surface mb-1">Advisory Title</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Canine Respiratory Disease Isolation Standard"
-                  value={broadcastTitle}
-                  onChange={(e) => setBroadcastTitle(e.target.value)}
-                  className="w-full p-2.5 rounded-xl border border-outline-variant/40 text-xs bg-surface-container-low"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-on-surface mb-1">Urgency Level</label>
-                <select
-                  value={broadcastUrgency}
-                  onChange={(e) => setBroadcastUrgency(e.target.value)}
-                  className="w-full p-2.5 rounded-xl border border-outline-variant/40 text-xs bg-surface-container-low"
-                >
-                  <option value="high">High (Clinical Advisory)</option>
-                  <option value="emergency">Emergency (Immediate Escalation)</option>
-                  <option value="routine">Routine (Guideline Update)</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-on-surface mb-1">Advisory Message</label>
-                <textarea
-                  required
-                  rows="3"
-                  placeholder="Type advisory details to store in database..."
-                  value={broadcastMsg}
-                  onChange={(e) => setBroadcastMsg(e.target.value)}
-                  className="w-full p-3 rounded-xl border border-outline-variant/40 text-xs bg-surface-container-low focus:ring-2 focus:ring-primary/20 outline-none"
-                />
-              </div>
-
-              {advisorySent && (
-                <div className="p-3 bg-secondary-container text-on-secondary-container rounded-xl text-xs font-bold">
-                  ✓ Advisory broadcasted and saved to MongoDB clinicaladvisories collection!
-                </div>
-              )}
-
-              <div className="flex items-center justify-end gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowBroadcastModal(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-on-surface hover:bg-surface-container"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2 rounded-xl text-xs font-bold bg-error text-white shadow-sm hover:opacity-90 transition-all"
-                >
-                  Save & Broadcast
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
       {/* Vet Verification & Documents Modal */}
       <VetVerificationModal
