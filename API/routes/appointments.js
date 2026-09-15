@@ -79,11 +79,53 @@ router.post("/", async function (req, res) {
             senderId: 'system',
             senderRole: 'system',
             receiverId: newAppt.vetId.toString(),
-            message: `New consultation request from ${newAppt.ownerName} for ${newAppt.petName} on ${newAppt.date} at ${newAppt.time}.`,
+            message: newAppt.triage === 'emergency' 
+              ? `🚨 EMERGENCY REQUEST from ${newAppt.ownerName} for ${newAppt.petName}! Accept within 10 minutes or it will be auto-cancelled.`
+              : `New consultation request from ${newAppt.ownerName} for ${newAppt.petName} on ${newAppt.date} at ${newAppt.time}.`,
             messageType: 'notification'
           }]);
     } catch (err) {
         console.error("Failed to send Supabase notification", err);
+    }
+
+    // Auto-reject emergency bookings if not accepted within 10 minutes
+    if (newAppt.triage === 'emergency') {
+      setTimeout(async () => {
+        try {
+          const apptCheck = await Appointment.findById(newAppt._id);
+          if (apptCheck && apptCheck.status === 'pending') {
+            apptCheck.status = 'cancelled';
+            await apptCheck.save();
+            
+            await Consultation.findOneAndUpdate(
+              { appointmentId: newAppt._id.toString() },
+              { $set: { status: 'cancelled' } }
+            );
+
+            // Notify Owner
+            await supabase.from('chat_messages').insert([{
+              conversationId: newConsultation._id.toString(),
+              senderId: 'system',
+              senderRole: 'system',
+              receiverId: newAppt.ownerId,
+              message: `Your Emergency booking for ${newAppt.petName} failed because the doctor did not accept it within 10 minutes.`,
+              messageType: 'notification'
+            }]);
+
+            // Notify Vet
+            await supabase.from('chat_messages').insert([{
+              conversationId: newConsultation._id.toString(),
+              senderId: 'system',
+              senderRole: 'system',
+              receiverId: newAppt.vetId.toString(),
+              message: `WARNING: You missed an Emergency On-Call booking. Please disable your Emergency status if you are not available to accept requests immediately.`,
+              messageType: 'notification'
+            }]);
+          }
+        } catch (err) {
+          console.error("Auto-reject timeout failed", err);
+        }
+      }, 10 * 60 * 1000); // 10 minutes
     }
 
     return res.status(201).json({ success: true, appointment: newAppt });

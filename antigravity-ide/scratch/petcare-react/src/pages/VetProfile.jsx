@@ -19,6 +19,7 @@ const VetProfile = () => {
   const [time, setTime] = useState('');
   const [type, setType] = useState('video');
   const [reason, setReason] = useState('');
+  const [isEmergencyBooking, setIsEmergencyBooking] = useState(false);
   
   const [isFavorite, setIsFavorite] = useState(false);
   const [favoriteImage, setFavoriteImage] = useState('');
@@ -87,8 +88,12 @@ const VetProfile = () => {
       return;
     }
 
-    if (!date || !time || !type) {
-      alert("Please select date, time, and type of consultation.");
+    if (!isEmergencyBooking && (!date || !time)) {
+      alert("Please select date and time.");
+      return;
+    }
+    if (!type) {
+      alert("Please select type of consultation.");
       return;
     }
 
@@ -129,9 +134,10 @@ const VetProfile = () => {
         petAge: selectedPet.age ? `${selectedPet.age} ${selectedPet.ageUnit || ''}`.trim() : 'Unknown',
         petWeight: selectedPet.weight ? `${selectedPet.weight} ${selectedPet.weightUnit || ''}`.trim() : 'Unknown',
         petSex: selectedPet.gender || selectedPet.sex || 'Unknown',
-        date: date,
-        time: time,
+        date: isEmergencyBooking ? new Date().toISOString().split('T')[0] : date,
+        time: isEmergencyBooking ? 'IMMEDIATE' : time,
         consultationType: type,
+        triage: isEmergencyBooking ? 'emergency' : 'routine',
         reason: reason,
         reasonForVisit: reason,
         fee: vet.consultationFee || 499,
@@ -418,6 +424,25 @@ const VetProfile = () => {
                       )}
                     </div>
 
+                    {/* Emergency Toggle (If Vet is Emergency Doctor) */}
+                    {vet.emergencyDuty && (
+                      <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center justify-between shadow-sm">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                            <span className="material-symbols-outlined text-red-600">emergency</span>
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-red-900 text-sm">Emergency Booking</h4>
+                            <p className="text-[10px] text-red-700 font-medium">Auto-rejects if not accepted in 10 mins</p>
+                          </div>
+                        </div>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input type="checkbox" className="sr-only peer" checked={isEmergencyBooking} onChange={(e) => setIsEmergencyBooking(e.target.checked)} />
+                          <div className="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-outline-variant after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+                        </label>
+                      </div>
+                    )}
+
                     {/* Select Consultation Type */}
                     <div className="flex flex-col gap-2">
                       <label className="font-label-md text-xs font-bold text-on-surface uppercase tracking-wider">2. Consultation Type</label>
@@ -436,38 +461,48 @@ const VetProfile = () => {
                     </div>
 
                     {/* Select Date & Time */}
-                    <div className="flex flex-col gap-2">
-                      <label className="font-label-md text-xs font-bold text-on-surface uppercase tracking-wider">3. Date & Time</label>
-                      <div className="grid grid-cols-2 gap-3">
-                        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required className="border border-outline-variant rounded-xl p-2.5 text-sm font-semibold text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
-                        <select value={time} onChange={(e) => setTime(e.target.value)} required className="border border-outline-variant rounded-xl p-2.5 text-sm font-semibold text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-surface-container-lowest">
-                          <option value="" disabled>Select Time</option>
-                          <option value="09:00 AM">09:00 AM</option>
-                          <option value="09:30 AM">09:30 AM</option>
-                          <option value="10:00 AM">10:00 AM</option>
-                          <option value="10:30 AM">10:30 AM</option>
-                          <option value="11:00 AM">11:00 AM</option>
-                          <option value="11:30 AM">11:30 AM</option>
-                          <option value="12:00 PM">12:00 PM</option>
-                          <option value="12:30 PM">12:30 PM</option>
-                          <option value="01:00 PM">01:00 PM</option>
-                          <option value="01:30 PM">01:30 PM</option>
-                          <option value="02:00 PM">02:00 PM</option>
-                          <option value="02:30 PM">02:30 PM</option>
-                          <option value="03:00 PM">03:00 PM</option>
-                          <option value="03:30 PM">03:30 PM</option>
-                          <option value="04:00 PM">04:00 PM</option>
-                          <option value="04:30 PM">04:30 PM</option>
-                          <option value="05:00 PM">05:00 PM</option>
-                          <option value="05:30 PM">05:30 PM</option>
-                          <option value="06:00 PM">06:00 PM</option>
-                          <option value="06:30 PM">06:30 PM</option>
-                          <option value="07:00 PM">07:00 PM</option>
-                          <option value="07:30 PM">07:30 PM</option>
-                          <option value="08:00 PM">08:00 PM</option>
-                        </select>
+                    {!isEmergencyBooking ? (
+                      <div className="flex flex-col gap-2">
+                        <label className="font-label-md text-xs font-bold text-on-surface uppercase tracking-wider">3. Date & Time</label>
+                        <div className="grid grid-cols-2 gap-3">
+                          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required className="border border-outline-variant rounded-xl p-2.5 text-sm font-semibold text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none" />
+                          <select value={time} onChange={(e) => setTime(e.target.value)} required className="border border-outline-variant rounded-xl p-2.5 text-sm font-semibold text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-surface-container-lowest">
+                            <option value="" disabled>Select Time</option>
+                            <option value="09:00 AM">09:00 AM</option>
+                            <option value="09:30 AM">09:30 AM</option>
+                            <option value="10:00 AM">10:00 AM</option>
+                            <option value="10:30 AM">10:30 AM</option>
+                            <option value="11:00 AM">11:00 AM</option>
+                            <option value="11:30 AM">11:30 AM</option>
+                            <option value="12:00 PM">12:00 PM</option>
+                            <option value="12:30 PM">12:30 PM</option>
+                            <option value="01:00 PM">01:00 PM</option>
+                            <option value="01:30 PM">01:30 PM</option>
+                            <option value="02:00 PM">02:00 PM</option>
+                            <option value="02:30 PM">02:30 PM</option>
+                            <option value="03:00 PM">03:00 PM</option>
+                            <option value="03:30 PM">03:30 PM</option>
+                            <option value="04:00 PM">04:00 PM</option>
+                            <option value="04:30 PM">04:30 PM</option>
+                            <option value="05:00 PM">05:00 PM</option>
+                            <option value="05:30 PM">05:30 PM</option>
+                            <option value="06:00 PM">06:00 PM</option>
+                            <option value="06:30 PM">06:30 PM</option>
+                            <option value="07:00 PM">07:00 PM</option>
+                            <option value="07:30 PM">07:30 PM</option>
+                            <option value="08:00 PM">08:00 PM</option>
+                          </select>
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="flex flex-col gap-2">
+                        <label className="font-label-md text-xs font-bold text-on-surface uppercase tracking-wider">3. Date & Time</label>
+                        <div className="bg-red-50 border border-red-200 text-red-800 rounded-xl p-3 text-sm font-bold flex items-center justify-between">
+                          <span>Today</span>
+                          <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]">bolt</span> IMMEDIATE / ASAP</span>
+                        </div>
+                      </div>
+                    )}
 
                     {/* Reason for Visit */}
                     <div className="flex flex-col gap-2">

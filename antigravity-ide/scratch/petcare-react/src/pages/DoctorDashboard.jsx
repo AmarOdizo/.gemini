@@ -121,7 +121,7 @@ const DoctorDashboard = () => {
 
   if (!user) return null;
 
-  const upcomingAppts = appointments.filter(a => a.status === 'upcoming');
+  const upcomingAppts = appointments.filter(a => a.status === 'upcoming' || a.status === 'pending');
   const pastAppts = appointments.filter(a => a.status !== 'upcoming');
 
   return (
@@ -267,12 +267,24 @@ const DoctorDashboard = () => {
                   </div>
                 ))
               ) : upcomingAppts.length > 0 ? (
-                upcomingAppts.map(appt => (
-                  <div key={appt._id} className="bg-surface-container-lowest border-l-[6px] border-l-primary border border-outline-variant/40 rounded-2xl p-5 md:p-6 shadow-sm hover:shadow-md transition-all">
+                upcomingAppts.map(appt => {
+                  const isEmergency = appt.triage === 'emergency';
+                  const isPending = appt.status === 'pending';
+                  return (
+                  <div key={appt._id} className={`border-l-[6px] border border-outline-variant/40 rounded-2xl p-5 md:p-6 shadow-sm hover:shadow-md transition-all relative overflow-hidden ${isEmergency && isPending ? 'border-l-red-600 bg-red-50/50 animate-pulse-slow' : isEmergency ? 'border-l-red-600 bg-surface-container-lowest' : 'border-l-primary bg-surface-container-lowest'}`}>
+                    {isEmergency && (
+                      <div className="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-black uppercase px-3 py-1.5 rounded-bl-xl shadow-sm flex items-center gap-1 tracking-wider">
+                        <span className="material-symbols-outlined text-[14px]">emergency</span> EMERGENCY
+                      </div>
+                    )}
                     <div className="flex flex-col md:flex-row justify-between md:items-start gap-4 mb-5">
                       <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary font-black text-lg border border-primary/20 shrink-0">
-                          {appt.time}
+                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center font-black text-lg border shrink-0 ${isEmergency ? 'bg-red-100 text-red-700 border-red-200' : 'bg-primary/10 text-primary border-primary/20'}`}>
+                          {appt.time === 'IMMEDIATE' ? (
+                            <span className="material-symbols-outlined text-[24px]">bolt</span>
+                          ) : (
+                            appt.time
+                          )}
                         </div>
                         <div>
                           <h4 className="font-bold text-lg md:text-xl text-on-surface mb-0.5">{appt.petName} <span className="text-sm font-medium text-on-surface-variant px-2 py-0.5 bg-surface-container-low rounded-md ml-1">{appt.petSpecies}</span></h4>
@@ -291,7 +303,11 @@ const DoctorDashboard = () => {
                             <span className="material-symbols-outlined text-[14px] filled-icon">storefront</span> Clinic
                           </span>
                         )}
-                        <span className="bg-emerald-100 text-emerald-800 text-[11px] px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">{appt.status}</span>
+                        {isPending ? (
+                          <span className="bg-amber-100 text-amber-800 text-[11px] px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">Pending</span>
+                        ) : (
+                          <span className="bg-emerald-100 text-emerald-800 text-[11px] px-2.5 py-1 rounded-md font-bold uppercase tracking-wider">{appt.status}</span>
+                        )}
                       </div>
                     </div>
 
@@ -301,29 +317,46 @@ const DoctorDashboard = () => {
                     </div>
 
                     <div className="flex flex-col gap-3">
-                      <div className="flex flex-wrap gap-3">
-                        <button 
-                          onClick={() => navigate(`/live-chat?consultationId=${appt._id}`)}
-                          className="flex-1 bg-surface-container-low text-primary text-sm font-bold py-3 rounded-xl hover:bg-surface-container border border-primary/20 hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2">
-                          <span className="material-symbols-outlined text-[20px] filled-icon">chat</span> Text Consult
-                        </button>
-                        {appt.consultationType === 'video' && (
+                      {isPending ? (
+                        <div className="flex flex-wrap gap-3">
                           <button 
-                            onClick={() => navigate(`/doctor-dashboard/video-call/${appt._id}`, { state: { appointment: appt } })}
-                            className="flex-1 bg-primary text-on-primary text-sm font-bold py-3 rounded-xl hover:bg-primary-container hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2">
-                            <span className="material-symbols-outlined text-[20px] filled-icon">videocam</span> Start Video Call
+                            onClick={() => handleUpdateStatus(appt._id, 'upcoming')}
+                            className="flex-1 bg-emerald-600 text-white text-sm font-bold py-3 rounded-xl hover:bg-emerald-700 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2">
+                            <span className="material-symbols-outlined text-[20px]">check_circle</span> Accept Booking
                           </button>
-                        )}
-                      </div>
-                      <button 
-                        onClick={() => handleUpdateStatus(appt._id, 'completed')}
-                        className="w-full bg-surface-container text-on-surface text-sm font-bold py-3 rounded-xl hover:bg-surface-container-high hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2 border border-outline-variant/30"
-                      >
-                        <span className="material-symbols-outlined text-[20px] filled-icon">check_circle</span> Complete Appointment
-                      </button>
+                          <button 
+                            onClick={() => handleUpdateStatus(appt._id, 'cancelled')}
+                            className="flex-1 bg-surface-container border border-outline-variant/50 text-error text-sm font-bold py-3 rounded-xl hover:bg-surface-container-high transition-all flex items-center justify-center gap-2">
+                            <span className="material-symbols-outlined text-[20px]">cancel</span> Decline
+                          </button>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="flex flex-wrap gap-3">
+                            <button 
+                              onClick={() => navigate(`/live-chat?consultationId=${appt._id}`)}
+                              className="flex-1 bg-surface-container-low text-primary text-sm font-bold py-3 rounded-xl hover:bg-surface-container border border-primary/20 hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2">
+                              <span className="material-symbols-outlined text-[20px] filled-icon">chat</span> Text Consult
+                            </button>
+                            {appt.consultationType === 'video' && (
+                              <button 
+                                onClick={() => navigate(`/doctor-dashboard/video-call/${appt._id}`, { state: { appointment: appt } })}
+                                className="flex-1 bg-primary text-on-primary text-sm font-bold py-3 rounded-xl hover:bg-primary-container hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2">
+                                <span className="material-symbols-outlined text-[20px] filled-icon">videocam</span> Start Video Call
+                              </button>
+                            )}
+                          </div>
+                          <button 
+                            onClick={() => handleUpdateStatus(appt._id, 'completed')}
+                            className="w-full bg-surface-container text-on-surface text-sm font-bold py-3 rounded-xl hover:bg-surface-container-high hover:shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2 border border-outline-variant/30"
+                          >
+                            <span className="material-symbols-outlined text-[20px] filled-icon">check_circle</span> Complete Appointment
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
-                ))
+                )})
               ) : (
                 <div className="bg-surface-container-lowest border border-outline-variant/50 border-dashed rounded-3xl p-10 text-center text-on-surface-variant flex flex-col items-center justify-center">
                   <div className="w-16 h-16 bg-surface-container-low rounded-full flex items-center justify-center mb-3">
