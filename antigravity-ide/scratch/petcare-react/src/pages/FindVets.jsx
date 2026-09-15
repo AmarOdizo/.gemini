@@ -172,7 +172,7 @@ const FindVets = () => {
                   </div>
                 </div>
               </div>
-            ))
+            )})
           ) : (
             <div className="col-span-full py-20 text-center bg-surface-container-lowest border border-dashed border-outline-variant/50 rounded-3xl flex flex-col items-center justify-center">
                <div className="w-20 h-20 bg-surface-container-low rounded-full flex items-center justify-center mb-4">
