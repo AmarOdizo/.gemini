@@ -36,6 +36,31 @@ const VetRegister = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    
+    if (name === 'phone') {
+      const numericValue = value.replace(/[^0-9+]/g, '');
+      setFormData(prev => ({ ...prev, [name]: numericValue }));
+      return;
+    }
+    
+    if (name === 'clinicPhone') {
+      const numericValue = value.replace(/[^0-9\-]/g, '');
+      setFormData(prev => ({ ...prev, [name]: numericValue }));
+      return;
+    }
+
+    if (name === 'email') {
+      const emailValue = value.replace(/\s/g, '');
+      setFormData(prev => ({ ...prev, [name]: emailValue }));
+      return;
+    }
+
+    if (name === 'name') {
+      const alphaValue = value.replace(/[^A-Za-z\s.]/g, ''); // Allow dots for 'Dr.'
+      setFormData(prev => ({ ...prev, [name]: alphaValue }));
+      return;
+    }
+
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
@@ -166,15 +191,15 @@ const VetRegister = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Full Name (with Prefix) *</label>
-                  <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="Dr. Ananya Sharma" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" />
+                  <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="Dr. Ananya Sharma" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" pattern="^[A-Za-z\s.]{3,50}$" title="Name must contain only alphabets/spaces/dots and be at least 3 characters long" minLength="3" maxLength="50" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Official Email Address *</label>
-                  <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="dr.ananya@clinic.com" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" />
+                  <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="dr.ananya@clinic.com" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. dr.ananya@clinic.com)" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Phone Number *</label>
-                  <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required placeholder="+91 98765 43210" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" />
+                  <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required placeholder="+91 98765 43210" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" pattern="^[+]*[0-9]{10,15}$" title="Phone number must contain 10-15 digits. A leading + is allowed." minLength="10" maxLength="16" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Account Password *</label>
@@ -196,7 +221,7 @@ const VetRegister = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold font-label-md text-on-surface mb-1">VCI Registration Number *</label>
-                  <input type="text" name="vciNumber" value={formData.vciNumber} onChange={handleChange} required placeholder="e.g. VCI-2024-8891" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm font-mono focus:outline-none focus:border-primary focus:ring-1 transition-all" />
+                  <input type="text" name="vciNumber" value={formData.vciNumber} onChange={handleChange} required placeholder="e.g. VCI-2024-8891" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm font-mono focus:outline-none focus:border-primary focus:ring-1 transition-all" pattern="^[A-Za-z0-9\-]+$" title="VCI number can only contain letters, numbers, and hyphens" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Primary Degree / Qualification *</label>
@@ -250,7 +275,7 @@ const VetRegister = () => {
                 </div>
                 <div>
                   <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Clinic Landline / Helpline</label>
-                  <input type="tel" name="clinicPhone" value={formData.clinicPhone} onChange={handleChange} placeholder="080-25501234" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" />
+                  <input type="tel" name="clinicPhone" value={formData.clinicPhone} onChange={handleChange} placeholder="080-25501234" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" pattern="^[0-9\-]{8,15}$" title="Enter a valid clinic phone or landline number" />
                 </div>
               </div>
               <div>
