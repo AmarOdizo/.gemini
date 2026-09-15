@@ -374,7 +374,7 @@ const MyPets = () => {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[500px] content-start">
           {filteredPets.map((pet) => {
             const petSpecies = pet.species || pet.type;
             const petImg = pet.image || DEFAULT_PET_IMAGES[petSpecies] || DEFAULT_PET_IMAGES.Other;
@@ -384,7 +384,7 @@ const MyPets = () => {
                 className="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between h-[480px]"
               >
                 {/* Pet Image & Badges */}
-                <div className="relative h-48 w-full bg-surface-container overflow-hidden">
+                <div className="relative h-48 w-full bg-surface-container overflow-hidden shrink-0">
                   <img
                     src={petImg}
                     alt={pet.name}
@@ -420,7 +420,7 @@ const MyPets = () => {
                 </div>
 
                 {/* Pet Details */}
-                <div className="p-5 space-y-4 flex-1">
+                <div className="p-5 space-y-4 flex-1 overflow-hidden flex flex-col justify-start">
                   <div>
                     <div className="flex justify-between items-start">
                       <h3 className="text-xl font-black text-on-surface">{pet.name}</h3>
@@ -472,7 +472,7 @@ const MyPets = () => {
                 </div>
 
                 {/* Card Actions */}
-                <div className="p-4 border-t border-outline-variant/20 bg-surface-container-lowest flex items-center justify-between gap-2">
+                <div className="p-4 border-t border-outline-variant/20 bg-surface-container-lowest flex items-center justify-between gap-2 shrink-0">
                   <button
                     onClick={() => {
                       setSelectedPet(pet);
