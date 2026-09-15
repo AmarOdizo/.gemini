@@ -15,6 +15,19 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    
+    if (name === 'phone') {
+      const numericValue = value.replace(/[^0-9+]/g, '');
+      setFormData(prev => ({ ...prev, [name]: numericValue }));
+      return;
+    }
+    
+    if (name === 'name') {
+      const alphaValue = value.replace(/[^A-Za-z\s]/g, '');
+      setFormData(prev => ({ ...prev, [name]: alphaValue }));
+      return;
+    }
+
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
@@ -129,6 +142,10 @@ const Register = () => {
                     onChange={handleChange} 
                     className="w-full pl-10 pr-4 py-2.5 border border-outline-variant/50 rounded-xl bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all text-on-surface" 
                     placeholder="Jane Doe" 
+                    pattern="^[A-Za-z\s]{3,50}$"
+                    title="Name must contain only alphabets and be at least 3 characters long"
+                    minLength="3"
+                    maxLength="50"
                     required 
                   />
                 </div>
@@ -161,6 +178,11 @@ const Register = () => {
                     onChange={handleChange} 
                     className="w-full pl-10 pr-4 py-2.5 border border-outline-variant/50 rounded-xl bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all text-on-surface" 
                     placeholder="+91 90000 00000" 
+                    pattern="^[+]*[0-9]{10,15}$"
+                    title="Phone number must contain 10-15 digits. A leading + is allowed."
+                    minLength="10"
+                    maxLength="16"
+                    required
                   />
                 </div>
               </div>
