@@ -3,6 +3,25 @@ import { Link } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 import { isVetSuspended, isVetApproved } from '../utils/suspensionUtils';
 
+const getAvailabilitySummary = (availability) => {
+  if (!availability || !Array.isArray(availability) || availability.length === 0) return 'Available for consultation';
+  const activeDays = availability.filter(a => a.active);
+  if (activeDays.length === 0) return 'Currently unavailable';
+  
+  const firstSlot = activeDays[0].slots;
+  const timeString = firstSlot && firstSlot.length >= 2 ? `${firstSlot[0]} - ${firstSlot[1]}` : '';
+  
+  if (activeDays.length === 7) return timeString ? `Mon-Sun • ${timeString}` : `Mon-Sun`;
+  
+  const isMonToFri = activeDays.length >= 5 && activeDays.every(a => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].includes(a.day));
+  if (isMonToFri && activeDays.length === 5) return timeString ? `Mon-Fri • ${timeString}` : `Mon-Fri`;
+  
+  const daysShort = activeDays.map(a => a.day.substring(0, 3)).join(', ');
+  const displayDays = daysShort.length > 18 ? `${activeDays.length} Days/Week` : daysShort;
+  
+  return timeString ? `${displayDays} • ${timeString}` : displayDays;
+};
+
 const FindVets = () => {
   const [vets, setVets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -101,7 +120,7 @@ const FindVets = () => {
                   </div>
                   <p className="text-sm text-primary font-bold mb-3 line-clamp-1">{vet.qualification}</p>
                   
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="flex flex-wrap gap-2 mb-3">
                     {vet.specialization && vet.specialization.slice(0, 2).map((spec, idx) => (
                       <span key={idx} className="text-[10px] uppercase tracking-wider font-bold bg-secondary-container/30 text-on-secondary-container px-2.5 py-1 rounded-md border border-secondary-container/50">
                         {spec}
@@ -112,6 +131,11 @@ const FindVets = () => {
                         +{vet.specialization.length - 2}
                       </span>
                     )}
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-xs text-on-surface-variant font-bold bg-surface-container-low border border-outline-variant/30 rounded-lg p-2 mb-4">
+                    <span className="material-symbols-outlined text-[16px] text-primary">calendar_clock</span>
+                    {getAvailabilitySummary(vet.availability)}
                   </div>
 
                   <div className="mt-auto pt-4 border-t border-outline-variant/30 flex items-center justify-between">
