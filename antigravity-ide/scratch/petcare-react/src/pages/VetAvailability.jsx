@@ -3,13 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 
 const DEFAULT_AVAILABILITY = [
-  { day: "Monday", active: true, slots: ["09:00", "17:00"] },
-  { day: "Tuesday", active: true, slots: ["09:00", "17:00"] },
-  { day: "Wednesday", active: true, slots: ["09:00", "17:00"] },
-  { day: "Thursday", active: true, slots: ["09:00", "17:00"] },
-  { day: "Friday", active: true, slots: ["09:00", "17:00"] },
-  { day: "Saturday", active: true, slots: ["10:00", "14:00"] },
-  { day: "Sunday", active: false, slots: ["10:00", "14:00"] }
+  { day: "Monday", active: true, slots: ["09:00 AM", "05:00 PM"] },
+  { day: "Tuesday", active: true, slots: ["09:00 AM", "05:00 PM"] },
+  { day: "Wednesday", active: true, slots: ["09:00 AM", "05:00 PM"] },
+  { day: "Thursday", active: true, slots: ["09:00 AM", "05:00 PM"] },
+  { day: "Friday", active: true, slots: ["09:00 AM", "05:00 PM"] },
+  { day: "Saturday", active: true, slots: ["10:00 AM", "02:00 PM"] },
+  { day: "Sunday", active: false, slots: ["10:00 AM", "02:00 PM"] }
+];
+
+const TIME_OPTIONS = [
+  "06:00 AM", "06:30 AM", "07:00 AM", "07:30 AM", "08:00 AM", "08:30 AM", 
+  "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
+  "12:00 PM", "12:30 PM", "01:00 PM", "01:30 PM", "02:00 PM", "02:30 PM",
+  "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM", "05:00 PM", "05:30 PM",
+  "06:00 PM", "06:30 PM", "07:00 PM", "07:30 PM", "08:00 PM", "08:30 PM",
+  "09:00 PM", "09:30 PM", "10:00 PM", "10:30 PM", "11:00 PM"
 ];
 
 const VetAvailability = () => {
@@ -178,21 +187,23 @@ const VetAvailability = () => {
                     <span className="font-bold text-on-surface text-sm">{dayObj.day}</span>
                   </label>
                   <div className="flex items-center gap-3 md:flex-1">
-                    <input 
-                      type="time" 
-                      value={dayObj.slots[0] || "09:00"} 
+                    <select 
+                      value={dayObj.slots[0] || "09:00 AM"} 
                       disabled={!dayObj.active}
                       onChange={(e) => handleAvailabilityChange(index, 'start', e.target.value)}
-                      className="bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-1 disabled:opacity-50" 
-                    />
+                      className="bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-sm font-semibold focus:outline-none focus:border-primary focus:ring-1 disabled:opacity-50 appearance-none" 
+                    >
+                      {TIME_OPTIONS.map(time => <option key={`start-${time}`} value={time}>{time}</option>)}
+                    </select>
                     <span className="text-xs font-bold text-on-surface-variant uppercase">To</span>
-                    <input 
-                      type="time" 
-                      value={dayObj.slots[1] || "17:00"} 
+                    <select 
+                      value={dayObj.slots[1] || "05:00 PM"} 
                       disabled={!dayObj.active}
                       onChange={(e) => handleAvailabilityChange(index, 'end', e.target.value)}
-                      className="bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary focus:ring-1 disabled:opacity-50" 
-                    />
+                      className="bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-sm font-semibold focus:outline-none focus:border-primary focus:ring-1 disabled:opacity-50 appearance-none" 
+                    >
+                      {TIME_OPTIONS.map(time => <option key={`end-${time}`} value={time}>{time}</option>)}
+                    </select>
                   </div>
                 </div>
               ))}
