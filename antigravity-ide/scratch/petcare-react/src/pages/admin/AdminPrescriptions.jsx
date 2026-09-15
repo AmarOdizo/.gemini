@@ -35,13 +35,11 @@ const AdminPrescriptions = () => {
 
   return (
     <AdminGenericPage
-      title="Electronic Prescriptions & Pharmacy Audit"
+      title="Electronic Prescriptions"
       subtitle="Comprehensive ledger of electronic veterinary prescriptions loaded from MongoDB prescriptions collection."
       icon="prescriptions"
       stats={[
-        { label: 'Total in DB', value: prescriptions.length.toString(), sub: 'In prescriptions table', icon: 'prescriptions' },
-        { label: 'Active Fulfillments', value: prescriptions.length.toString(), sub: 'Pharmacy partners', icon: 'local_pharmacy' },
-        { label: 'Controlled Drugs (DEA)', value: '18', sub: '100% audit compliant', icon: 'verified' }
+        { label: 'Total in DB', value: prescriptions.length.toString(), sub: 'In prescriptions table', icon: 'prescriptions' }
       ]}
     >
       <div className="bg-white rounded-2xl shadow-sm border border-outline-variant/20 overflow-hidden">
