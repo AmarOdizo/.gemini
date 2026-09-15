@@ -279,7 +279,7 @@ const MyPets = () => {
   });
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-6">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-6 min-h-[80vh]">
       <TopNav
         title="My Pet Companions"
         subtitle="View, add, and manage your pets' health records, vaccination schedules, and profile details."
@@ -356,7 +356,7 @@ const MyPets = () => {
           <p className="text-xs font-bold text-on-surface-variant">Loading pet profiles...</p>
         </div>
       ) : filteredPets.length === 0 ? (
-        <div className="text-center py-16 bg-surface-container-lowest border border-dashed border-outline-variant rounded-2xl p-8 space-y-4">
+        <div className="text-center bg-surface-container-lowest border border-dashed border-outline-variant rounded-2xl p-8 space-y-4 min-h-[400px] flex flex-col items-center justify-center">
           <span className="material-symbols-outlined text-5xl text-outline-variant">pets</span>
           <div>
             <h3 className="text-lg font-bold text-on-surface">No Pet Companions Found</h3>
@@ -381,7 +381,7 @@ const MyPets = () => {
             return (
               <div
                 key={pet._id || pet.id}
-                className="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+                className="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between h-[480px]"
               >
                 {/* Pet Image & Badges */}
                 <div className="relative h-48 w-full bg-surface-container overflow-hidden">
