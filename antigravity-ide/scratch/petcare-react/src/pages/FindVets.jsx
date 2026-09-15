@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 import { isVetSuspended, isVetApproved } from '../utils/suspensionUtils';
+import { checkVetOnlineStatus } from '../utils/availabilityUtils';
 
 const getAvailabilitySummary = (availability) => {
   if (!availability || !Array.isArray(availability) || availability.length === 0) return 'Available for consultation';
@@ -108,13 +109,21 @@ const FindVets = () => {
               </div>
             ))
           ) : vets.length > 0 ? (
-            vets.map(vet => (
+            vets.map(vet => {
+              const isOnline = checkVetOnlineStatus(vet);
+              return (
               <div key={vet._id} className="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group h-full">
                 <div className="relative h-48 overflow-hidden bg-surface-container">
                   <img src={vet.photoUrl || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=500&auto=format&fit=crop"} alt={vet.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-black text-emerald-700 flex items-center gap-1.5 shadow-sm uppercase tracking-wider">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Online
-                  </div>
+                  {isOnline ? (
+                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-black text-emerald-700 flex items-center gap-1.5 shadow-sm uppercase tracking-wider">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Online
+                    </div>
+                  ) : (
+                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-black text-on-surface-variant flex items-center gap-1.5 shadow-sm uppercase tracking-wider">
+                      <span className="w-2 h-2 rounded-full bg-outline-variant"></span> Offline
+                    </div>
+                  )}
                 </div>
                 <div className="p-5 flex-grow flex flex-col">
                   <div className="flex justify-between items-start mb-2">
@@ -151,9 +160,15 @@ const FindVets = () => {
                       <span className="text-[10px] text-on-surface-variant uppercase font-bold tracking-wider mb-0.5">Consult Fee</span>
                       <span className="font-black text-primary text-lg">₹{vet.consultationFee || 499}</span>
                     </div>
-                    <Link to={`/owner-dashboard/vet-profile?id=${vet._id}`} className="bg-primary text-on-primary px-5 py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-primary-container transition-colors flex items-center gap-1 group/btn">
-                      Book Visit <span className="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
-                    </Link>
+                    {isOnline ? (
+                      <Link to={`/owner-dashboard/vet-profile?id=${vet._id}`} className="bg-primary text-on-primary px-5 py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-primary-container transition-colors flex items-center gap-1 group/btn">
+                        Book Visit <span className="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+                      </Link>
+                    ) : (
+                      <span className="bg-surface-container-high text-on-surface-variant px-5 py-2.5 rounded-xl text-xs font-bold cursor-not-allowed flex items-center gap-1">
+                        Currently Offline
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>

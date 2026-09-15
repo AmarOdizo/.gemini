@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 import { isVetSuspended, isVetApproved } from '../utils/suspensionUtils';
+import { checkVetOnlineStatus } from '../utils/availabilityUtils';
 
 const OwnerDashboard = () => {
   const [user, setUser] = useState(null);
@@ -258,18 +259,25 @@ const OwnerDashboard = () => {
                       </div>
                     ))
                   ) : vets.length > 0 ? (
-                    vets.slice(0, 4).map(vet => (
-                      <Link to={`/owner-dashboard/vet-profile?id=${vet._id || vet.id}`} key={vet._id} className="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 flex gap-4 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group hover:-translate-y-1">
-                        <img src={vet.photoUrl || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=100&auto=format&fit=crop"} alt={vet.name} className="w-16 h-16 rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform" />
+                    vets.slice(0, 4).map(vet => {
+                      const isOnline = checkVetOnlineStatus(vet);
+                      return (
+                      <Link to={`/owner-dashboard/vet-profile?id=${vet._id || vet.id}`} key={vet._id} className="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 flex gap-4 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group hover:-translate-y-1 relative overflow-hidden">
+                        <div className="relative">
+                          <img src={vet.photoUrl || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=100&auto=format&fit=crop"} alt={vet.name} className="w-16 h-16 rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform" />
+                          <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-surface-container-lowest ${isOnline ? 'bg-emerald-500' : 'bg-outline-variant'}`}></div>
+                        </div>
                         <div className="flex flex-col justify-center">
-                          <h4 className="font-bold text-on-surface text-sm group-hover:text-primary transition-colors">{vet.name}</h4>
+                          <h4 className="font-bold text-on-surface text-sm group-hover:text-primary transition-colors flex items-center gap-2">
+                            {vet.name}
+                          </h4>
                           <p className="text-xs text-on-surface-variant font-medium line-clamp-1">{vet.qualification}</p>
                           <div className="flex items-center gap-1 mt-1.5 text-[11px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md w-fit">
                             <span className="material-symbols-outlined text-[14px]">star</span> 4.9
                           </div>
                         </div>
                       </Link>
-                    ))
+                    )})
                   ) : (
                     <div className="col-span-full py-12 text-center text-on-surface-variant bg-surface-container-lowest rounded-2xl border border-dashed border-outline-variant">
                       <span className="material-symbols-outlined text-4xl opacity-50 mb-2">sentiment_dissatisfied</span>
@@ -325,9 +333,14 @@ const OwnerDashboard = () => {
                     <div className="flex flex-col gap-2">
                       <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">2. Select Doctor</label>
                       <select value={selectedVetId} onChange={(e) => setSelectedVetId(e.target.value)} required className="border-2 border-outline-variant/40 rounded-xl p-3 text-sm font-semibold text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-surface-container-lowest hover:border-outline-variant transition-colors appearance-none cursor-pointer">
-                        {loading ? <option>Loading...</option> : vets.map(v => (
-                          <option key={v._id} value={v._id}>{v.name} ({v.specialization?.[0] || 'Vet'})</option>
-                        ))}
+                        {loading ? <option>Loading...</option> : vets.map(v => {
+                          const isOnline = checkVetOnlineStatus(v);
+                          return (
+                            <option key={v._id} value={v._id} disabled={!isOnline}>
+                              {v.name} ({v.specialization?.[0] || 'Vet'}) {isOnline ? '' : ' - OFFLINE'}
+                            </option>
+                          );
+                        })}
                       </select>
                     </div>
 
