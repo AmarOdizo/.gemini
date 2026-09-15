@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 import { isVetSuspended, isVetApproved } from '../utils/suspensionUtils';
 
@@ -25,6 +25,9 @@ const getAvailabilitySummary = (availability) => {
 const FindVets = () => {
   const [vets, setVets] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  const location = useLocation();
+  const isEmergency = new URLSearchParams(location.search).get('emergency') === 'true';
 
   const fetchVets = async () => {
     try {
@@ -32,7 +35,12 @@ const FindVets = () => {
       if (res.ok) {
         const data = await res.json();
         // Only show approved and verified veterinarians to pet owners
-        const availableVets = (data.data || []).filter(vet => isVetApproved(vet));
+        let availableVets = (data.data || []).filter(vet => isVetApproved(vet));
+        
+        if (isEmergency) {
+          availableVets = availableVets.filter(vet => vet.emergencyDuty);
+        }
+        
         setVets(availableVets);
       }
     } catch (err) {
@@ -49,11 +57,11 @@ const FindVets = () => {
     const handleSync = () => fetchVets();
     window.addEventListener('petcare_vets_updated', handleSync);
     return () => window.removeEventListener('petcare_vets_updated', handleSync);
-  }, []);
+  }, [isEmergency]);
 
   return (
     <main className="p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full transition-opacity duration-300">
-        <TopNav title="Find a Veterinarian" subtitle="Search and book appointments with top verified vets across India." />
+        <TopNav title={isEmergency ? "Emergency On-Call Doctors" : "Find a Veterinarian"} subtitle={isEmergency ? "These doctors are available for urgent 24/7 emergency consultations." : "Search and book appointments with top verified vets across India."} />
 
         <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-surface-container-low/80 backdrop-blur-md p-4 md:p-5 rounded-2xl border border-outline-variant/30 shadow-sm sticky top-20 z-20">
           <div className="relative w-full md:w-1/2 group">

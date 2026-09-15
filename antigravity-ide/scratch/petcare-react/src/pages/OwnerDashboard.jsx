@@ -195,6 +195,51 @@ const OwnerDashboard = () => {
                 </div>
               </section>
 
+              {/* Emergency On-Call Section */}
+              <section>
+                <div className="flex justify-between items-end mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
+                      <span className="material-symbols-outlined text-red-600 text-[18px] filled-icon">emergency</span>
+                    </div>
+                    <h3 className="font-headline-sm text-xl text-on-surface font-black tracking-tight">Emergency On-Call</h3>
+                  </div>
+                  <Link to="/find-vets?emergency=true" className="text-red-600 font-label-md text-xs font-bold hover:text-red-800 transition-colors px-3 py-1.5 rounded-full hover:bg-red-50">View All Emergencies &rarr;</Link>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {loading ? (
+                    Array.from({ length: 2 }).map((_, i) => (
+                      <div key={i} className="bg-red-50/50 border border-red-100 rounded-2xl p-4 flex gap-4 animate-pulse">
+                        <div className="w-16 h-16 rounded-xl bg-red-200/50 shrink-0"></div>
+                        <div className="flex flex-col gap-2 w-full justify-center">
+                          <div className="h-4 bg-red-200/50 rounded w-3/4"></div>
+                          <div className="h-3 bg-red-200/50 rounded w-1/2"></div>
+                        </div>
+                      </div>
+                    ))
+                  ) : vets.filter(v => v.emergencyDuty).length > 0 ? (
+                    vets.filter(v => v.emergencyDuty).slice(0, 4).map(vet => (
+                      <Link to={`/owner-dashboard/vet-profile?id=${vet._id || vet.id}`} key={vet._id} className="bg-red-50/80 border-2 border-red-200/60 rounded-2xl p-4 flex gap-4 hover:shadow-lg hover:border-red-400 transition-all cursor-pointer group hover:-translate-y-1 relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-16 h-16 bg-red-200/30 rounded-bl-full -mr-4 -mt-4 z-0"></div>
+                        <img src={vet.photoUrl || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=100&auto=format&fit=crop"} alt={vet.name} className="w-16 h-16 rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform relative z-10 border border-red-200" />
+                        <div className="flex flex-col justify-center relative z-10">
+                          <h4 className="font-bold text-red-900 text-sm group-hover:text-red-700 transition-colors line-clamp-1">{vet.name}</h4>
+                          <p className="text-xs text-red-700/80 font-bold line-clamp-1">{vet.qualification}</p>
+                          <div className="flex items-center gap-1 mt-1.5 text-[10px] font-black text-red-700 bg-red-100 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider">
+                            <span className="material-symbols-outlined text-[14px]">call</span> On-Call Now
+                          </div>
+                        </div>
+                      </Link>
+                    ))
+                  ) : (
+                    <div className="col-span-full py-8 text-center text-red-800/60 bg-red-50/50 rounded-2xl border border-dashed border-red-200 flex flex-col items-center">
+                      <span className="material-symbols-outlined text-3xl opacity-50 mb-1">healing</span>
+                      <p className="font-medium text-sm">No emergency vets available right now.</p>
+                    </div>
+                  )}
+                </div>
+              </section>
+
               <section>
                 <div className="flex justify-between items-end mb-4">
                   <h3 className="font-headline-sm text-xl text-on-surface font-black tracking-tight">Recommended Veterinarians</h3>
