@@ -165,28 +165,6 @@ const DoctorDashboard = () => {
               View Status Details
             </Link>
           </div>
-        ) : (user.status === 'pending' || user.isVerified === false) ? (
-          <div className="p-4 sm:p-5 rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm animate-fade-in">
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 border border-amber-200 mt-0.5">
-                <span className="material-symbols-outlined text-2xl">hourglass_top</span>
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded-full bg-amber-500 text-white font-black text-[10px] uppercase tracking-wider">
-                    Pending Verification
-                  </span>
-                  <span className="text-xs font-bold text-amber-800">Admin Verification Queue</span>
-                </div>
-                <p className="text-xs text-amber-800 font-medium mt-1">
-                  Your account is awaiting document verification by the Clinical Administrator. Until approved, your profile will not appear on the Owner Dashboard.
-                </p>
-              </div>
-            </div>
-            <Link to="/doctor-profile" className="px-4 py-2 bg-amber-600 text-white rounded-xl text-xs font-bold hover:opacity-95 shadow-xs shrink-0 whitespace-nowrap">
-              Review Profile
-            </Link>
-          </div>
         ) : user.status === 'rejected' ? (
           <div className="p-4 sm:p-5 rounded-2xl bg-rose-50 border-2 border-rose-300 text-rose-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm animate-fade-in">
             <div className="flex items-start gap-3">
@@ -207,6 +185,28 @@ const DoctorDashboard = () => {
             </div>
             <Link to="/doctor-profile" className="px-4 py-2 bg-rose-700 text-white rounded-xl text-xs font-bold hover:opacity-95 shadow-xs shrink-0 whitespace-nowrap">
               Update Profile
+            </Link>
+          </div>
+        ) : (user.status === 'pending' || user.isVerified === false) ? (
+          <div className="p-4 sm:p-5 rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm animate-fade-in">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 border border-amber-200 mt-0.5">
+                <span className="material-symbols-outlined text-2xl">hourglass_top</span>
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full bg-amber-500 text-white font-black text-[10px] uppercase tracking-wider">
+                    Pending Verification
+                  </span>
+                  <span className="text-xs font-bold text-amber-800">Admin Verification Queue</span>
+                </div>
+                <p className="text-xs text-amber-800 font-medium mt-1">
+                  Your account is awaiting document verification by the Clinical Administrator. Until approved, your profile will not appear on the Owner Dashboard.
+                </p>
+              </div>
+            </div>
+            <Link to="/doctor-profile" className="px-4 py-2 bg-amber-600 text-white rounded-xl text-xs font-bold hover:opacity-95 shadow-xs shrink-0 whitespace-nowrap">
+              Review Profile
             </Link>
           </div>
         ) : null}

@@ -121,15 +121,15 @@ const DoctorProfile = () => {
                       <span className="material-symbols-outlined text-[13px]">block</span>
                       Suspended
                     </span>
-                  ) : (user.status === 'pending' || user.isVerified === false) ? (
-                    <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-amber-500 text-white flex items-center gap-1 shadow-xs">
-                      <span className="material-symbols-outlined text-[13px]">hourglass_top</span>
-                      Pending Verification
-                    </span>
                   ) : user.status === 'rejected' ? (
                     <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-rose-700 text-white flex items-center gap-1 shadow-xs">
                       <span className="material-symbols-outlined text-[13px]">cancel</span>
                       Disapproved
+                    </span>
+                  ) : (user.status === 'pending' || user.isVerified === false) ? (
+                    <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-amber-500 text-white flex items-center gap-1 shadow-xs">
+                      <span className="material-symbols-outlined text-[13px]">hourglass_top</span>
+                      Pending Verification
                     </span>
                   ) : (
                     <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-600 text-white flex items-center gap-1 shadow-xs">
@@ -179,23 +179,6 @@ const DoctorProfile = () => {
                   </p>
                 </div>
               </div>
-            ) : (user.status === 'pending' || user.isVerified === false) ? (
-              <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-900 flex flex-col sm:flex-row items-start gap-4 shadow-sm animate-fade-in">
-                <div className="w-11 h-11 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 border border-amber-200">
-                  <span className="material-symbols-outlined text-2xl">hourglass_top</span>
-                </div>
-                <div className="space-y-1 flex-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded-full bg-amber-500 text-white font-black text-xs uppercase tracking-wider">
-                      Pending Verification / Not Verified
-                    </span>
-                    <span className="text-xs font-bold text-amber-800">Verification Queue Review</span>
-                  </div>
-                  <p className="text-xs text-amber-800 leading-relaxed font-medium">
-                    Your VCI license and registration credentials are currently under review in the Admin Verification Queue. Until verified and approved by the Clinical Administrator, your doctor profile will <strong>NOT</strong> appear on the Owner Dashboard, and pet parents cannot book appointments.
-                  </p>
-                </div>
-              </div>
             ) : user.status === 'rejected' ? (
               <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-rose-50 border-2 border-rose-300 text-rose-900 flex flex-col sm:flex-row items-start gap-4 shadow-sm animate-fade-in">
                 <div className="w-11 h-11 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0 border border-rose-200">
@@ -210,6 +193,23 @@ const DoctorProfile = () => {
                   </div>
                   <p className="text-xs text-rose-800 leading-relaxed font-medium">
                     {user?.rejectionReason ? `Reason: ${user.rejectionReason}` : 'Your credentials were not approved. Please verify your VCI registration certificate and update your profile details.'}
+                  </p>
+                </div>
+              </div>
+            ) : (user.status === 'pending' || user.isVerified === false) ? (
+              <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-900 flex flex-col sm:flex-row items-start gap-4 shadow-sm animate-fade-in">
+                <div className="w-11 h-11 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 border border-amber-200">
+                  <span className="material-symbols-outlined text-2xl">hourglass_top</span>
+                </div>
+                <div className="space-y-1 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full bg-amber-500 text-white font-black text-xs uppercase tracking-wider">
+                      Pending Verification / Not Verified
+                    </span>
+                    <span className="text-xs font-bold text-amber-800">Verification Queue Review</span>
+                  </div>
+                  <p className="text-xs text-amber-800 leading-relaxed font-medium">
+                    Your VCI license and registration credentials are currently under review in the Admin Verification Queue. Until verified and approved by the Clinical Administrator, your doctor profile will <strong>NOT</strong> appear on the Owner Dashboard, and pet parents cannot book appointments.
                   </p>
                 </div>
               </div>
