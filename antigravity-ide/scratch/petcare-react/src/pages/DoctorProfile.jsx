@@ -45,6 +45,7 @@ const DoctorProfile = () => {
       city: parsedUser.city || '',
       consultationFee: parsedUser.consultationFee || 499,
       about: parsedUser.about || '',
+      photoUrl: parsedUser.photoUrl || '',
     });
 
     loadDoctorProfile(parsedUser);
@@ -71,6 +72,49 @@ const DoctorProfile = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Image size should be less than 5MB");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64data = reader.result;
+        try {
+          const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/imagekit/upload`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              file: base64data,
+              fileName: `doctor_${user._id || user.id}_${Date.now()}.jpg`,
+              folder: "/vets"
+            })
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            setFormData(prev => ({ ...prev, photoUrl: data.url }));
+          } else {
+            alert(data.message || 'Image upload failed');
+          }
+        } catch (err) {
+          alert("Error uploading image: " + err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+      reader.readAsDataURL(file);
+    } catch (err) {
+      alert("Error reading file");
+      setLoading(false);
+    }
   };
 
   const handleSave = async () => {
@@ -110,8 +154,21 @@ const DoctorProfile = () => {
           {/* Cover & Avatar Header */}
           <div className="h-32 bg-primary/20 relative">
             <div className="absolute -bottom-12 left-8 flex items-end gap-4">
-              <div className="w-24 h-24 rounded-full border-4 border-surface-container-lowest overflow-hidden bg-white shadow-md">
-                <img src={user.photoUrl || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&auto=format&fit=crop"} alt={user.name} className="w-full h-full object-cover" />
+              <div className="relative w-24 h-24 rounded-full border-4 border-surface-container-lowest overflow-hidden bg-white shadow-md group">
+                <img src={isEditing && formData.photoUrl ? formData.photoUrl : user.photoUrl || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&auto=format&fit=crop"} alt={user.name} className="w-full h-full object-cover" />
+                {isEditing && (
+                  <label className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-white cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
+                    {loading ? (
+                      <span className="material-symbols-outlined animate-spin text-[20px]">sync</span>
+                    ) : (
+                      <>
+                        <span className="material-symbols-outlined text-[20px]">photo_camera</span>
+                        <span className="text-[9px] font-bold mt-1 uppercase tracking-wider">Change</span>
+                      </>
+                    )}
+                    <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={loading} />
+                  </label>
+                )}
               </div>
               <div className="mb-2 hidden sm:block">
                 <h2 className="font-headline-lg font-bold text-lg text-on-surface flex items-center gap-2">
