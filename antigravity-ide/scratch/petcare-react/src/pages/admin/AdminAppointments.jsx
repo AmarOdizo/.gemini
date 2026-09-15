@@ -82,15 +82,7 @@ const AdminAppointments = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
-          <button
-            onClick={() => alert("Exporting all appointment schedules as CSV...")}
-            className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-outline-variant/30 rounded-xl text-xs font-bold text-on-surface hover:bg-surface-container transition-colors shadow-xs"
-          >
-            <span className="material-symbols-outlined text-[1.125rem]">file_download</span>
-            <span>Export CSV</span>
-          </button>
-        </div>
+
       </div>
 
       {/* Segmented Navigation Tabs */}

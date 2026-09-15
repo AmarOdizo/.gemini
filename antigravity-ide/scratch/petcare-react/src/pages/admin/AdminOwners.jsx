@@ -62,13 +62,7 @@ const AdminOwners = () => {
           </p>
         </div>
 
-        <button
-          onClick={() => alert("Exporting full owner directory as CSV...")}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-white border border-outline-variant/30 text-on-surface rounded-xl text-xs font-bold hover:bg-surface-container transition-colors shadow-sm self-start sm:self-auto"
-        >
-          <span className="material-symbols-outlined text-[1.125rem]">download</span>
-          <span>Export Directory</span>
-        </button>
+
       </div>
 
       {/* Summary Metrics */}
