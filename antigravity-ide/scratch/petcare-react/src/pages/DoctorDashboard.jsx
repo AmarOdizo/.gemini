@@ -338,23 +338,18 @@ const DoctorDashboard = () => {
 
           {/* Right Column: Quick Actions & Past */}
           <div className="flex flex-col gap-6">
-            <div className="bg-surface-container-lowest border border-outline-variant/40 rounded-3xl p-6 shadow-sm">
-              <h3 className="font-headline-sm font-black mb-4 tracking-tight">Quick Actions</h3>
-              <div className="grid grid-cols-2 gap-3">
-                <Link to="/prescribe" className="flex flex-col items-center justify-center gap-2 bg-surface-container-low/50 hover:bg-surface-container border border-outline-variant/30 p-5 rounded-2xl transition-all hover:scale-[1.02] text-primary font-bold text-xs text-center cursor-pointer group shadow-sm">
-                  <span className="material-symbols-outlined text-[28px] group-hover:scale-110 transition-transform">prescriptions</span> New Rx
-                </Link>
-                <div className="flex flex-col items-center justify-center gap-2 bg-surface-container-low/50 hover:bg-surface-container border border-outline-variant/30 p-5 rounded-2xl transition-all hover:scale-[1.02] text-primary font-bold text-xs text-center cursor-pointer group shadow-sm">
-                  <span className="material-symbols-outlined text-[28px] group-hover:scale-110 transition-transform">history</span> Records
+            <Link to="/prescribe" className="w-full bg-primary text-on-primary hover:bg-surface-tint rounded-3xl p-6 shadow-md transition-all hover:shadow-lg hover:-translate-y-1 flex items-center justify-between group">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <span className="material-symbols-outlined text-[28px] text-white">prescriptions</span>
                 </div>
-                <div className="flex flex-col items-center justify-center gap-2 bg-surface-container-low/50 hover:bg-surface-container border border-outline-variant/30 p-5 rounded-2xl transition-all hover:scale-[1.02] text-primary font-bold text-xs text-center cursor-pointer group shadow-sm">
-                  <span className="material-symbols-outlined text-[28px] group-hover:scale-110 transition-transform">chat</span> Messages
-                </div>
-                <div className="flex flex-col items-center justify-center gap-2 bg-surface-container-low/50 hover:bg-surface-container border border-outline-variant/30 p-5 rounded-2xl transition-all hover:scale-[1.02] text-primary font-bold text-xs text-center cursor-pointer group shadow-sm">
-                  <span className="material-symbols-outlined text-[28px] group-hover:scale-110 transition-transform">calendar_month</span> Schedule
+                <div>
+                  <h3 className="font-headline-sm font-black text-white text-lg tracking-tight">New Prescription</h3>
+                  <p className="text-white/80 text-xs font-medium">Quick Rx Generation</p>
                 </div>
               </div>
-            </div>
+              <span className="material-symbols-outlined text-white opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all">arrow_forward</span>
+            </Link>
 
             <div className="bg-surface-container-lowest border border-outline-variant/40 rounded-3xl shadow-sm overflow-hidden flex flex-col h-[400px]">
                <div className="p-5 border-b border-outline-variant/30 bg-surface-container-low/50">
