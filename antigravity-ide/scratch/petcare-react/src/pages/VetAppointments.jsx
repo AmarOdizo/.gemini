@@ -7,6 +7,7 @@ const VetAppointments = () => {
   const [user, setUser] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('all'); // 'all', 'upcoming', 'completed'
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -118,8 +119,9 @@ const VetAppointments = () => {
               <span className="material-symbols-outlined text-primary">calendar_month</span> All Appointments
             </h3>
             <div className="flex gap-2">
-              <button className="px-3 py-1.5 bg-primary text-on-primary rounded font-bold text-xs shadow-sm">Upcoming</button>
-              <button className="px-3 py-1.5 bg-surface-container text-on-surface-variant border border-outline-variant/50 rounded font-bold text-xs">Completed</button>
+              <button onClick={() => setFilter('all')} className={`px-3 py-1.5 rounded font-bold text-xs ${filter === 'all' ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-container text-on-surface-variant border border-outline-variant/50'}`}>All</button>
+              <button onClick={() => setFilter('upcoming')} className={`px-3 py-1.5 rounded font-bold text-xs ${filter === 'upcoming' ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-container text-on-surface-variant border border-outline-variant/50'}`}>Upcoming</button>
+              <button onClick={() => setFilter('completed')} className={`px-3 py-1.5 rounded font-bold text-xs ${filter === 'completed' ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-container text-on-surface-variant border border-outline-variant/50'}`}>Completed</button>
             </div>
           </div>
 
@@ -129,9 +131,17 @@ const VetAppointments = () => {
                 <span className="material-symbols-outlined animate-spin text-primary text-4xl mb-4">sync</span>
                 <span className="font-label-md text-base font-semibold">Loading Schedule...</span>
               </div>
-            ) : appointments.length > 0 ? (
-              <div className="flex flex-col gap-4">
-                {appointments.map(appt => (
+            ) : (() => {
+              const filteredAppointments = appointments.filter(appt => {
+                if (filter === 'all') return true;
+                if (filter === 'upcoming') return appt.status === 'upcoming' || appt.status === 'pending';
+                if (filter === 'completed') return appt.status === 'completed';
+                return true;
+              });
+
+              return filteredAppointments.length > 0 ? (
+                <div className="flex flex-col gap-4">
+                  {filteredAppointments.map(appt => (
                   <div key={appt._id} className={`border rounded-xl p-5 hover:bg-surface-container-low transition-colors ${appt.status === 'upcoming' ? 'border-primary/50 bg-primary/5' : 'border-outline-variant'}`}>
                     <div className="flex flex-col md:flex-row justify-between md:items-start gap-4">
 
