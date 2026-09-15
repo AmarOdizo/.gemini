@@ -62,27 +62,7 @@ const LiveConsultationDrawer = ({ consultation, onClose }) => {
           </div>
         </div>
 
-        {/* Drawer Footer Actions */}
-        <div className="p-3 sm:p-4 border-t border-outline-variant/20 bg-surface-container-low flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-          <button
-            onClick={() => {
-              const appointmentId = consultation._id || consultation.id || 'room-vet-8942';
-              navigate(`/doctor-dashboard/video-call/${appointmentId}`);
-            }}
-            className="flex-1 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:bg-primary-container transition-colors shadow-sm flex items-center justify-center gap-2 text-center"
-          >
-            <span className="material-symbols-outlined text-[1.125rem]">call</span>
-            <span>Join Room as Clinical Admin</span>
-          </button>
-          <button
-            onClick={() => {
-              alert(`Session ${consultation.id} clinical report exported.`);
-            }}
-            className="px-4 py-2.5 bg-white border border-outline-variant/30 text-on-surface rounded-xl text-xs font-bold hover:bg-surface-container transition-colors text-center"
-          >
-            Export Log
-          </button>
-        </div>
+
       </div>
     </div>
   );
