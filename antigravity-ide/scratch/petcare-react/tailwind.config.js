@@ -41,6 +41,7 @@ export default {
             "surface-variant": "#d8e3fb",
             "on-primary-fixed": "#00201d",
             "surface": "#f9f9ff",
+            "on-surface": "#191c1b",
             "primary-fixed-dim": "#6ae8da",
             "secondary-container": "#bcece1",
             "on-secondary": "#ffffff",
