@@ -10,7 +10,7 @@ const LocalVideo = ({ stream, isMuted, isCameraOff }) => {
   }, [stream]);
 
   return (
-    <div className="relative w-32 h-48 md:w-48 md:h-64 bg-surface-container-high rounded-xl overflow-hidden shadow-lg border-2 border-primary/20 transition-all z-10">
+    <div className="relative w-24 h-32 md:w-32 md:h-48 bg-surface-container-high rounded-xl overflow-hidden shadow-lg border-2 border-primary/20 transition-all z-10">
       {stream && !isCameraOff ? (
         <video
           ref={videoRef}

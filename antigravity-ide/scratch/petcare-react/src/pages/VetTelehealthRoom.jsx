@@ -36,8 +36,8 @@ const VetTelehealthRoom = () => {
 
   return (
     <div className="bg-surface text-on-surface antialiased min-h-screen flex flex-col font-body-md overflow-hidden">
-      <header className="h-16 bg-surface-container-lowest border-b border-outline-variant/30 px-6 flex justify-between items-center z-50">
-        <div className="flex items-center gap-4">
+      <header className="h-12 bg-surface-container-lowest border-b border-outline-variant/30 px-4 flex justify-between items-center z-50">
+        <div className="flex items-center gap-3">
           <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-xs text-on-surface-variant hover:text-primary font-bold">
             <span className="material-symbols-outlined text-[18px]">arrow_back</span> Back
           </button>
@@ -59,22 +59,22 @@ const VetTelehealthRoom = () => {
         </div>
       </header>
 
-      <main className="flex-1 flex overflow-hidden h-[calc(100vh-64px)]">
+      <main className="flex-1 flex overflow-hidden h-[calc(100vh-48px)]">
         
         {/* Left Panel: Patient Vitals */}
-        <aside className="hidden md:flex w-80 bg-surface-container-low border-r border-outline-variant/20 flex-col p-5 overflow-y-auto shrink-0 space-y-4">
-          <div className="flex flex-col items-center text-center space-y-2">
-            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-md relative">
+        <aside className="hidden md:flex w-64 bg-surface-container-low border-r border-outline-variant/20 flex-col p-4 overflow-y-auto shrink-0 space-y-3">
+          <div className="flex flex-col items-center text-center space-y-1.5">
+            <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-md relative">
               <img src={patient.img} alt={patient.name} className="w-full h-full object-cover" />
-              <span className="absolute bottom-1 right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-white"></span>
+              <span className="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white"></span>
             </div>
             <div>
-              <h2 className="font-headline-sm text-lg font-bold text-primary">{patient.name}</h2>
-              <span className="text-xs text-on-surface-variant font-medium bg-surface-container px-2.5 py-0.5 rounded-full">{patient.speciesBreed}</span>
+              <h2 className="font-headline-sm text-base font-bold text-primary">{patient.name}</h2>
+              <span className="text-[10px] text-on-surface-variant font-medium bg-surface-container px-2 py-0.5 rounded-full">{patient.speciesBreed}</span>
             </div>
           </div>
 
-          <div className="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/20 shadow-sm space-y-2 text-xs">
+          <div className="bg-surface-container-lowest rounded-2xl p-3 border border-outline-variant/20 shadow-sm space-y-1.5 text-[11px]">
             <h3 className="font-bold text-primary uppercase tracking-wider text-[11px] mb-2 flex items-center gap-1">
               <span className="material-symbols-outlined text-[16px]">monitor_heart</span> Patient Vitals
             </h3>
@@ -96,7 +96,7 @@ const VetTelehealthRoom = () => {
             </div>
           </div>
 
-          <div className="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/20 shadow-sm space-y-2 text-xs mt-auto">
+          <div className="bg-surface-container-lowest rounded-2xl p-3 border border-outline-variant/20 shadow-sm space-y-1.5 text-[11px] mt-auto">
             <h3 className="font-bold text-primary uppercase tracking-wider text-[11px] mb-2 flex items-center gap-1">
               <span className="material-symbols-outlined text-[16px]">person</span> Pet Parent Details
             </h3>
@@ -154,8 +154,8 @@ const VetTelehealthRoom = () => {
         </section>
 
         {/* Right Panel: Quick Prescription Draft */}
-        <aside className="hidden lg:flex w-80 bg-surface-container-lowest border-l border-outline-variant/20 flex-col p-5 overflow-y-auto shrink-0 space-y-4">
-          <div className="flex justify-between items-center border-b border-outline-variant/30 pb-3">
+        <aside className="hidden lg:flex w-64 bg-surface-container-lowest border-l border-outline-variant/20 flex-col p-4 overflow-y-auto shrink-0 space-y-3">
+          <div className="flex justify-between items-center border-b border-outline-variant/30 pb-2">
             <h3 className="font-headline-sm text-sm font-bold flex items-center gap-2 text-primary">
               <span className="material-symbols-outlined text-[18px]">edit_document</span> Draft Prescription
             </h3>

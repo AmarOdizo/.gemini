@@ -156,40 +156,40 @@ const VetRegister = () => {
 
   return (
     <div className="bg-surface text-on-surface antialiased min-h-screen flex flex-col">
-      <header className="sticky top-0 z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-6 py-4 flex justify-between items-center">
+      <header className="sticky top-0 z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-4 py-2 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <Logo iconSize="text-2xl" textSize="text-xl" />
-          <span className="font-headline-sm font-black text-lg"><span className="font-body-sm font-normal text-on-surface-variant">| VCI Doctors</span></span>
+          <Logo iconSize="text-xl" textSize="text-base" />
+          <span className="font-headline-sm font-black text-sm"><span className="font-body-sm font-normal text-on-surface-variant">| VCI Doctors</span></span>
         </Link>
         <div className="flex items-center gap-3">
           <span className="text-xs text-on-surface-variant hidden sm:inline">Already registered?</span>
-          <Link to="/login" className="text-xs font-bold text-primary border border-primary/30 px-3 py-1.5 rounded-lg hover:bg-primary/5 transition-colors">
+          <Link to="/login" className="text-[11px] font-bold text-primary border border-primary/30 px-2.5 py-1 rounded-lg hover:bg-primary/5 transition-colors">
             Doctor Login
           </Link>
         </div>
       </header>
 
-      <main className="flex-grow flex items-center justify-center py-8 px-4">
-        <div className="max-w-3xl w-full bg-surface-container-lowest rounded-2xl shadow-lg border border-outline-variant/30 p-6 md:p-10 relative overflow-hidden">
+      <main className="flex-grow flex items-start justify-center py-3 px-3">
+        <div className="max-w-3xl w-full bg-surface-container-lowest rounded-xl shadow-lg border border-outline-variant/30 p-4 md:p-6 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary-container/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
 
-          <div className="text-center mb-8 relative z-10">
-            <span className="inline-flex items-center gap-1 text-xs text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 font-bold mb-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> VCI Doctor Verification
+          <div className="text-center mb-4 relative z-10">
+            <span className="inline-flex items-center gap-1 text-[10px] text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-bold mb-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> VCI Doctor Verification
             </span>
-            <h1 className="font-headline-lg text-2xl md:text-3xl font-extrabold text-primary mb-2">Veterinarian Partner Registration</h1>
-            <p className="font-body-md text-xs text-on-surface-variant max-w-lg mx-auto">
+            <h1 className="font-headline-lg text-lg md:text-xl font-extrabold text-primary mb-1">Veterinarian Partner Registration</h1>
+            <p className="font-body-md text-[11px] text-on-surface-variant max-w-lg mx-auto">
               Join PawsIndia's veterinary network. Complete your professional profile and upload your VCI Registration Certificate for instant verification.
             </p>
           </div>
 
-          <form onSubmit={handleRegister} className="space-y-6 relative z-10">
+          <form onSubmit={handleRegister} className="space-y-3 relative z-10">
             {/* Section 1: Doctor Personal Information */}
-            <div className="space-y-4">
-              <h2 className="font-headline-sm text-base font-bold text-on-surface border-b border-outline-variant/30 pb-2 flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[20px]">person</span> Personal & Account Details
+            <div className="space-y-2">
+              <h2 className="font-headline-sm text-xs font-bold text-on-surface border-b border-outline-variant/30 pb-1 flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-primary text-[16px]">person</span> Personal & Account Details
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <div>
                   <label className="form-label">Full Name (with Prefix) *</label>
                   <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="Dr. Ananya Sharma" className="input-standard" pattern="^[A-Za-z\s.]{3,50}$" title="Name must contain only alphabets/spaces/dots and be at least 3 characters long" minLength="3" maxLength="50" />
@@ -208,18 +208,18 @@ const VetRegister = () => {
                 </div>
                 <div>
                   <label className="form-label">Profile Photo (Optional)</label>
-                  <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'photoUrl')} disabled={loading} className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" />
+                  <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'photoUrl')} disabled={loading} className="w-full px-2 py-1 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-[11px] focus:outline-none focus:border-primary focus:ring-1 transition-all file:mr-3 file:py-0.5 file:px-2 file:rounded-full file:border-0 file:text-[10px] file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" />
                   {formData.photoUrl && <p className="text-xs text-emerald-600 font-bold mt-1">✓ Photo uploaded</p>}
                 </div>
               </div>
             </div>
 
             {/* Section 2: VCI Credentials & Qualification */}
-            <div className="space-y-4">
-              <h2 className="font-headline-sm text-base font-bold text-on-surface border-b border-outline-variant/30 pb-2 flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[20px]">badge</span> VCI License & Education
+            <div className="space-y-2">
+              <h2 className="font-headline-sm text-xs font-bold text-on-surface border-b border-outline-variant/30 pb-1 flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-primary text-[16px]">badge</span> VCI License & Education
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <div>
                   <label className="form-label">VCI Registration Number *</label>
                   <input type="text" name="vciNumber" value={formData.vciNumber} onChange={handleChange} required placeholder="e.g. VCI-2024-8891" className="input-standard font-mono" pattern="^[A-Za-z0-9\-]+$" title="VCI number can only contain letters, numbers, and hyphens" />
@@ -238,18 +238,18 @@ const VetRegister = () => {
                 </div>
                 <div className="md:col-span-2">
                   <label className="form-label">Upload VCI Certificate / License (Required)</label>
-                  <input type="file" accept="image/*,.pdf" onChange={(e) => handleFileUpload(e, 'licenseCertUrl')} disabled={loading} required={!formData.licenseCertUrl} className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" />
+                  <input type="file" accept="image/*,.pdf" onChange={(e) => handleFileUpload(e, 'licenseCertUrl')} disabled={loading} required={!formData.licenseCertUrl} className="w-full px-2 py-1 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-[11px] focus:outline-none focus:border-primary focus:ring-1 transition-all file:mr-3 file:py-0.5 file:px-2 file:rounded-full file:border-0 file:text-[10px] file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" />
                   {formData.licenseCertUrl && <p className="text-xs text-emerald-600 font-bold mt-1">✓ Certificate uploaded successfully</p>}
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold font-label-md text-on-surface mb-2">Specializations & Focus Areas</label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                <label className="block text-[10px] font-bold font-label-md text-on-surface mb-1">Specializations & Focus Areas</label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
                   {Object.keys(specializations).map(spec => (
-                    <label key={spec} className="flex items-center gap-2 p-2 bg-surface-container-low border border-outline-variant/40 rounded-xl cursor-pointer hover:border-primary">
-                      <input type="checkbox" checked={specializations[spec]} onChange={() => handleSpecChange(spec)} className="w-4 h-4 text-primary rounded" />
-                      <span className="text-xs font-semibold text-on-surface">{spec}</span>
+                    <label key={spec} className="flex items-center gap-1.5 p-1.5 bg-surface-container-low border border-outline-variant/40 rounded-lg cursor-pointer hover:border-primary">
+                      <input type="checkbox" checked={specializations[spec]} onChange={() => handleSpecChange(spec)} className="w-3.5 h-3.5 text-primary rounded" />
+                      <span className="text-[11px] font-semibold text-on-surface">{spec}</span>
                     </label>
                   ))}
                 </div>
@@ -257,11 +257,11 @@ const VetRegister = () => {
             </div>
 
             {/* Section 3: Practice & Clinic Location */}
-            <div className="space-y-4">
-              <h2 className="font-headline-sm text-base font-bold text-on-surface border-b border-outline-variant/30 pb-2 flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[20px]">location_on</span> Clinic & Consultation Details
+            <div className="space-y-2">
+              <h2 className="font-headline-sm text-xs font-bold text-on-surface border-b border-outline-variant/30 pb-1 flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-primary text-[16px]">location_on</span> Clinic & Consultation Details
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <div>
                   <label className="form-label">Clinic / Hospital Name</label>
                   <input type="text" name="clinicName" value={formData.clinicName} onChange={handleChange} placeholder="PawsCare Pet Hospital" className="input-standard" />
@@ -272,7 +272,7 @@ const VetRegister = () => {
                 </div>
                 <div>
                   <label className="form-label">Consultation Fee (₹) *</label>
-                  <input type="number" name="consultationFee" min="0" value={formData.consultationFee} onChange={handleChange} required className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm font-bold text-primary focus:outline-none focus:border-primary focus:ring-1 transition-all" />
+                  <input type="number" name="consultationFee" min="0" value={formData.consultationFee} onChange={handleChange} required className="w-full px-2.5 py-1.5 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-xs font-bold text-primary focus:outline-none focus:border-primary focus:ring-1 transition-all" />
                 </div>
                 <div>
                   <label className="form-label">Clinic Landline / Helpline</label>
@@ -280,22 +280,22 @@ const VetRegister = () => {
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Professional Bio / Profile Summary</label>
-                <textarea name="about" value={formData.about} onChange={handleChange} rows="3" placeholder="Describe your clinical expertise..." className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm resize-none focus:outline-none focus:border-primary focus:ring-1 transition-all"></textarea>
+                <label className="block text-[10px] font-bold font-label-md text-on-surface mb-0.5">Professional Bio / Profile Summary</label>
+                <textarea name="about" value={formData.about} onChange={handleChange} rows="2" placeholder="Describe your clinical expertise..." className="w-full px-2.5 py-1.5 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-xs resize-none focus:outline-none focus:border-primary focus:ring-1 transition-all"></textarea>
               </div>
             </div>
 
-            <div className="pt-2">
-              <label className="flex items-start gap-3 cursor-pointer">
-                <input type="checkbox" name="terms" checked={formData.terms} onChange={handleChange} required className="w-4 h-4 text-primary rounded border-outline-variant mt-0.5" />
-                <span className="text-xs text-on-surface-variant">
+            <div className="pt-1">
+              <label className="flex items-start gap-2 cursor-pointer">
+                <input type="checkbox" name="terms" checked={formData.terms} onChange={handleChange} required className="w-3.5 h-3.5 text-primary rounded border-outline-variant mt-0.5" />
+                <span className="text-[11px] text-on-surface-variant">
                   I declare that I hold a valid B.V.Sc / M.V.Sc degree recognized by VCI and agree to the 
                   <Link to="#" className="text-primary font-bold hover:underline"> VCI Telehealth Code of Ethics</Link>.
                 </span>
               </label>
             </div>
 
-              <button type="submit" disabled={loading} className="btn-primary w-full mt-2 py-4">
+              <button type="submit" disabled={loading} className="btn-primary w-full mt-1 py-2">
               {loading ? <span>Processing...</span> : <span>Submit Profile for VCI Verification</span>}
               <span className="material-symbols-outlined text-base">verified</span>
             </button>

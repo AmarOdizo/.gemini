@@ -133,14 +133,14 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center items-center p-4 sm:p-6 font-['Hanken_Grotesk'] relative overflow-hidden selection:bg-emerald-500 selection:text-black">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center items-center p-3 sm:p-4 font-['Hanken_Grotesk'] relative overflow-hidden selection:bg-emerald-500 selection:text-black">
       {/* Dynamic Background Glowing Blobs */}
       <div className="absolute top-1/4 -left-32 w-96 h-96 bg-emerald-600/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-teal-500/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-10 right-1/3 w-64 h-64 bg-cyan-600/10 rounded-full blur-2xl pointer-events-none" />
 
       {/* Top Brand Bar */}
-      <div className="w-full max-w-md mb-6 flex items-center justify-between z-10">
+      <div className="w-full max-w-md mb-3 flex items-center justify-between z-10">
         <Link
           to="/"
           className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-emerald-400 transition-colors"
@@ -156,25 +156,25 @@ const AdminLogin = () => {
       </div>
 
       {/* Main Admin Card */}
-      <div className="w-full max-w-md bg-slate-900/90 backdrop-blur-xl border border-slate-800/90 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/60 relative z-10">
+      <div className="w-full max-w-md bg-slate-900/90 backdrop-blur-xl border border-slate-800/90 rounded-2xl p-4 sm:p-6 shadow-2xl shadow-black/60 relative z-10">
         {/* Header with Emblem */}
-        <div className="flex flex-col items-center text-center mb-6">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-600 p-[2px] shadow-lg shadow-emerald-500/30 mb-5 relative group overflow-hidden">
+        <div className="flex flex-col items-center text-center mb-4">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-600 p-[2px] shadow-lg shadow-emerald-500/30 mb-3 relative group overflow-hidden">
             <div className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-            <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center relative z-10">
-              <span className="material-symbols-outlined text-3xl text-transparent bg-clip-text bg-gradient-to-tr from-emerald-400 to-teal-200">
+            <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center relative z-10">
+              <span className="material-symbols-outlined text-2xl text-transparent bg-clip-text bg-gradient-to-tr from-emerald-400 to-teal-200">
                 pets
               </span>
             </div>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 text-[0.6875rem] font-bold tracking-wider uppercase text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-800/40 mb-3 shadow-inner">
+          <div className="inline-flex items-center gap-1.5 text-[0.625rem] font-bold tracking-wider uppercase text-emerald-400 bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-800/40 mb-2 shadow-inner">
             <span className="material-symbols-outlined text-[0.875rem]">verified_user</span>
             Restricted Clinical Access
           </div>
 
           <div className="flex items-center">
-            <Logo pawsColor="text-white" textSize="text-3xl sm:text-4xl" iconSize="text-4xl" />
+            <Logo pawsColor="text-white" textSize="text-2xl sm:text-3xl" iconSize="text-3xl" />
           </div>
           <p className="text-[0.6875rem] uppercase tracking-[0.2em] font-extrabold text-emerald-500/80 mt-1.5 max-w-xs">
             Admin Control Center
@@ -183,7 +183,7 @@ const AdminLogin = () => {
 
         {/* Error Alert */}
         {errorMsg && (
-          <div className="mb-5 p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-start gap-2.5 animate-in fade-in">
+          <div className="mb-3 p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-[11px] flex items-start gap-2 animate-in fade-in">
             <span className="material-symbols-outlined text-rose-400 text-base shrink-0 mt-0.5">
               error
             </span>
@@ -193,7 +193,7 @@ const AdminLogin = () => {
 
         {/* Success Alert */}
         {successMsg && (
-          <div className="mb-5 p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-start gap-2.5 animate-in fade-in">
+          <div className="mb-3 p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[11px] flex items-start gap-2 animate-in fade-in">
             <span className="material-symbols-outlined text-emerald-400 text-base shrink-0 mt-0.5">
               check_circle
             </span>
@@ -202,9 +202,9 @@ const AdminLogin = () => {
         )}
 
         {/* Form */}
-        <form onSubmit={handleAdminLogin} className="space-y-4">
+        <form onSubmit={handleAdminLogin} className="space-y-3">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+            <label className="block text-[11px] font-semibold text-slate-300 mb-1">
               Admin Email or Username
             </label>
             <div className="relative">
@@ -218,14 +218,14 @@ const AdminLogin = () => {
                 placeholder="e.g. admin@odizo.com"
                 required
                 autoFocus
-                className="w-full bg-slate-950/80 border border-slate-700/80 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all"
+                className="w-full bg-slate-950/80 border border-slate-700/80 rounded-lg pl-9 pr-3 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all"
               />
             </div>
           </div>
 
           <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-semibold text-slate-300">
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-[11px] font-semibold text-slate-300">
                 Security Password
               </label>
               <span className="text-[0.6875rem] text-slate-500">256-bit Encrypted</span>
@@ -240,7 +240,7 @@ const AdminLogin = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full bg-slate-950/80 border border-slate-700/80 rounded-xl pl-10 pr-11 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all"
+                className="w-full bg-slate-950/80 border border-slate-700/80 rounded-lg pl-9 pr-10 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all"
               />
               <button
                 type="button"
@@ -255,7 +255,7 @@ const AdminLogin = () => {
             </div>
           </div>
 
-          <div className="flex items-center justify-between text-xs pt-1">
+          <div className="flex items-center justify-between text-[11px] pt-0.5">
             <label className="flex items-center gap-2 text-slate-400 cursor-pointer hover:text-slate-300">
               <input
                 type="checkbox"
@@ -273,7 +273,7 @@ const AdminLogin = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-2 py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 text-slate-950 font-bold text-sm hover:from-emerald-400 hover:to-teal-500 transition-all duration-200 shadow-lg shadow-emerald-500/20 active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full mt-1 py-2 px-4 rounded-lg bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 text-slate-950 font-bold text-xs hover:from-emerald-400 hover:to-teal-500 transition-all duration-200 shadow-lg shadow-emerald-500/20 active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading ? (
               <>
@@ -293,16 +293,16 @@ const AdminLogin = () => {
         </form>
 
         {/* Quick Fill Demo Accounts */}
-        <div className="mt-6 pt-5 border-t border-slate-800/80">
-          <p className="text-[0.6875rem] uppercase font-bold tracking-wider text-slate-400 text-center mb-3">
+        <div className="mt-4 pt-3 border-t border-slate-800/80">
+          <p className="text-[0.625rem] uppercase font-bold tracking-wider text-slate-400 text-center mb-2">
             Quick 1-Click Demo Login
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
             <button
               type="button"
               onClick={() => handleQuickFill('admin@odizo.com', 'admin123')}
-              className="px-3 py-2 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-left border border-slate-700/60 transition-all group"
+              className="px-2.5 py-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-800 text-left border border-slate-700/60 transition-all group"
             >
               <div className="flex items-center justify-between">
                 <span className="text-[0.6875rem] font-bold text-emerald-400">Odizo Admin</span>
@@ -315,7 +315,7 @@ const AdminLogin = () => {
             <button
               type="button"
               onClick={() => handleQuickFill('admin@petcare.org', 'admin123')}
-              className="px-3 py-2 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-left border border-slate-700/60 transition-all group"
+              className="px-2.5 py-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-800 text-left border border-slate-700/60 transition-all group"
             >
               <div className="flex items-center justify-between">
                 <span className="text-[0.6875rem] font-bold text-teal-400">Chief Clinical</span>
@@ -328,7 +328,7 @@ const AdminLogin = () => {
         </div>
 
         {/* Security Notice */}
-        <div className="mt-5 text-center">
+        <div className="mt-3 text-center">
           <p className="text-[0.625rem] text-slate-500 flex items-center justify-center gap-1">
             <span className="material-symbols-outlined text-[0.875rem] text-slate-500">shield</span>
             Authorized clinical governance personnel only. All access is logged with IP & timestamp.
@@ -337,7 +337,7 @@ const AdminLogin = () => {
       </div>
 
       {/* Footer Navigation */}
-      <div className="mt-6 flex items-center justify-center text-xs text-slate-500 z-10">
+      <div className="mt-3 flex items-center justify-center text-[11px] text-slate-500 z-10">
         <Link to="/login" className="hover:text-slate-300 transition-colors">
           Pet Parent & Doctor Login
         </Link>

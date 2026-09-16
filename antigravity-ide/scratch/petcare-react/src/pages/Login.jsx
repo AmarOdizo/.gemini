@@ -53,11 +53,11 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-surface text-on-surface antialiased min-h-screen flex items-center justify-center p-4 md:p-8">
-      <main className="w-full max-w-5xl flex flex-col md:flex-row bg-surface-container-lowest rounded-2xl overflow-hidden shadow-xl border border-outline-variant/30 min-h-[600px]">
+    <div className="bg-surface text-on-surface antialiased min-h-screen flex items-center justify-center p-2 md:p-4">
+      <main className="w-full max-w-4xl flex flex-col md:flex-row bg-surface-container-lowest rounded-2xl overflow-hidden shadow-xl border border-outline-variant/30">
         {/* Left Side */}
         <div 
-          className="hidden md:flex md:w-1/2 relative bg-surface-container-low flex-col justify-between p-8 bg-cover bg-center" 
+          className="hidden md:flex md:w-1/2 relative bg-surface-container-low flex-col justify-between p-6 bg-cover bg-center" 
           style={{ backgroundImage: "linear-gradient(to bottom, rgba(0,69,65,0.75), rgba(0,32,30,0.9)), url('https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=1000&auto=format&fit=crop')" }}
         >
           <Link to="/" className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-2xl w-max border border-white/20">
@@ -67,12 +67,12 @@ const Login = () => {
             </div>
           </Link>
 
-          <div className="space-y-3 text-white">
-            <div className="inline-flex items-center gap-2 bg-emerald-500/30 text-emerald-200 text-xs px-3 py-1 rounded-full border border-emerald-400/30 font-bold">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Pet Parent & Vet Access
+          <div className="space-y-2 text-white">
+            <div className="inline-flex items-center gap-2 bg-emerald-500/30 text-emerald-200 text-[10px] px-2.5 py-0.5 rounded-full border border-emerald-400/30 font-bold">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Pet Parent & Vet Access
             </div>
-            <h2 className="text-3xl font-extrabold font-headline-lg leading-tight">One Portal for Pet Care & Clinical Management.</h2>
-            <p className="text-xs text-surface-variant/90 leading-relaxed font-body-md">
+            <h2 className="text-2xl font-extrabold font-headline-lg leading-tight">One Portal for Pet Care & Clinical Management.</h2>
+            <p className="text-[11px] text-surface-variant/90 leading-relaxed font-body-md">
               Seamlessly manage your pet's appointments, health records, and prescriptions or access doctor telehealth tools.
             </p>
           </div>
@@ -84,68 +84,68 @@ const Login = () => {
         </div>
 
         {/* Right Side */}
-        <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-10 relative bg-surface-container-lowest space-y-6">
+        <div className="w-full md:w-1/2 flex flex-col justify-center p-4 md:p-6 relative bg-surface-container-lowest space-y-3">
           <div className="md:hidden flex items-center mb-2">
             <Logo />
           </div>
 
-          <div className="space-y-1">
-            <label className="block font-label-md text-xs font-bold text-primary uppercase tracking-wider">Select Login Account Type</label>
-            <div className="grid grid-cols-2 gap-1 bg-surface-container-low p-1.5 rounded-2xl border border-outline-variant/30 text-xs font-bold">
+          <div className="space-y-0.5">
+            <label className="block font-label-md text-[10px] font-bold text-primary uppercase tracking-wider">Select Login Account Type</label>
+            <div className="grid grid-cols-2 gap-1 bg-surface-container-low p-1 rounded-xl border border-outline-variant/30 text-[11px] font-bold">
               <button 
                 type="button" 
                 onClick={() => switchRole('owner')} 
-                className={`py-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 ${role === 'owner' ? 'bg-primary text-white' : 'text-on-surface-variant hover:bg-surface-container'}`}
+                className={`py-1.5 rounded-lg transition-all shadow-sm flex items-center justify-center gap-1 ${role === 'owner' ? 'bg-primary text-white' : 'text-on-surface-variant hover:bg-surface-container'}`}
               >
-                <span className="material-symbols-outlined text-[18px]">pets</span> Pet Parent Login
+                <span className="material-symbols-outlined text-[16px]">pets</span> Pet Parent Login
               </button>
               <button 
                 type="button" 
                 onClick={() => switchRole('vet')} 
-                className={`py-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 ${role === 'vet' ? 'bg-primary text-white' : 'text-on-surface-variant hover:bg-surface-container'}`}
+                className={`py-1.5 rounded-lg transition-all shadow-sm flex items-center justify-center gap-1 ${role === 'vet' ? 'bg-primary text-white' : 'text-on-surface-variant hover:bg-surface-container'}`}
               >
-                <span className="material-symbols-outlined text-[18px]">stethoscope</span> Doctor (Vet) Login
+                <span className="material-symbols-outlined text-[16px]">stethoscope</span> Doctor (Vet) Login
               </button>
             </div>
           </div>
 
           <div>
-            <h2 className="text-2xl font-extrabold font-headline-lg text-on-surface mb-2 tracking-tight">
+            <h2 className="text-lg font-extrabold font-headline-lg text-on-surface mb-1 tracking-tight">
               {role === 'owner' ? 'Welcome back, Pet Parent.' : 'Welcome back, Doctor.'}
             </h2>
-            <p className="text-sm font-body-sm text-on-surface-variant">
+            <p className="text-xs font-body-sm text-on-surface-variant">
               Enter your registered email and password to access your secure portal.
             </p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div className="space-y-1">
+          <form onSubmit={handleLogin} className="space-y-3">
+            <div className="space-y-0.5">
               <label className="form-label">Email Address <span className="text-error">*</span></label>
               <div className="relative">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-outline-variant text-[20px]">mail</span>
+                <span className="material-symbols-outlined absolute left-2.5 top-1/2 transform -translate-y-1/2 text-outline-variant text-[16px]">mail</span>
                 <input 
                   type="email" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="input-standard pl-10" 
+                  className="input-standard pl-8" 
                   placeholder="name@example.com" 
                   required 
                 />
               </div>
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               <div className="flex justify-between items-center">
                 <label className="form-label">Password <span className="text-error">*</span></label>
                 <Link to="#" className="text-[11px] font-bold text-primary hover:underline">Forgot password?</Link>
               </div>
               <div className="relative">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-outline-variant text-[20px]">lock</span>
+                <span className="material-symbols-outlined absolute left-2.5 top-1/2 transform -translate-y-1/2 text-outline-variant text-[16px]">lock</span>
                 <input 
                   type="password" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="input-standard pl-10" 
+                  className="input-standard pl-8" 
                   placeholder="Enter your password" 
                   required 
                 />
@@ -155,7 +155,7 @@ const Login = () => {
             <button 
               type="submit" 
               disabled={loading}
-              className="btn-primary w-full mt-4"
+              className="btn-primary w-full mt-2"
             >
               {loading ? (
                 <>
@@ -169,7 +169,7 @@ const Login = () => {
             </button>
           </form>
 
-          <div className="text-center text-xs font-body-sm text-on-surface-variant pt-2 flex flex-col gap-1.5">
+          <div className="text-center text-[11px] font-body-sm text-on-surface-variant pt-1 flex flex-col gap-1">
             <div>
               Don't have an account?{' '}
               <Link to={role === 'vet' ? '/vet-register' : '/register'} className="font-bold text-primary hover:underline">

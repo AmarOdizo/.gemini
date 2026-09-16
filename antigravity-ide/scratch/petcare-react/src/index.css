@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    font-size: 14px;
+  }
+}
+
 @layer components {
   /* Common utilities found in the HTML */
   .material-symbols-outlined {
@@ -31,18 +37,18 @@
   }
   
   .input-standard {
-    @apply w-full px-4 py-2.5 border border-outline-variant/60 rounded-xl bg-surface-container-lowest text-on-surface font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder-outline-variant;
+    @apply w-full px-2.5 py-1.5 border border-outline-variant/60 rounded-lg bg-surface-container-lowest text-on-surface font-body-sm text-xs focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder-outline-variant;
   }
   
   .form-label {
-    @apply block font-label-md text-xs font-bold text-on-surface mb-1 tracking-wide;
+    @apply block font-label-md text-[10px] font-bold text-on-surface mb-0.5 tracking-wide;
   }
 
   .btn-primary {
-    @apply flex items-center justify-center gap-2 bg-primary text-on-primary font-label-md font-bold px-6 py-3 rounded-xl hover:bg-primary/90 hover:shadow-md transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply flex items-center justify-center gap-1.5 bg-primary text-on-primary font-label-md font-bold px-4 py-1.5 rounded-xl hover:bg-primary/90 hover:shadow-md transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-xs;
   }
 
   .btn-secondary {
-    @apply flex items-center justify-center gap-2 bg-transparent text-primary border border-primary font-label-md font-bold px-6 py-3 rounded-xl hover:bg-primary/5 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply flex items-center justify-center gap-1.5 bg-transparent text-primary border border-primary font-label-md font-bold px-4 py-1.5 rounded-xl hover:bg-primary/5 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-xs;
   }
 }
