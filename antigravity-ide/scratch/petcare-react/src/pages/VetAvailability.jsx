@@ -120,87 +120,87 @@ const VetAvailability = () => {
   }
 
   return (
-    <main className="p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full">
+    <main className="p-3 md:p-4 pb-20 md:pb-4 flex flex-col gap-3 max-w-[1280px] mx-auto w-full">
         <TopNav title="Manage Availability" subtitle="Configure your weekly consultation slots and emergency duty switches." />
 
         <div className="flex justify-end">
           <button 
             onClick={handleSave} 
             disabled={saving}
-            className="bg-primary text-white px-6 py-2.5 rounded-xl font-bold shadow-md hover:bg-surface-tint transition-all flex items-center gap-2"
+            className="bg-primary text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-surface-tint hover:-translate-y-0.5 transition-all flex items-center gap-1.5 active:translate-y-0"
           >
-            {saving ? <span className="material-symbols-outlined animate-spin">sync</span> : <span className="material-symbols-outlined text-[20px]">save</span>}
+            {saving ? <span className="material-symbols-outlined animate-spin text-[16px]">sync</span> : <span className="material-symbols-outlined text-[16px]">save</span>}
             {saving ? 'Saving...' : 'Save Schedule Settings'}
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30 shadow-sm flex items-center justify-between">
-            <div className="space-y-1">
-              <span className="text-[10px] font-bold text-red-700 bg-red-50 px-2.5 py-0.5 rounded-full border border-red-200 uppercase tracking-wider">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="bg-surface-container-lowest rounded-xl p-3 md:p-4 border border-outline-variant/30 shadow-sm flex items-center justify-between">
+            <div className="space-y-0.5">
+              <span className="text-[9px] font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded border border-red-200 uppercase tracking-wider">
                 24/7 On-Call Duty
               </span>
-              <h3 className="font-headline-sm text-base font-bold text-on-surface">Emergency On-Call</h3>
-              <p className="text-xs text-on-surface-variant">Allow urgent emergency calls at ₹999/call.</p>
+              <h3 className="font-headline-sm text-sm font-bold text-on-surface">Emergency On-Call</h3>
+              <p className="text-[10px] text-on-surface-variant">Allow urgent emergency calls at ₹999/call.</p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" className="sr-only peer" checked={emergencyDuty} onChange={(e) => setEmergencyDuty(e.target.checked)} />
-              <div className="w-11 h-6 bg-surface-container-high peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+              <div className="w-9 h-5 bg-surface-container-high peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-red-600"></div>
             </label>
           </div>
 
-          <div className="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30 shadow-sm flex items-center justify-between">
-            <div className="space-y-1">
-              <span className="text-[10px] font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full border border-primary/20 uppercase tracking-wider">
+          <div className="bg-surface-container-lowest rounded-xl p-3 md:p-4 border border-outline-variant/30 shadow-sm flex items-center justify-between">
+            <div className="space-y-0.5">
+              <span className="text-[9px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20 uppercase tracking-wider">
                 Consultation Modes
               </span>
-              <h3 className="font-headline-sm text-base font-bold text-on-surface">Accept Telehealth Calls</h3>
-              <p className="text-xs text-on-surface-variant">Toggle video consultations on/off.</p>
+              <h3 className="font-headline-sm text-sm font-bold text-on-surface">Accept Telehealth Calls</h3>
+              <p className="text-[10px] text-on-surface-variant">Toggle video consultations on/off.</p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" className="sr-only peer" checked={telehealthMode} onChange={(e) => setTelehealthMode(e.target.checked)} />
-              <div className="w-11 h-6 bg-surface-container-high peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+              <div className="w-9 h-5 bg-surface-container-high peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
             </label>
           </div>
         </div>
 
-        <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden mt-2">
-          <div className="p-5 border-b border-outline-variant/50 bg-surface-container-low flex justify-between items-center">
-            <h3 className="font-headline-sm text-lg font-bold">Weekly Schedule Settings</h3>
-            <button onClick={handleReset} className="text-xs font-bold text-primary bg-primary/10 px-3 py-1.5 rounded-lg hover:bg-primary/20 transition-colors">
+        <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-sm overflow-hidden mt-1">
+          <div className="p-3 md:p-4 border-b border-outline-variant/50 bg-surface-container-low flex justify-between items-center">
+            <h3 className="font-headline-sm text-sm font-bold">Weekly Schedule Settings</h3>
+            <button onClick={handleReset} className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-1 rounded hover:bg-primary/20 transition-colors border border-primary/20">
               Reset to Default
             </button>
           </div>
-          <div className="p-5">
-            <p className="text-sm text-on-surface-variant mb-6">Define your working hours for each day of the week. Uncheck the box to mark a day as Off-Duty.</p>
+          <div className="p-3 md:p-4">
+            <p className="text-[11px] text-on-surface-variant mb-4">Define your working hours for each day of the week. Uncheck the box to mark a day as Off-Duty.</p>
             
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-3">
               {availability.map((dayObj, index) => (
-                <div key={dayObj.day} className={`flex flex-col md:flex-row md:items-center gap-4 p-4 rounded-xl border border-outline-variant/20 transition-colors ${dayObj.active ? 'bg-surface-bright hover:border-primary/40' : 'bg-surface-container-low opacity-70'}`}>
-                  <label className="flex items-center gap-3 md:w-1/3">
+                <div key={dayObj.day} className={`flex flex-col md:flex-row md:items-center justify-between gap-2 p-2.5 rounded-lg border transition-colors ${dayObj.active ? 'bg-surface-bright border-outline-variant/30 hover:border-primary/40' : 'bg-surface-container-low border-outline-variant/20 opacity-70'}`}>
+                  <label className="flex items-center gap-2">
                     <input 
                       type="checkbox" 
-                      className="w-5 h-5 rounded text-primary border-outline-variant focus:ring-primary" 
+                      className="w-4 h-4 rounded text-primary border-outline-variant focus:ring-primary" 
                       checked={dayObj.active} 
                       onChange={(e) => handleAvailabilityChange(index, 'active', e.target.checked)}
                     />
-                    <span className="font-bold text-on-surface text-sm">{dayObj.day}</span>
+                    <span className="font-bold text-on-surface text-xs">{dayObj.day}</span>
                   </label>
-                  <div className="flex items-center gap-3 md:flex-1">
+                  <div className="flex items-center gap-1.5 w-full md:w-auto">
                     <select 
                       value={dayObj.slots[0] || "09:00 AM"} 
                       disabled={!dayObj.active}
                       onChange={(e) => handleAvailabilityChange(index, 'start', e.target.value)}
-                      className="bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-sm font-semibold focus:outline-none focus:border-primary focus:ring-1 disabled:opacity-50 appearance-none" 
+                      className="flex-1 md:flex-none bg-surface-container-lowest border border-outline-variant/50 rounded-md px-2 py-1 text-[11px] font-semibold focus:outline-none focus:border-primary focus:ring-1 disabled:opacity-50 appearance-none shadow-xs text-center" 
                     >
                       {TIME_OPTIONS.map(time => <option key={`start-${time}`} value={time}>{time}</option>)}
                     </select>
-                    <span className="text-xs font-bold text-on-surface-variant uppercase">To</span>
+                    <span className="text-[10px] font-bold text-on-surface-variant uppercase text-center">-</span>
                     <select 
                       value={dayObj.slots[1] || "05:00 PM"} 
                       disabled={!dayObj.active}
                       onChange={(e) => handleAvailabilityChange(index, 'end', e.target.value)}
-                      className="bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-sm font-semibold focus:outline-none focus:border-primary focus:ring-1 disabled:opacity-50 appearance-none" 
+                      className="flex-1 md:flex-none bg-surface-container-lowest border border-outline-variant/50 rounded-md px-2 py-1 text-[11px] font-semibold focus:outline-none focus:border-primary focus:ring-1 disabled:opacity-50 appearance-none shadow-xs text-center" 
                     >
                       {TIME_OPTIONS.map(time => <option key={`end-${time}`} value={time}>{time}</option>)}
                     </select>
