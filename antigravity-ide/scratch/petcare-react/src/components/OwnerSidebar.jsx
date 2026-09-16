@@ -1,5 +1,5 @@
-import React from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
+import Logo from './Logo';
 
 const OwnerSidebar = () => {
   const navigate = useNavigate();
@@ -24,14 +24,9 @@ const OwnerSidebar = () => {
       {/* Desktop Sidebar */}
       <nav className="bg-surface/80 backdrop-blur-md border-r border-outline-variant/30 hidden md:flex flex-col h-screen w-[280px] p-6 gap-6 fixed left-0 top-0 z-40 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
         {/* Header Brand */}
-        <Link to="/" className="flex items-center gap-3 mb-4 px-2 group">
-          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:scale-105 transition-transform">
-            <span className="material-symbols-outlined text-primary text-2xl filled-icon">pets</span>
-          </div>
+        <Link to="/" className="flex items-center mb-4 px-2 group">
           <div>
-            <h1 className="font-headline-sm text-xl font-black text-primary tracking-tight">
-              Paws<span className="text-[#FF9933]">India</span> 🇮🇳
-            </h1>
+            <Logo iconSize="text-3xl" textSize="text-xl" />
             <p className="font-label-md text-[10px] uppercase tracking-wider text-on-surface-variant font-bold">Veterinary Portal</p>
           </div>
         </Link>

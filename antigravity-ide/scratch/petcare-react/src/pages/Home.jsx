@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Logo from '../components/Logo';
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -24,8 +25,7 @@ const Home = () => {
       <nav className="sticky top-0 z-50 flex justify-between items-center w-full px-4 md:px-8 h-16 bg-surface border-b border-outline-variant">
         <div className="flex items-center gap-4">
           <Link className="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2" to="/">
-            <span className="material-symbols-outlined text-primary text-2xl filled-icon">pets</span>
-            <span>Paws<span className="text-[#FF9933]">India</span> <span className="text-sm">🇮🇳</span></span>
+            <Logo iconSize="text-2xl" textSize="text-xl" />
           </Link>
         </div>
 
@@ -149,8 +149,7 @@ const Home = () => {
       <footer className="bg-surface-container-highest w-full py-8 px-4 md:px-8 flex flex-col gap-8 border-t border-outline-variant">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 w-full max-w-container-max mx-auto">
           <Link className="font-headline-sm text-xl font-bold text-primary flex items-center gap-2" to="/">
-            <span className="material-symbols-outlined text-primary text-2xl filled-icon">pets</span>
-            <span>Paws<span className="text-[#FF9933]">India</span> 🇮🇳</span>
+            <Logo iconSize="text-2xl" textSize="text-xl" />
           </Link>
           <div className="flex flex-wrap justify-center gap-6">
             <Link className="font-label-md text-on-surface-variant hover:text-primary transition-colors" to="/">Home</Link>

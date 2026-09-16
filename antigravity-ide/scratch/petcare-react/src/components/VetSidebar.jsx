@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
+import Logo from './Logo';
 
 const VetSidebar = () => {
   const navigate = useNavigate();
@@ -32,11 +33,8 @@ const VetSidebar = () => {
       <nav className="bg-surface-container-low border-r border-outline-variant/30 hidden md:flex flex-col h-screen w-[280px] p-6 gap-4 fixed left-0 top-0 z-40 no-print">
         {/* Header Brand */}
         <Link to="/" className="flex items-center gap-3 mb-6 px-2">
-          <span className="material-symbols-outlined text-primary text-3xl filled-icon">pets</span>
           <div>
-            <h1 className="font-headline-sm text-lg font-black text-primary">
-              Paws<span className="text-[#FF9933]">India</span> 🇮🇳
-            </h1>
+            <Logo iconSize="text-3xl" textSize="text-lg" />
             <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">
               Doctor Command Portal
             </p>

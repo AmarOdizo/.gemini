@@ -356,7 +356,7 @@ const MyPets = () => {
           <p className="text-xs font-bold text-on-surface-variant">Loading pet profiles...</p>
         </div>
       ) : filteredPets.length === 0 ? (
-        <div className="text-center bg-surface-container-lowest border border-dashed border-outline-variant rounded-2xl p-8 space-y-4 min-h-[400px] flex flex-col items-center justify-center">
+        <div className="text-center bg-surface-container-lowest border border-dashed border-outline-variant rounded-2xl p-8 space-y-4 h-[480px] flex flex-col items-center justify-center w-full">
           <span className="material-symbols-outlined text-5xl text-outline-variant">pets</span>
           <div>
             <h3 className="text-lg font-bold text-on-surface">No Pet Companions Found</h3>
@@ -374,7 +374,7 @@ const MyPets = () => {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[500px] content-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 content-start">
           {filteredPets.map((pet) => {
             const petSpecies = pet.species || pet.type;
             const petImg = pet.image || DEFAULT_PET_IMAGES[petSpecies] || DEFAULT_PET_IMAGES.Other;

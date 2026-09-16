@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
+import Logo from '../components/Logo';
 const Register = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -94,11 +94,8 @@ const Register = () => {
           </div>
           
           <div className="relative z-10 flex flex-col h-full justify-between">
-            <Link to="/" className="flex items-center gap-3">
-              <div className="bg-white p-2 rounded-xl shadow-sm">
-                <span className="material-symbols-outlined text-primary text-2xl filled-icon">pets</span>
-              </div>
-              <h1 className="font-headline-md text-xl font-black text-white tracking-tight">Paws<span className="text-[#FF9933]">India</span> 🇮🇳</h1>
+            <Link to="/" className="flex items-center">
+              <Logo pawsColor="text-white" textSize="text-3xl" iconSize="text-3xl" />
             </Link>
 
             <div className="space-y-6">
@@ -124,9 +121,8 @@ const Register = () => {
         {/* Right Side: Registration Form */}
         <div className="w-full md:w-7/12 p-6 md:p-10 bg-surface-container-lowest flex flex-col justify-center relative overflow-y-auto">
           
-          <div className="md:hidden flex items-center gap-2 mb-6 pb-4 border-b border-outline-variant/30">
-            <span className="material-symbols-outlined text-primary text-2xl filled-icon">pets</span>
-            <span className="font-headline-md text-lg font-bold text-primary">PawsIndia PetCare</span>
+          <div className="md:hidden flex items-center mb-6 pb-4 border-b border-outline-variant/30">
+            <Logo />
           </div>
 
           <div className="mb-8">

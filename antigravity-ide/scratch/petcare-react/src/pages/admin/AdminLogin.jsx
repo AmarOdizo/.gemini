@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { API_BASE } from '../../services/adminApi';
+import Logo from '../../components/Logo';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -172,9 +173,9 @@ const AdminLogin = () => {
             Restricted Clinical Access
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white via-emerald-50 to-teal-100 flex items-center gap-2">
-            PawsIndia <span className="text-2xl grayscale-[0.2]">🇮🇳</span>
-          </h1>
+          <div className="flex items-center">
+            <Logo pawsColor="text-white" textSize="text-3xl sm:text-4xl" iconSize="text-4xl" />
+          </div>
           <p className="text-[0.6875rem] uppercase tracking-[0.2em] font-extrabold text-emerald-500/80 mt-1.5 max-w-xs">
             Admin Control Center
           </p>

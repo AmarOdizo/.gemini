@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import Logo from '../components/Logo';
 
 const VetRegister = () => {
   const [formData, setFormData] = useState({
@@ -156,9 +157,9 @@ const VetRegister = () => {
   return (
     <div className="bg-surface text-on-surface antialiased min-h-screen flex flex-col">
       <header className="sticky top-0 z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 px-6 py-4 flex justify-between items-center">
-        <Link to="/" className="flex items-center gap-2 text-primary hover:opacity-80 transition-opacity">
-          <span className="material-symbols-outlined text-2xl filled-icon">pets</span>
-          <span className="font-headline-sm font-black text-lg">PawsIndia <span className="font-body-sm font-normal text-on-surface-variant">| VCI Doctors</span></span>
+        <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <Logo iconSize="text-2xl" textSize="text-xl" />
+          <span className="font-headline-sm font-black text-lg"><span className="font-body-sm font-normal text-on-surface-variant">| VCI Doctors</span></span>
         </Link>
         <div className="flex items-center gap-3">
           <span className="text-xs text-on-surface-variant hidden sm:inline">Already registered?</span>

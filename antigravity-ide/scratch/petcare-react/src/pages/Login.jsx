@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
+import Logo from '../components/Logo';
 const Login = () => {
   const [role, setRole] = useState('owner');
   const [email, setEmail] = useState('');
@@ -61,9 +61,8 @@ const Login = () => {
           style={{ backgroundImage: "linear-gradient(to bottom, rgba(0,69,65,0.75), rgba(0,32,30,0.9)), url('https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=1000&auto=format&fit=crop')" }}
         >
           <Link to="/" className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-2xl w-max border border-white/20">
-            <span className="material-symbols-outlined text-emerald-300 text-3xl filled-icon">pets</span>
-            <div>
-              <h1 className="font-headline-md text-xl font-black text-white">Paws<span className="text-[#FF9933]">India</span> 🇮🇳</h1>
+            <Logo pawsColor="text-white" textSize="text-3xl" iconSize="text-3xl" />
+            <div className="ml-2">
               <p className="text-[10px] text-emerald-100 font-bold uppercase tracking-wider">Unified Healthcare Portal</p>
             </div>
           </Link>
@@ -86,9 +85,8 @@ const Login = () => {
 
         {/* Right Side */}
         <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-10 relative bg-surface-container-lowest space-y-6">
-          <div className="md:hidden flex items-center gap-2 mb-2">
-            <span className="material-symbols-outlined text-primary text-3xl filled-icon">pets</span>
-            <span className="font-headline-md text-xl font-bold text-primary">PawsIndia PetCare</span>
+          <div className="md:hidden flex items-center mb-2">
+            <Logo />
           </div>
 
           <div className="space-y-1">
