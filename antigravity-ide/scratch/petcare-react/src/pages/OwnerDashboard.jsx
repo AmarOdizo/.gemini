@@ -171,99 +171,99 @@ const OwnerDashboard = () => {
   if (!user) return null;
 
   return (
-    <main className="p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full transition-opacity duration-300">
+    <main className="p-3 md:p-4 pb-20 md:pb-4 flex flex-col gap-3 max-w-[1280px] mx-auto w-full transition-opacity duration-300">
         <TopNav title={`Welcome back, ${user.name.split(' ')[0]}! 👋`} subtitle="Here's what's happening with your furry friends today." />
 
-        <div className="flex flex-col gap-6 w-full">
+        <div className="flex flex-col gap-3 w-full">
           {/* Search Bar */}
           <div className="relative w-full md:w-2/3 lg:w-1/2 group">
-            <span className="material-symbols-outlined absolute left-4 top-1/2 transform -translate-y-1/2 text-outline-variant group-focus-within:text-primary transition-colors">search</span>
+            <span className="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-outline-variant text-[18px] group-focus-within:text-primary transition-colors">search</span>
             <input 
               type="text" 
-              className="w-full pl-12 pr-4 py-3.5 bg-surface-container-lowest border border-outline-variant/50 rounded-2xl font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all shadow-sm hover:shadow-md" 
+              className="w-full pl-9 pr-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-xl font-body-sm text-xs focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all shadow-sm hover:shadow-md" 
               placeholder="Search for veterinarians, clinics, or services..." 
             />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
             {/* Left Column */}
-            <div className="lg:col-span-2 flex flex-col gap-8">
+            <div className="lg:col-span-2 flex flex-col gap-4">
               
+              {/* Your Registered Pets */}
               <section>
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="font-headline-sm text-xl text-on-surface font-black tracking-tight">Your Registered Pets</h3>
-                  <Link to="/my-pets" className="flex items-center gap-1 text-xs font-bold text-primary hover:text-primary-container transition-colors px-3 py-1.5 rounded-full hover:bg-surface-container-low">
-                    Manage Pets <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="font-headline-sm text-sm text-on-surface font-black tracking-tight">Your Registered Pets</h3>
+                  <Link to="/my-pets" className="flex items-center gap-0.5 text-[11px] font-bold text-primary hover:text-primary-container transition-colors px-2 py-1 rounded-full hover:bg-surface-container-low">
+                    Manage Pets <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                   </Link>
                 </div>
-                <div className="flex gap-4 overflow-x-auto pb-4 custom-scrollbar snap-x">
-                  <Link to="/my-pets" className="min-w-[160px] md:min-w-[200px] bg-surface-container-low border-2 border-dashed border-outline-variant/60 rounded-2xl p-6 flex flex-col items-center justify-center text-primary hover:bg-surface-container hover:border-primary/50 transition-all cursor-pointer shrink-0 snap-start hover:scale-[1.02]">
-                    <span className="material-symbols-outlined text-4xl mb-2 opacity-80">add_circle</span>
-                    <span className="font-label-md font-bold text-sm">Add New Pet</span>
+                <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar snap-x">
+                  <Link to="/my-pets" className="min-w-[120px] bg-surface-container-low border-2 border-dashed border-outline-variant/60 rounded-xl p-3 flex flex-col items-center justify-center text-primary hover:bg-surface-container hover:border-primary/50 transition-all cursor-pointer shrink-0 snap-start hover:scale-[1.02]">
+                    <span className="material-symbols-outlined text-2xl mb-1 opacity-80">add_circle</span>
+                    <span className="font-label-md font-bold text-[11px]">Add New Pet</span>
                   </Link>
-                  {/* If we had pets to display in the dashboard here, we would map them. Currently it's in the Quick Book section. */}
                 </div>
               </section>
 
               {/* Emergency On-Call Section */}
               <section>
-                <div className="flex justify-between items-end mb-4">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
-                      <span className="material-symbols-outlined text-red-600 text-[18px] filled-icon">emergency</span>
+                <div className="flex justify-between items-center mb-2">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center">
+                      <span className="material-symbols-outlined text-red-600 text-[14px] filled-icon">emergency</span>
                     </div>
-                    <h3 className="font-headline-sm text-xl text-on-surface font-black tracking-tight">Emergency On-Call</h3>
+                    <h3 className="font-headline-sm text-sm text-on-surface font-black tracking-tight">Emergency On-Call</h3>
                   </div>
-                  <Link to="/find-vets?emergency=true" className="text-red-600 font-label-md text-xs font-bold hover:text-red-800 transition-colors px-3 py-1.5 rounded-full hover:bg-red-50">View All Emergencies &rarr;</Link>
+                  <Link to="/find-vets?emergency=true" className="text-red-600 font-label-md text-[11px] font-bold hover:text-red-800 transition-colors px-2 py-1 rounded-full hover:bg-red-50">View All &rarr;</Link>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {loading ? (
                     Array.from({ length: 2 }).map((_, i) => (
-                      <div key={i} className="bg-red-50/50 border border-red-100 rounded-2xl p-4 flex gap-4 animate-pulse">
-                        <div className="w-16 h-16 rounded-xl bg-red-200/50 shrink-0"></div>
-                        <div className="flex flex-col gap-2 w-full justify-center">
-                          <div className="h-4 bg-red-200/50 rounded w-3/4"></div>
-                          <div className="h-3 bg-red-200/50 rounded w-1/2"></div>
+                      <div key={i} className="bg-red-50/50 border border-red-100 rounded-xl p-2.5 flex gap-2.5 animate-pulse">
+                        <div className="w-10 h-10 rounded-lg bg-red-200/50 shrink-0"></div>
+                        <div className="flex flex-col gap-1.5 w-full justify-center">
+                          <div className="h-3 bg-red-200/50 rounded w-3/4"></div>
+                          <div className="h-2.5 bg-red-200/50 rounded w-1/2"></div>
                         </div>
                       </div>
                     ))
                   ) : vets.filter(v => v.emergencyDuty).length > 0 ? (
                     vets.filter(v => v.emergencyDuty).slice(0, 4).map(vet => (
-                      <Link to={`/owner-dashboard/vet-profile?id=${vet._id || vet.id}`} key={vet._id} className="bg-red-50/80 border-2 border-red-200/60 rounded-2xl p-4 flex gap-4 hover:shadow-lg hover:border-red-400 transition-all cursor-pointer group hover:-translate-y-1 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-16 h-16 bg-red-200/30 rounded-bl-full -mr-4 -mt-4 z-0"></div>
-                        <img src={vet.photoUrl || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=100&auto=format&fit=crop"} alt={vet.name} className="w-16 h-16 rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform relative z-10 border border-red-200" />
+                      <Link to={`/owner-dashboard/vet-profile?id=${vet._id || vet.id}`} key={vet._id} className="bg-red-50/80 border border-red-200/60 rounded-xl p-2.5 flex gap-2.5 hover:shadow-md hover:border-red-400 transition-all cursor-pointer group hover:-translate-y-0.5 relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-10 h-10 bg-red-200/30 rounded-bl-full -mr-2 -mt-2 z-0"></div>
+                        <img src={vet.photoUrl || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=100&auto=format&fit=crop"} alt={vet.name} className="w-10 h-10 rounded-lg object-cover shadow-sm group-hover:scale-105 transition-transform relative z-10 border border-red-200" />
                         <div className="flex flex-col justify-center relative z-10">
-                          <h4 className="font-bold text-red-900 text-sm group-hover:text-red-700 transition-colors line-clamp-1">{vet.name}</h4>
-                          <p className="text-xs text-red-700/80 font-bold line-clamp-1">{vet.qualification}</p>
-                          <div className="flex items-center gap-1 mt-1.5 text-[10px] font-black text-red-700 bg-red-100 px-2 py-0.5 rounded-md w-fit uppercase tracking-wider">
-                            <span className="material-symbols-outlined text-[14px]">call</span> On-Call Now
+                          <h4 className="font-bold text-red-900 text-xs group-hover:text-red-700 transition-colors line-clamp-1">{vet.name}</h4>
+                          <p className="text-[11px] text-red-700/80 font-bold line-clamp-1">{vet.qualification}</p>
+                          <div className="flex items-center gap-0.5 mt-0.5 text-[9px] font-black text-red-700 bg-red-100 px-1.5 py-0.5 rounded w-fit uppercase tracking-wider">
+                            <span className="material-symbols-outlined text-[12px]">call</span> On-Call
                           </div>
                         </div>
                       </Link>
                     ))
                   ) : (
-                    <div className="col-span-full py-8 text-center text-red-800/60 bg-red-50/50 rounded-2xl border border-dashed border-red-200 flex flex-col items-center">
-                      <span className="material-symbols-outlined text-3xl opacity-50 mb-1">healing</span>
-                      <p className="font-medium text-sm">No emergency vets available right now.</p>
+                    <div className="col-span-full py-4 text-center text-red-800/60 bg-red-50/50 rounded-xl border border-dashed border-red-200 flex flex-col items-center">
+                      <span className="material-symbols-outlined text-xl opacity-50 mb-0.5">healing</span>
+                      <p className="font-medium text-xs">No emergency vets available right now.</p>
                     </div>
                   )}
                 </div>
               </section>
 
+              {/* Recommended Veterinarians */}
               <section>
-                <div className="flex justify-between items-end mb-4">
-                  <h3 className="font-headline-sm text-xl text-on-surface font-black tracking-tight">Recommended Veterinarians</h3>
-                  <Link to="/find-vets" className="text-primary font-label-md text-xs font-bold hover:text-primary-container transition-colors px-3 py-1.5 rounded-full hover:bg-surface-container-low">View All Doctors &rarr;</Link>
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="font-headline-sm text-sm text-on-surface font-black tracking-tight">Recommended Veterinarians</h3>
+                  <Link to="/find-vets" className="text-primary font-label-md text-[11px] font-bold hover:text-primary-container transition-colors px-2 py-1 rounded-full hover:bg-surface-container-low">View All &rarr;</Link>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {loading ? (
                     Array.from({ length: 4 }).map((_, i) => (
-                      <div key={i} className="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-4 flex gap-4 animate-pulse">
-                        <div className="w-16 h-16 rounded-xl bg-surface-variant shrink-0"></div>
-                        <div className="flex flex-col gap-2 w-full justify-center">
-                          <div className="h-4 bg-surface-variant rounded w-3/4"></div>
-                          <div className="h-3 bg-surface-variant rounded w-1/2"></div>
-                          <div className="h-3 bg-surface-variant rounded w-1/4 mt-1"></div>
+                      <div key={i} className="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-2.5 flex gap-2.5 animate-pulse">
+                        <div className="w-10 h-10 rounded-lg bg-surface-variant shrink-0"></div>
+                        <div className="flex flex-col gap-1.5 w-full justify-center">
+                          <div className="h-3 bg-surface-variant rounded w-3/4"></div>
+                          <div className="h-2.5 bg-surface-variant rounded w-1/2"></div>
                         </div>
                       </div>
                     ))
@@ -271,26 +271,26 @@ const OwnerDashboard = () => {
                     vets.slice(0, 4).map(vet => {
                       const isOnline = checkVetOnlineStatus(vet);
                       return (
-                      <Link to={`/owner-dashboard/vet-profile?id=${vet._id || vet.id}`} key={vet._id} className="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 flex gap-4 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group hover:-translate-y-1 relative overflow-hidden">
+                      <Link to={`/owner-dashboard/vet-profile?id=${vet._id || vet.id}`} key={vet._id} className="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-2.5 flex gap-2.5 hover:shadow-md hover:border-primary/30 transition-all cursor-pointer group hover:-translate-y-0.5 relative overflow-hidden">
                         <div className="relative">
-                          <img src={vet.photoUrl || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=100&auto=format&fit=crop"} alt={vet.name} className="w-16 h-16 rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform" />
-                          <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-surface-container-lowest ${isOnline ? 'bg-emerald-500' : 'bg-outline-variant'}`}></div>
+                          <img src={vet.photoUrl || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=100&auto=format&fit=crop"} alt={vet.name} className="w-10 h-10 rounded-lg object-cover shadow-sm group-hover:scale-105 transition-transform" />
+                          <div className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-surface-container-lowest ${isOnline ? 'bg-emerald-500' : 'bg-outline-variant'}`}></div>
                         </div>
                         <div className="flex flex-col justify-center">
-                          <h4 className="font-bold text-on-surface text-sm group-hover:text-primary transition-colors flex items-center gap-2">
+                          <h4 className="font-bold text-on-surface text-xs group-hover:text-primary transition-colors flex items-center gap-1">
                             {vet.name}
                           </h4>
-                          <p className="text-xs text-on-surface-variant font-medium line-clamp-1">{vet.qualification}</p>
-                          <div className="flex items-center gap-1 mt-1.5 text-[11px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md w-fit">
-                            <span className="material-symbols-outlined text-[14px]">star</span> 4.9
+                          <p className="text-[11px] text-on-surface-variant font-medium line-clamp-1">{vet.qualification}</p>
+                          <div className="flex items-center gap-0.5 mt-0.5 text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded w-fit">
+                            <span className="material-symbols-outlined text-[12px]">star</span> 4.9
                           </div>
                         </div>
                       </Link>
                     )})
                   ) : (
-                    <div className="col-span-full py-12 text-center text-on-surface-variant bg-surface-container-lowest rounded-2xl border border-dashed border-outline-variant">
-                      <span className="material-symbols-outlined text-4xl opacity-50 mb-2">sentiment_dissatisfied</span>
-                      <p className="font-medium text-sm">No recommended vets available.</p>
+                    <div className="col-span-full py-6 text-center text-on-surface-variant bg-surface-container-lowest rounded-xl border border-dashed border-outline-variant">
+                      <span className="material-symbols-outlined text-2xl opacity-50 mb-1">sentiment_dissatisfied</span>
+                      <p className="font-medium text-xs">No recommended vets available.</p>
                     </div>
                   )}
                 </div>
@@ -298,49 +298,49 @@ const OwnerDashboard = () => {
             </div>
 
             {/* Right Column */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-3">
               {/* Quick Book Consultation Widget */}
-              <div className="bg-surface-container-lowest border border-outline-variant/40 rounded-3xl shadow-sm hover:shadow-md transition-shadow overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
-                <div className="p-5 border-b border-outline-variant/20 flex justify-between items-center bg-gradient-to-r from-primary to-primary-container text-on-primary">
-                  <h3 className="font-headline-sm font-bold flex items-center gap-2">
-                    <span className="material-symbols-outlined filled-icon">bolt</span> Quick Book Consult
+              <div className="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full blur-2xl -mr-8 -mt-8 pointer-events-none"></div>
+                <div className="px-3 py-2.5 border-b border-outline-variant/20 flex justify-between items-center bg-gradient-to-r from-primary to-primary-container text-on-primary">
+                  <h3 className="font-headline-sm text-xs font-bold flex items-center gap-1.5">
+                    <span className="material-symbols-outlined filled-icon text-[16px]">bolt</span> Quick Book Consult
                   </h3>
                 </div>
-                <div className="p-6 relative z-10">
-                  <form onSubmit={handleQuickBook} className="flex flex-col gap-5">
+                <div className="p-3 relative z-10">
+                  <form onSubmit={handleQuickBook} className="flex flex-col gap-3">
                     
                     {/* Select Pet */}
-                    <div className="flex flex-col gap-2">
-                      <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">1. Select Pet</label>
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">1. Select Pet</label>
                       {loading ? (
-                         <div className="flex gap-2"><div className="w-16 h-12 bg-surface-variant animate-pulse rounded-xl"></div></div>
+                         <div className="flex gap-2"><div className="w-12 h-8 bg-surface-variant animate-pulse rounded-lg"></div></div>
                       ) : pets.length > 0 ? (
-                        <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar snap-x">
+                        <div className="flex gap-1.5 overflow-x-auto pb-1 custom-scrollbar snap-x">
                           {pets.map(p => (
-                            <label key={p._id} className={`shrink-0 cursor-pointer border-2 rounded-xl p-2 flex items-center gap-2.5 transition-all min-w-[130px] snap-start ${selectedPetId === p._id ? 'bg-primary/5 border-primary text-primary shadow-sm scale-[1.02]' : 'border-outline-variant/40 bg-surface-container-lowest text-on-surface hover:bg-surface-container-low hover:border-outline-variant'}`}>
+                            <label key={p._id} className={`shrink-0 cursor-pointer border rounded-lg p-1.5 flex items-center gap-1.5 transition-all min-w-[100px] snap-start text-[11px] ${selectedPetId === p._id ? 'bg-primary/5 border-primary text-primary shadow-sm' : 'border-outline-variant/40 bg-surface-container-lowest text-on-surface hover:bg-surface-container-low hover:border-outline-variant'}`}>
                               <input type="radio" name="quick_pet" value={p._id} checked={selectedPetId === p._id} onChange={() => setSelectedPetId(p._id)} className="hidden" />
-                              <div className="w-9 h-9 rounded-full overflow-hidden shrink-0 border border-outline-variant/30 flex items-center justify-center bg-surface-container">
+                              <div className="w-7 h-7 rounded-full overflow-hidden shrink-0 border border-outline-variant/30 flex items-center justify-center bg-surface-container">
                                 {p.image ? (
                                   <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
                                 ) : (
-                                  <span className="material-symbols-outlined text-[16px] text-on-surface-variant">pets</span>
+                                  <span className="material-symbols-outlined text-[12px] text-on-surface-variant">pets</span>
                                 )}
                               </div>
-                              <span className="font-bold text-xs">{p.name}</span>
+                              <span className="font-bold">{p.name}</span>
                             </label>
                           ))}
                         </div>
                       ) : (
-                        <div className="text-xs text-error font-bold p-3 border border-error/30 rounded-xl bg-error-container/20 flex items-center gap-2">
-                          <span className="material-symbols-outlined text-[18px]">error</span> Register a pet first!
+                        <div className="text-[11px] text-error font-bold p-2 border border-error/30 rounded-lg bg-error-container/20 flex items-center gap-1.5">
+                          <span className="material-symbols-outlined text-[14px]">error</span> Register a pet first!
                         </div>
                       )}
                     </div>
 
                     {/* Select Doctor */}
-                    <div className="flex flex-col gap-2">
-                      <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">2. Select Doctor</label>
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">2. Select Doctor</label>
                       <select value={selectedVetId} onChange={(e) => setSelectedVetId(e.target.value)} required className="input-standard appearance-none cursor-pointer">
                         {loading ? <option>Loading...</option> : vets.map(v => {
                           const isOnline = checkVetOnlineStatus(v);
@@ -354,9 +354,9 @@ const OwnerDashboard = () => {
                     </div>
 
                     {/* Date & Time */}
-                    <div className="flex flex-col gap-2">
-                      <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">3. Date & Time</label>
-                      <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">3. Date & Time</label>
+                      <div className="grid grid-cols-2 gap-2">
                         <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required className="input-standard" />
                         <select value={time} onChange={(e) => setTime(e.target.value)} required className="input-standard appearance-none cursor-pointer">
                           <option value="" disabled>Select Time</option>
@@ -387,11 +387,11 @@ const OwnerDashboard = () => {
                       </div>
                     </div>
 
-                    <button type="submit" disabled={bookingLoading || !selectedVetId || !selectedPetId || !date || !time} className="btn-primary w-full py-4 mt-2 shadow-primary/30 shadow-lg flex justify-center items-center gap-2">
+                    <button type="submit" disabled={bookingLoading || !selectedVetId || !selectedPetId || !date || !time} className="btn-primary w-full py-2 mt-1 shadow-primary/20 shadow-md flex justify-center items-center gap-1.5">
                       {bookingLoading ? (
-                        <><span className="material-symbols-outlined animate-spin text-[18px]">sync</span> Booking...</>
+                        <><span className="material-symbols-outlined animate-spin text-[14px]">sync</span> Booking...</>
                       ) : (
-                        <><span className="material-symbols-outlined text-[18px] filled-icon">event_available</span> Confirm Booking</>
+                        <><span className="material-symbols-outlined text-[14px] filled-icon">event_available</span> Confirm Booking</>
                       )}
                     </button>
                   </form>
@@ -399,50 +399,50 @@ const OwnerDashboard = () => {
               </div>
 
               {/* Recent Consultations */}
-              <div className="bg-surface-container-lowest border border-outline-variant/40 rounded-3xl shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col h-[400px]">
-                <div className="p-5 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low/50 backdrop-blur-sm">
-                  <h3 className="font-headline-sm font-bold flex items-center gap-2 text-on-surface">
-                    <span className="material-symbols-outlined text-primary">history</span> Recent Consultations
+              <div className="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col h-[320px]">
+                <div className="px-3 py-2 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low/50 backdrop-blur-sm">
+                  <h3 className="font-headline-sm text-xs font-bold flex items-center gap-1.5 text-on-surface">
+                    <span className="material-symbols-outlined text-primary text-[16px]">history</span> Recent Consultations
                   </h3>
-                  <Link to="/appointments" className="text-primary text-xs font-bold hover:text-primary-container transition-colors px-2 py-1 rounded-md hover:bg-surface-container">View All</Link>
+                  <Link to="/appointments" className="text-primary text-[11px] font-bold hover:text-primary-container transition-colors px-1.5 py-0.5 rounded hover:bg-surface-container">View All</Link>
                 </div>
-                <div className="p-4 flex-grow overflow-y-auto space-y-3 custom-scrollbar">
+                <div className="p-2.5 flex-grow overflow-y-auto space-y-2 custom-scrollbar">
                   {loading ? (
                     Array.from({ length: 3 }).map((_, i) => (
-                      <div key={i} className="p-4 border border-outline-variant/30 rounded-2xl bg-surface-container-low/30 animate-pulse">
-                        <div className="h-4 bg-surface-variant rounded w-1/2 mb-2"></div>
-                        <div className="h-3 bg-surface-variant rounded w-1/3 mb-3"></div>
-                        <div className="h-3 bg-surface-variant rounded w-3/4"></div>
+                      <div key={i} className="p-2.5 border border-outline-variant/30 rounded-xl bg-surface-container-low/30 animate-pulse">
+                        <div className="h-3 bg-surface-variant rounded w-1/2 mb-1.5"></div>
+                        <div className="h-2.5 bg-surface-variant rounded w-1/3 mb-2"></div>
+                        <div className="h-2.5 bg-surface-variant rounded w-3/4"></div>
                       </div>
                     ))
                   ) : appointments.length > 0 ? (
                     appointments.slice(0, 5).map(appt => (
-                      <div key={appt._id} className="p-4 border border-outline-variant/40 rounded-2xl hover:bg-surface-container-lowest bg-surface-container-low/20 transition-all hover:shadow-sm cursor-pointer group">
-                        <div className="flex justify-between items-start mb-2">
-                          <span className="font-bold text-sm text-on-surface group-hover:text-primary transition-colors">{appt.vetName}</span>
-                          <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">{appt.status}</span>
+                      <div key={appt._id} className="p-2.5 border border-outline-variant/40 rounded-xl hover:bg-surface-container-lowest bg-surface-container-low/20 transition-all hover:shadow-sm cursor-pointer group">
+                        <div className="flex justify-between items-start mb-1">
+                          <span className="font-bold text-xs text-on-surface group-hover:text-primary transition-colors">{appt.vetName}</span>
+                          <span className="text-[9px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">{appt.status}</span>
                         </div>
-                        <p className="text-xs text-on-surface-variant mb-3 font-medium">For {appt.petName}</p>
-                        <div className="flex items-center gap-4 text-[11px] text-on-surface-variant font-bold bg-surface-container-low w-fit px-3 py-1.5 rounded-lg border border-outline-variant/20 mb-3">
-                          <span className="flex items-center gap-1.5"><span className="material-symbols-outlined text-[14px]">calendar_today</span> {appt.date}</span>
-                          <span className="w-1 h-1 rounded-full bg-outline-variant"></span>
-                          <span className="flex items-center gap-1.5"><span className="material-symbols-outlined text-[14px]">schedule</span> {appt.time}</span>
+                        <p className="text-[11px] text-on-surface-variant mb-1.5 font-medium">For {appt.petName}</p>
+                        <div className="flex items-center gap-3 text-[10px] text-on-surface-variant font-bold bg-surface-container-low w-fit px-2 py-1 rounded border border-outline-variant/20 mb-1.5">
+                          <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">calendar_today</span> {appt.date}</span>
+                          <span className="w-0.5 h-0.5 rounded-full bg-outline-variant"></span>
+                          <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">schedule</span> {appt.time}</span>
                         </div>
                         
                         {(appt.status === 'upcoming' || appt.status === 'pending') && (
-                          <div className="flex gap-2 mt-2">
+                          <div className="flex gap-1.5 mt-1.5">
                             <button 
                               onClick={(e) => { e.stopPropagation(); navigate(`/live-chat?consultationId=${appt._id}`); }}
-                              className="flex-1 bg-surface-container-high border border-outline-variant text-on-surface text-[11px] font-bold py-2 px-2 rounded-lg hover:bg-surface-container transition-colors flex items-center justify-center gap-1"
+                              className="flex-1 bg-surface-container-high border border-outline-variant text-on-surface text-[10px] font-bold py-1.5 px-1.5 rounded-lg hover:bg-surface-container transition-colors flex items-center justify-center gap-0.5"
                             >
-                              <span className="material-symbols-outlined text-[14px]">chat</span> Chat
+                              <span className="material-symbols-outlined text-[12px]">chat</span> Chat
                             </button>
                             {appt.consultationType === 'video' && (
                               <button 
                                 onClick={(e) => { e.stopPropagation(); navigate(`/owner-dashboard/video-call/${appt._id}`); }}
-                                className="flex-1 bg-primary text-white text-[11px] font-bold py-2 px-2 rounded-lg hover:bg-surface-tint transition-colors flex items-center justify-center gap-1"
+                                className="flex-1 bg-primary text-white text-[10px] font-bold py-1.5 px-1.5 rounded-lg hover:bg-surface-tint transition-colors flex items-center justify-center gap-0.5"
                               >
-                                <span className="material-symbols-outlined text-[14px]">videocam</span> Start Video Call
+                                <span className="material-symbols-outlined text-[12px]">videocam</span> Video Call
                               </button>
                             )}
                           </div>
@@ -451,8 +451,8 @@ const OwnerDashboard = () => {
                     ))
                   ) : (
                     <div className="flex flex-col items-center justify-center h-full text-on-surface-variant">
-                       <span className="material-symbols-outlined text-4xl opacity-30 mb-2">event_note</span>
-                       <span className="text-sm font-medium">No recent consultations.</span>
+                       <span className="material-symbols-outlined text-2xl opacity-30 mb-1">event_note</span>
+                       <span className="text-xs font-medium">No recent consultations.</span>
                     </div>
                   )}
                 </div>

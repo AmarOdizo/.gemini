@@ -76,7 +76,7 @@ const TopNav = ({ title, subtitle, backLink }) => {
   const userId = user ? (user._id || user.id) : null;
 
   return (
-    <header className="sticky top-0 z-30 flex justify-between items-center w-full no-print mb-lg bg-surface/80 backdrop-blur-md py-4 border-b border-outline-variant/20 -mx-4 px-4 md:-mx-8 md:px-8 shadow-sm">
+    <header className="sticky top-0 z-30 flex justify-between items-center w-full no-print mb-sm bg-surface/80 backdrop-blur-md py-2 border-b border-outline-variant/20 -mx-3 px-3 md:-mx-4 md:px-4 shadow-sm">
       <div className="flex flex-col justify-center">
         {backLink ? (
           <Link to={backLink.to} className="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors font-body-sm font-semibold mb-1">
@@ -84,23 +84,23 @@ const TopNav = ({ title, subtitle, backLink }) => {
           </Link>
         ) : null}
         
-        <h2 className="font-headline-lg text-xl md:text-2xl font-bold text-on-surface leading-tight">
+        <h2 className="font-headline-lg text-base md:text-lg font-bold text-on-surface leading-tight">
           {title || `Welcome back, ${firstName}! 👋`}
         </h2>
         {subtitle && (
-          <p className="text-on-surface-variant font-body-sm text-sm mt-1">
+          <p className="text-on-surface-variant font-body-sm text-xs mt-0.5">
             {subtitle}
           </p>
         )}
       </div>
       
-      <div className="flex items-center gap-3 md:gap-4 relative">
+      <div className="flex items-center gap-2 md:gap-3 relative">
         <button 
           onClick={() => setShowDropdown(!showDropdown)}
-          className={`w-10 h-10 flex items-center justify-center rounded-full transition-colors relative shadow-sm border ${showDropdown ? 'bg-primary text-white border-primary' : 'hover:bg-surface-container-high text-on-surface-variant border-outline-variant/30'}`} 
+          className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors relative shadow-sm border ${showDropdown ? 'bg-primary text-white border-primary' : 'hover:bg-surface-container-high text-on-surface-variant border-outline-variant/30'}`} 
           title="Notifications"
         >
-          <span className="material-symbols-outlined">notifications</span>
+          <span className="material-symbols-outlined text-[18px]">notifications</span>
           {notifications.length > 0 && (
             <span className="min-w-[1.125rem] h-[1.125rem] px-1 bg-error text-white text-[10px] font-black rounded-full absolute -top-1 -right-1 border-2 border-surface flex items-center justify-center shadow-xs">
               {notifications.length}
@@ -163,7 +163,7 @@ const TopNav = ({ title, subtitle, backLink }) => {
             </div>
           </div>
         )}
-        <div className="w-10 h-10 md:w-11 md:h-11 rounded-full overflow-hidden border-2 border-primary/30 cursor-pointer bg-surface-container shadow-sm transition-transform hover:scale-105">
+        <div className="w-8 h-8 md:w-9 md:h-9 rounded-full overflow-hidden border-2 border-primary/30 cursor-pointer bg-surface-container shadow-sm transition-transform hover:scale-105">
           <img 
             alt="User Profile" 
             className="w-full h-full object-cover" 
