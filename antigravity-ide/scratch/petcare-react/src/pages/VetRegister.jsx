@@ -191,23 +191,23 @@ const VetRegister = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Full Name (with Prefix) *</label>
-                  <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="Dr. Ananya Sharma" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" pattern="^[A-Za-z\s.]{3,50}$" title="Name must contain only alphabets/spaces/dots and be at least 3 characters long" minLength="3" maxLength="50" />
+                  <label className="form-label">Full Name (with Prefix) *</label>
+                  <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="Dr. Ananya Sharma" className="input-standard" pattern="^[A-Za-z\s.]{3,50}$" title="Name must contain only alphabets/spaces/dots and be at least 3 characters long" minLength="3" maxLength="50" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Official Email Address *</label>
-                  <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="dr.ananya@clinic.com" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. dr.ananya@clinic.com)" />
+                  <label className="form-label">Official Email Address *</label>
+                  <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="dr.ananya@clinic.com" className="input-standard" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. dr.ananya@clinic.com)" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Phone Number *</label>
-                  <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required placeholder="+91 98765 43210" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" pattern="^[+]*[0-9]{10,15}$" title="Phone number must contain 10-15 digits. A leading + is allowed." minLength="10" maxLength="16" />
+                  <label className="form-label">Phone Number *</label>
+                  <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required placeholder="+91 98765 43210" className="input-standard" pattern="^[+]*[0-9]{10,15}$" title="Phone number must contain 10-15 digits. A leading + is allowed." minLength="10" maxLength="16" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Account Password *</label>
-                  <input type="password" name="password" value={formData.password} onChange={handleChange} required placeholder="••••••••" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" />
+                  <label className="form-label">Account Password *</label>
+                  <input type="password" name="password" value={formData.password} onChange={handleChange} required placeholder="••••••••" className="input-standard" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Profile Photo (Optional)</label>
+                  <label className="form-label">Profile Photo (Optional)</label>
                   <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'photoUrl')} disabled={loading} className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" />
                   {formData.photoUrl && <p className="text-xs text-emerald-600 font-bold mt-1">✓ Photo uploaded</p>}
                 </div>
@@ -221,23 +221,23 @@ const VetRegister = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold font-label-md text-on-surface mb-1">VCI Registration Number *</label>
-                  <input type="text" name="vciNumber" value={formData.vciNumber} onChange={handleChange} required placeholder="e.g. VCI-2024-8891" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm font-mono focus:outline-none focus:border-primary focus:ring-1 transition-all" pattern="^[A-Za-z0-9\-]+$" title="VCI number can only contain letters, numbers, and hyphens" />
+                  <label className="form-label">VCI Registration Number *</label>
+                  <input type="text" name="vciNumber" value={formData.vciNumber} onChange={handleChange} required placeholder="e.g. VCI-2024-8891" className="input-standard font-mono" pattern="^[A-Za-z0-9\-]+$" title="VCI number can only contain letters, numbers, and hyphens" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Primary Degree / Qualification *</label>
-                  <input type="text" name="qualification" value={formData.qualification} onChange={handleChange} required placeholder="B.V.Sc & A.H. / M.V.Sc (Surgery)" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" />
+                  <label className="form-label">Primary Degree / Qualification *</label>
+                  <input type="text" name="qualification" value={formData.qualification} onChange={handleChange} required placeholder="B.V.Sc & A.H. / M.V.Sc (Surgery)" className="input-standard" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold font-label-md text-on-surface mb-1">University / College Name *</label>
-                  <input type="text" name="university" value={formData.university} onChange={handleChange} required placeholder="e.g. KVAFSU Bangalore" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" />
+                  <label className="form-label">University / College Name *</label>
+                  <input type="text" name="university" value={formData.university} onChange={handleChange} required placeholder="e.g. KVAFSU Bangalore" className="input-standard" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Years of Experience *</label>
-                  <input type="number" name="experience" min="0" value={formData.experience} onChange={handleChange} required placeholder="8" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" />
+                  <label className="form-label">Years of Experience *</label>
+                  <input type="number" name="experience" min="0" value={formData.experience} onChange={handleChange} required placeholder="8" className="input-standard" />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Upload VCI Certificate / License (Required)</label>
+                  <label className="form-label">Upload VCI Certificate / License (Required)</label>
                   <input type="file" accept="image/*,.pdf" onChange={(e) => handleFileUpload(e, 'licenseCertUrl')} disabled={loading} required={!formData.licenseCertUrl} className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" />
                   {formData.licenseCertUrl && <p className="text-xs text-emerald-600 font-bold mt-1">✓ Certificate uploaded successfully</p>}
                 </div>
@@ -263,20 +263,20 @@ const VetRegister = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Clinic / Hospital Name</label>
-                  <input type="text" name="clinicName" value={formData.clinicName} onChange={handleChange} placeholder="PawsCare Pet Hospital" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" />
+                  <label className="form-label">Clinic / Hospital Name</label>
+                  <input type="text" name="clinicName" value={formData.clinicName} onChange={handleChange} placeholder="PawsCare Pet Hospital" className="input-standard" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold font-label-md text-on-surface mb-1">City / State *</label>
-                  <input type="text" name="city" value={formData.city} onChange={handleChange} required placeholder="Koramangala, Bengaluru" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" />
+                  <label className="form-label">City / State *</label>
+                  <input type="text" name="city" value={formData.city} onChange={handleChange} required placeholder="Koramangala, Bengaluru" className="input-standard" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Consultation Fee (₹) *</label>
+                  <label className="form-label">Consultation Fee (₹) *</label>
                   <input type="number" name="consultationFee" min="0" value={formData.consultationFee} onChange={handleChange} required className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm font-bold text-primary focus:outline-none focus:border-primary focus:ring-1 transition-all" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold font-label-md text-on-surface mb-1">Clinic Landline / Helpline</label>
-                  <input type="tel" name="clinicPhone" value={formData.clinicPhone} onChange={handleChange} placeholder="080-25501234" className="w-full px-3 py-2 border border-outline-variant/50 rounded-lg bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 transition-all" pattern="^[0-9\-]{8,15}$" title="Enter a valid clinic phone or landline number" />
+                  <label className="form-label">Clinic Landline / Helpline</label>
+                  <input type="tel" name="clinicPhone" value={formData.clinicPhone} onChange={handleChange} placeholder="080-25501234" className="input-standard" pattern="^[0-9\-]{8,15}$" title="Enter a valid clinic phone or landline number" />
                 </div>
               </div>
               <div>
@@ -295,7 +295,7 @@ const VetRegister = () => {
               </label>
             </div>
 
-            <button type="submit" disabled={loading} className="w-full bg-primary text-on-primary rounded-xl py-3.5 px-6 font-bold text-sm hover:bg-tertiary hover:-translate-y-[1px] hover:shadow-lg transition-all active:scale-[0.98] duration-200 flex justify-center items-center gap-2">
+              <button type="submit" disabled={loading} className="btn-primary w-full mt-2 py-4">
               {loading ? <span>Processing...</span> : <span>Submit Profile for VCI Verification</span>}
               <span className="material-symbols-outlined text-base">verified</span>
             </button>

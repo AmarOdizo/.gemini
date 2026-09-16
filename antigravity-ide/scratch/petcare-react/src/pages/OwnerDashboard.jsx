@@ -341,7 +341,7 @@ const OwnerDashboard = () => {
                     {/* Select Doctor */}
                     <div className="flex flex-col gap-2">
                       <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">2. Select Doctor</label>
-                      <select value={selectedVetId} onChange={(e) => setSelectedVetId(e.target.value)} required className="border-2 border-outline-variant/40 rounded-xl p-3 text-sm font-semibold text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-surface-container-lowest hover:border-outline-variant transition-colors appearance-none cursor-pointer">
+                      <select value={selectedVetId} onChange={(e) => setSelectedVetId(e.target.value)} required className="input-standard appearance-none cursor-pointer">
                         {loading ? <option>Loading...</option> : vets.map(v => {
                           const isOnline = checkVetOnlineStatus(v);
                           return (
@@ -357,8 +357,8 @@ const OwnerDashboard = () => {
                     <div className="flex flex-col gap-2">
                       <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">3. Date & Time</label>
                       <div className="grid grid-cols-2 gap-3">
-                        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required className="border-2 border-outline-variant/40 rounded-xl p-3 text-sm font-semibold text-on-surface outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 hover:border-outline-variant transition-colors" />
-                        <select value={time} onChange={(e) => setTime(e.target.value)} required className="border-2 border-outline-variant/40 rounded-xl p-3 text-sm font-semibold text-on-surface outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 hover:border-outline-variant transition-colors bg-surface-container-lowest">
+                        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required className="input-standard" />
+                        <select value={time} onChange={(e) => setTime(e.target.value)} required className="input-standard appearance-none cursor-pointer">
                           <option value="" disabled>Select Time</option>
                           <option value="09:00 AM">09:00 AM</option>
                           <option value="09:30 AM">09:30 AM</option>
@@ -387,7 +387,7 @@ const OwnerDashboard = () => {
                       </div>
                     </div>
 
-                    <button type="submit" disabled={bookingLoading} className="w-full bg-primary text-on-primary py-3.5 rounded-xl font-bold shadow-md hover:bg-primary-container hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all flex justify-center items-center gap-2 mt-2">
+                    <button type="submit" disabled={bookingLoading || !selectedVetId || !selectedPetId || !date || !time} className="btn-primary w-full py-4 mt-2 shadow-primary/30 shadow-lg flex justify-center items-center gap-2">
                       {bookingLoading ? (
                         <><span className="material-symbols-outlined animate-spin text-[18px]">sync</span> Booking...</>
                       ) : (

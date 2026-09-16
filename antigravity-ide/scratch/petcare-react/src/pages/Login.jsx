@@ -120,14 +120,14 @@ const Login = () => {
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-1">
-              <label className="block text-xs font-bold font-label-md text-on-surface">Email Address <span className="text-error">*</span></label>
+              <label className="form-label">Email Address <span className="text-error">*</span></label>
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-outline-variant text-[20px]">mail</span>
                 <input 
                   type="email" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-surface-container-low border border-outline-variant/50 rounded-xl font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all text-on-surface" 
+                  className="input-standard pl-10" 
                   placeholder="name@example.com" 
                   required 
                 />
@@ -136,7 +136,7 @@ const Login = () => {
 
             <div className="space-y-1">
               <div className="flex justify-between items-center">
-                <label className="block text-xs font-bold font-label-md text-on-surface">Password <span className="text-error">*</span></label>
+                <label className="form-label">Password <span className="text-error">*</span></label>
                 <Link to="#" className="text-[11px] font-bold text-primary hover:underline">Forgot password?</Link>
               </div>
               <div className="relative">
@@ -145,7 +145,7 @@ const Login = () => {
                   type="password" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-10 py-3 bg-surface-container-low border border-outline-variant/50 rounded-xl font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all text-on-surface" 
+                  className="input-standard pl-10" 
                   placeholder="Enter your password" 
                   required 
                 />
@@ -155,7 +155,7 @@ const Login = () => {
             <button 
               type="submit" 
               disabled={loading}
-              className="w-full bg-primary text-on-primary font-label-md py-3.5 rounded-xl font-bold shadow-md hover:bg-surface-tint transition-colors flex items-center justify-center gap-2 mt-4"
+              className="btn-primary w-full mt-4"
             >
               {loading ? (
                 <>

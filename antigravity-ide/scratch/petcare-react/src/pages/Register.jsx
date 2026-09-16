@@ -135,14 +135,14 @@ const Register = () => {
           <form onSubmit={handleRegister} className="space-y-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="flex flex-col gap-1 md:col-span-2">
-                <label className="font-label-md text-xs font-bold text-on-surface">Full Name</label>
+                <label className="form-label">Full Name</label>
                 <div className="relative">
                   <span className="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-outline-variant text-[20px]">person</span>
                   <input 
                     name="name" 
                     value={formData.name} 
                     onChange={handleChange} 
-                    className="w-full pl-10 pr-4 py-2.5 border border-outline-variant/50 rounded-xl bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all text-on-surface" 
+                    className="input-standard pl-10" 
                     placeholder="Jane Doe" 
                     pattern="^[A-Za-z\s]{3,50}$"
                     title="Name must contain only alphabets and be at least 3 characters long"
@@ -154,7 +154,7 @@ const Register = () => {
               </div>
 
               <div className="flex flex-col gap-1 md:col-span-2">
-                <label className="font-label-md text-xs font-bold text-on-surface">Email Address</label>
+                <label className="form-label">Email Address</label>
                 <div className="relative">
                   <span className="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-outline-variant text-[20px]">mail</span>
                   <input 
@@ -162,7 +162,7 @@ const Register = () => {
                     name="email" 
                     value={formData.email} 
                     onChange={handleChange} 
-                    className="w-full pl-10 pr-4 py-2.5 border border-outline-variant/50 rounded-xl bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all text-on-surface" 
+                    className="input-standard pl-10" 
                     placeholder="name@example.com" 
                     pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
                     title="Please enter a valid email address (e.g. name@example.com)"
@@ -172,7 +172,7 @@ const Register = () => {
               </div>
 
               <div className="flex flex-col gap-1 md:col-span-2">
-                <label className="font-label-md text-xs font-bold text-on-surface">Phone Number</label>
+                <label className="form-label">Phone Number</label>
                 <div className="relative">
                   <span className="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-outline-variant text-[20px]">call</span>
                   <input 
@@ -180,7 +180,7 @@ const Register = () => {
                     name="phone" 
                     value={formData.phone} 
                     onChange={handleChange} 
-                    className="w-full pl-10 pr-4 py-2.5 border border-outline-variant/50 rounded-xl bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all text-on-surface" 
+                    className="input-standard pl-10" 
                     placeholder="+91 90000 00000" 
                     pattern="^[+]*[0-9]{10,15}$"
                     title="Phone number must contain 10-15 digits. A leading + is allowed."
@@ -192,7 +192,7 @@ const Register = () => {
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="font-label-md text-xs font-bold text-on-surface">Password</label>
+                <label className="form-label">Password</label>
                 <div className="relative">
                   <span className="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-outline-variant text-[20px]">lock</span>
                   <input 
@@ -200,7 +200,7 @@ const Register = () => {
                     name="password" 
                     value={formData.password} 
                     onChange={handleChange} 
-                    className="w-full pl-10 pr-10 py-2.5 border border-outline-variant/50 rounded-xl bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all text-on-surface" 
+                    className="input-standard pl-10 pr-10" 
                     placeholder="••••••••" 
                     required 
                     minLength="8" 
@@ -209,7 +209,7 @@ const Register = () => {
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="font-label-md text-xs font-bold text-on-surface">Confirm Password</label>
+                <label className="form-label">Confirm Password</label>
                 <div className="relative">
                   <span className="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-outline-variant text-[20px]">lock_reset</span>
                   <input 
@@ -217,7 +217,7 @@ const Register = () => {
                     name="confirmPassword" 
                     value={formData.confirmPassword} 
                     onChange={handleChange} 
-                    className="w-full pl-10 pr-10 py-2.5 border border-outline-variant/50 rounded-xl bg-surface-container-lowest font-body-sm text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all text-on-surface" 
+                    className="input-standard pl-10 pr-10" 
                     placeholder="••••••••" 
                     required 
                   />
@@ -243,11 +243,11 @@ const Register = () => {
               </div>
             </div>
 
-            <button 
-              type="submit" 
-              disabled={loading}
-              className="w-full bg-primary text-on-primary font-label-md py-3.5 rounded-xl font-bold shadow-md hover:bg-surface-tint transition-colors flex items-center justify-center gap-2 mt-2"
-            >
+              <button 
+                type="submit" 
+                disabled={loading}
+                className="btn-primary w-full"
+              >
               {loading ? (
                 <><span className="material-symbols-outlined animate-spin text-[20px]">sync</span> Processing...</>
               ) : 'Create Account'}

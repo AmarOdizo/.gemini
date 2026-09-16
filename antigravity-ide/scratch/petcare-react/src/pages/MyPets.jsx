@@ -342,7 +342,7 @@ const MyPets = () => {
           {/* Add New Pet Button */}
           <button
             onClick={handleOpenAddModal}
-            className="bg-primary text-on-primary font-bold px-4 py-2 rounded-xl text-xs shadow-md hover:bg-surface-tint transition-all flex items-center gap-1.5 shrink-0"
+            className="btn-primary flex items-center gap-1.5 shrink-0"
           >
             <span className="material-symbols-outlined text-[18px]">add</span> Add New Pet
           </button>
@@ -594,7 +594,7 @@ const MyPets = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Name */}
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-on-surface-variant">
+                    <label className="form-label">
                       Pet Name <span className="text-error">*</span>
                     </label>
                     <div className="relative">
@@ -605,14 +605,14 @@ const MyPets = () => {
                         value={formData.name}
                         onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
                         placeholder="e.g. Max, Bella"
-                        className="w-full pl-10 pr-3 py-2.5 bg-surface-container border border-outline-variant/40 rounded-xl text-sm focus:outline-none focus:border-primary text-on-surface font-semibold transition-all hover:bg-surface-container-high"
+                        className="input-standard pl-10"
                       />
                     </div>
                   </div>
 
                   {/* Species */}
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-on-surface-variant">
+                    <label className="form-label">
                       Species <span className="text-error">*</span>
                     </label>
                     <div className="relative">
@@ -620,7 +620,7 @@ const MyPets = () => {
                       <select
                         value={formData.species}
                         onChange={(e) => setFormData((prev) => ({ ...prev, species: e.target.value }))}
-                        className="w-full pl-10 pr-3 py-2.5 bg-surface-container border border-outline-variant/40 rounded-xl text-sm focus:outline-none focus:border-primary text-on-surface font-semibold appearance-none cursor-pointer transition-all hover:bg-surface-container-high"
+                        className="input-standard pl-10 appearance-none cursor-pointer"
                       >
                         <option value="Dog">Dog</option>
                         <option value="Cat">Cat</option>
@@ -634,7 +634,7 @@ const MyPets = () => {
 
                   {/* Breed */}
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-on-surface-variant">Breed</label>
+                    <label className="form-label">Breed</label>
                     <input
                       type="text"
                       value={formData.breed}
@@ -646,7 +646,7 @@ const MyPets = () => {
 
                   {/* Gender */}
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-on-surface-variant">Gender</label>
+                    <label className="form-label">Gender</label>
                     <div className="relative">
                       <select
                         value={formData.gender}
@@ -671,7 +671,7 @@ const MyPets = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {/* Age */}
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-on-surface-variant">Age</label>
+                    <label className="form-label">Age</label>
                     <div className="flex bg-surface-container border border-outline-variant/40 rounded-xl overflow-hidden focus-within:border-primary transition-all">
                       <input
                         type="number"
@@ -694,7 +694,7 @@ const MyPets = () => {
 
                   {/* Weight */}
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-on-surface-variant">Weight</label>
+                    <label className="form-label">Weight</label>
                     <div className="flex bg-surface-container border border-outline-variant/40 rounded-xl overflow-hidden focus-within:border-primary transition-all">
                       <input
                         type="number"
@@ -717,7 +717,7 @@ const MyPets = () => {
 
                   {/* Color */}
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-on-surface-variant">Color / Markings</label>
+                    <label className="form-label">Color / Markings</label>
                     <input
                       type="text"
                       value={formData.color}
@@ -738,13 +738,13 @@ const MyPets = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Health Status */}
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-on-surface-variant">Health Status</label>
+                    <label className="form-label">Health Status</label>
                     <div className="relative">
                        <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-[18px]">monitor_heart</span>
                       <select
                         value={formData.healthStatus}
                         onChange={(e) => setFormData((prev) => ({ ...prev, healthStatus: e.target.value }))}
-                        className="w-full pl-10 pr-3 py-2.5 bg-surface-container border border-outline-variant/40 rounded-xl text-sm focus:outline-none focus:border-primary text-on-surface font-semibold appearance-none cursor-pointer transition-all hover:bg-surface-container-high"
+                        className="input-standard pl-10 appearance-none cursor-pointer"
                       >
                         <option value="Healthy">Healthy</option>
                         <option value="Sick">Sick</option>
@@ -756,7 +756,7 @@ const MyPets = () => {
 
                   {/* General Status */}
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-on-surface-variant">Pet Status</label>
+                    <label className="form-label">Pet Status</label>
                     <div className="relative">
                       <select
                         value={formData.status}
