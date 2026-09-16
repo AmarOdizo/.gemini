@@ -279,7 +279,7 @@ const MyPets = () => {
   });
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-6 min-h-[80vh]">
+    <main className="p-3 md:p-4 pb-20 md:pb-4 flex flex-col gap-3 max-w-[1280px] mx-auto w-full min-h-[80vh] transition-opacity duration-300">
       <TopNav
         title="My Pet Companions"
         subtitle="View, add, and manage your pets' health records, vaccination schedules, and profile details."
@@ -288,13 +288,13 @@ const MyPets = () => {
       {/* Toast Notification */}
       {toastMessage && (
         <div
-          className={`fixed top-4 right-4 z-50 px-4 py-3 rounded-xl shadow-lg border text-sm font-semibold flex items-center gap-2 animate-bounce ${
+          className={`fixed top-4 right-4 z-50 px-3 py-2 rounded-lg shadow-lg border text-xs font-semibold flex items-center gap-1.5 animate-bounce ${
             toastMessage.type === 'error'
               ? 'bg-red-900/90 text-red-100 border-red-500'
               : 'bg-emerald-900/90 text-emerald-100 border-emerald-500'
           }`}
         >
-          <span className="material-symbols-outlined text-[20px]">
+          <span className="material-symbols-outlined text-[16px]">
             {toastMessage.type === 'error' ? 'error' : 'check_circle'}
           </span>
           {toastMessage.text}
@@ -302,9 +302,24 @@ const MyPets = () => {
       )}
 
       {/* Control Bar: Filters & Add Button */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-surface-container-low p-4 rounded-2xl border border-outline-variant/30 shadow-sm">
-        {/* Species Filter & Search */}
-        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-3 bg-surface-container-low/80 backdrop-blur-md p-2.5 md:p-3 rounded-xl border border-outline-variant/30 shadow-sm sticky top-14 z-20">
+        
+        {/* Search Input (Takes more space on mobile) */}
+        <div className="relative w-full md:w-1/3 group order-2 md:order-1">
+          <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-outline-variant text-[18px] group-focus-within:text-primary transition-colors">
+            search
+          </span>
+          <input
+            type="text"
+            placeholder="Search by name or breed..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-8 pr-3 py-1.5 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-xs font-bold focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-sm text-on-surface"
+          />
+        </div>
+
+        {/* Species Filter Scrollable container */}
+        <div className="flex gap-1.5 w-full md:w-auto overflow-x-auto pb-1 md:pb-0 custom-scrollbar order-3 md:order-2 flex-grow justify-start md:justify-center">
           {['All', 'Dog', 'Cat', 'Bird', 'Rabbit', 'Other'].map((spec) => (
             <button
               key={spec}
@@ -313,54 +328,41 @@ const MyPets = () => {
                 e.preventDefault();
                 setSelectedSpecies(spec);
               }}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+              className={`whitespace-nowrap px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all flex items-center gap-1 border ${
                 selectedSpecies === spec
-                  ? 'bg-primary text-white shadow-sm'
-                  : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
+                  ? 'bg-primary text-on-primary border-primary shadow-sm hover:-translate-y-0.5'
+                  : 'bg-surface-container-lowest text-on-surface-variant border-outline-variant/40 hover:bg-surface-container-low hover:border-outline-variant'
               }`}
             >
+              {spec === 'All' && <span className="material-symbols-outlined text-[14px]">auto_awesome</span>}
+              {spec === 'Dog' && <span className="material-symbols-outlined text-[14px]">sound_detection_dog_barking</span>}
+              {spec === 'Cat' && <span className="material-symbols-outlined text-[14px]">pets</span>}
               {spec}
             </button>
           ))}
         </div>
 
-        <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
-          {/* Search Input */}
-          <div className="relative w-full md:w-64">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-[18px]">
-              search
-            </span>
-            <input
-              type="text"
-              placeholder="Search by name or breed..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 bg-surface-container border border-outline-variant/40 rounded-xl text-xs focus:outline-none focus:border-primary text-on-surface"
-            />
-          </div>
-
-          {/* Add New Pet Button */}
-          <button
-            onClick={handleOpenAddModal}
-            className="btn-primary flex items-center gap-1.5 shrink-0"
-          >
-            <span className="material-symbols-outlined text-[18px]">add</span> Add New Pet
-          </button>
-        </div>
+        {/* Add New Pet Button */}
+        <button
+          onClick={handleOpenAddModal}
+          className="w-full md:w-auto order-1 md:order-3 px-4 py-1.5 bg-primary text-on-primary rounded-lg text-[11px] font-bold shadow-sm hover:bg-primary-container hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-1 shrink-0"
+        >
+          <span className="material-symbols-outlined text-[16px]">add</span> Add Pet
+        </button>
       </div>
 
       {/* Pets Grid */}
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 space-y-3">
-          <span className="material-symbols-outlined text-4xl text-primary animate-spin">sync</span>
-          <p className="text-xs font-bold text-on-surface-variant">Loading pet profiles...</p>
+        <div className="flex flex-col items-center justify-center py-10 space-y-2">
+          <span className="material-symbols-outlined text-2xl text-primary animate-spin">sync</span>
+          <p className="text-[11px] font-bold text-on-surface-variant">Loading pet profiles...</p>
         </div>
       ) : filteredPets.length === 0 ? (
-        <div className="text-center bg-surface-container-lowest border border-dashed border-outline-variant rounded-2xl p-8 space-y-4 h-[480px] flex flex-col items-center justify-center w-full">
-          <span className="material-symbols-outlined text-5xl text-outline-variant">pets</span>
+        <div className="text-center bg-surface-container-lowest border border-dashed border-outline-variant rounded-xl p-6 space-y-3 flex flex-col items-center justify-center w-full">
+          <span className="material-symbols-outlined text-3xl text-outline-variant">pets</span>
           <div>
-            <h3 className="text-lg font-bold text-on-surface">No Pet Companions Found</h3>
-            <p className="text-xs text-on-surface-variant mt-1">
+            <h3 className="text-sm font-bold text-on-surface">No Pet Companions Found</h3>
+            <p className="text-[11px] text-on-surface-variant mt-0.5">
               {searchQuery || selectedSpecies !== 'All'
                 ? 'No pets match your search criteria or species filter.'
                 : 'You have not registered any pets yet. Click below to add your first pet!'}
@@ -368,23 +370,23 @@ const MyPets = () => {
           </div>
           <button
             onClick={handleOpenAddModal}
-            className="bg-primary text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-md hover:bg-surface-tint transition-all inline-flex items-center gap-2"
+            className="bg-primary text-white text-[11px] font-bold px-3 py-1.5 rounded-lg shadow-sm hover:bg-surface-tint transition-all inline-flex items-center gap-1.5"
           >
-            <span className="material-symbols-outlined text-[18px]">add</span> Register First Pet
+            <span className="material-symbols-outlined text-[14px]">add</span> Register First Pet
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 content-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 content-start">
           {filteredPets.map((pet) => {
             const petSpecies = pet.species || pet.type;
             const petImg = pet.image || DEFAULT_PET_IMAGES[petSpecies] || DEFAULT_PET_IMAGES.Other;
             return (
               <div
                 key={pet._id || pet.id}
-                className="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between h-[480px]"
+                className="bg-surface-container-lowest rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
               >
                 {/* Pet Image & Badges */}
-                <div className="relative h-48 w-full bg-surface-container overflow-hidden shrink-0">
+                <div className="relative h-32 w-full bg-surface-container overflow-hidden shrink-0">
                   <img
                     src={petImg}
                     alt={pet.name}
@@ -393,12 +395,12 @@ const MyPets = () => {
                       e.target.src = DEFAULT_PET_IMAGES.Other;
                     }}
                   />
-                  <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                    <span className="bg-black/60 backdrop-blur-md text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                  <div className="absolute top-2 left-2 flex flex-wrap gap-1">
+                    <span className="bg-black/60 backdrop-blur-md text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">
                       {petSpecies}
                     </span>
                     <span
-                      className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider backdrop-blur-md ${
+                      className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-md ${
                         pet.healthStatus === 'Healthy'
                           ? 'bg-emerald-500/90 text-white'
                           : pet.healthStatus === 'Sick'
@@ -413,90 +415,90 @@ const MyPets = () => {
                   <button
                     onClick={() => handleSetFavorite(pet)}
                     title="Set as favorite pet for top navbar avatar"
-                    className="absolute top-3 right-3 bg-white/80 backdrop-blur-md hover:bg-white text-rose-500 p-1.5 rounded-full shadow-md transition-all"
+                    className="absolute top-2 right-2 bg-white/80 backdrop-blur-md hover:bg-white text-rose-500 p-1 rounded-full shadow-sm transition-all"
                   >
-                    <span className="material-symbols-outlined text-[18px] filled-icon">favorite</span>
+                    <span className="material-symbols-outlined text-[14px] filled-icon">favorite</span>
                   </button>
                 </div>
 
                 {/* Pet Details */}
-                <div className="p-5 space-y-4 flex-1 overflow-hidden flex flex-col justify-start">
+                <div className="p-3 space-y-2 flex-1 overflow-hidden flex flex-col justify-start">
                   <div>
                     <div className="flex justify-between items-start">
-                      <h3 className="text-xl font-black text-on-surface">{pet.name}</h3>
-                      <span className="text-xs font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full">
+                      <h3 className="text-xs font-black text-on-surface">{pet.name}</h3>
+                      <span className="text-[10px] font-bold text-primary bg-primary/10 px-1.5 py-0.5 rounded-full">
                         {pet.gender}
                       </span>
                     </div>
-                    <p className="text-xs font-bold text-on-surface-variant mt-0.5">
+                    <p className="text-[11px] font-bold text-on-surface-variant">
                       {pet.breed || 'Mixed Breed'} {pet.color ? `• ${pet.color}` : ''}
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 text-xs bg-surface-container-low p-3 rounded-xl border border-outline-variant/20">
+                  <div className="grid grid-cols-2 gap-1.5 text-[11px] bg-surface-container-low p-2 rounded-lg border border-outline-variant/20">
                     <div>
-                      <span className="text-[10px] text-on-surface-variant block uppercase font-bold">Age</span>
+                      <span className="text-[9px] text-on-surface-variant block uppercase font-bold">Age</span>
                       <span className="font-bold text-on-surface">
                         {pet.age} {pet.ageUnit || 'Years'}
                       </span>
                     </div>
                     <div>
-                      <span className="text-[10px] text-on-surface-variant block uppercase font-bold">Weight</span>
+                      <span className="text-[9px] text-on-surface-variant block uppercase font-bold">Weight</span>
                       <span className="font-bold text-on-surface">
                         {pet.weight} {pet.weightUnit || 'kg'}
                       </span>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between text-xs pt-1">
-                    <div className="flex items-center gap-1.5">
+                  <div className="flex items-center justify-between text-[11px]">
+                    <div className="flex items-center gap-1">
                       <span
-                        className={`w-2 h-2 rounded-full ${
+                        className={`w-1.5 h-1.5 rounded-full ${
                           pet.vaccinated ? 'bg-emerald-500' : 'bg-red-500'
                         }`}
                       ></span>
                       <span className="font-bold text-on-surface">
-                        {pet.vaccinated ? 'Vaccinated' : 'Not Vaccinated'}
+                        {pet.vaccinated ? 'Vaccinated' : 'Not Vacc.'}
                       </span>
                     </div>
-                    <span className="text-[11px] text-on-surface-variant">
-                      Status: <strong className="text-on-surface">{pet.status || 'Available'}</strong>
+                    <span className="text-[10px] text-on-surface-variant">
+                      <strong className="text-on-surface">{pet.status || 'Available'}</strong>
                     </span>
                   </div>
 
                   {pet.description && (
-                    <p className="text-xs text-on-surface-variant/90 line-clamp-2 italic">
+                    <p className="text-[10px] text-on-surface-variant/90 line-clamp-1 italic">
                       "{pet.description}"
                     </p>
                   )}
                 </div>
 
                 {/* Card Actions */}
-                <div className="p-4 border-t border-outline-variant/20 bg-surface-container-lowest flex items-center justify-between gap-2 shrink-0">
+                <div className="px-3 py-2 border-t border-outline-variant/20 bg-surface-container-lowest flex items-center justify-between gap-1 shrink-0">
                   <button
                     onClick={() => {
                       setSelectedPet(pet);
                       setIsViewModalOpen(true);
                     }}
-                    className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
+                    className="text-[11px] font-bold text-primary hover:underline flex items-center gap-0.5"
                   >
-                    <span className="material-symbols-outlined text-[16px]">visibility</span> View Details
+                    <span className="material-symbols-outlined text-[14px]">visibility</span> View
                   </button>
 
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-0.5">
                     <button
                       onClick={() => handleOpenEditModal(pet)}
-                      className="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-xl transition-all"
+                      className="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-all"
                       title="Edit Pet Profile"
                     >
-                      <span className="material-symbols-outlined text-[18px]">edit</span>
+                      <span className="material-symbols-outlined text-[14px]">edit</span>
                     </button>
                     <button
                       onClick={() => handleDeletePet(pet)}
-                      className="p-2 text-on-surface-variant hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                      className="p-1.5 text-on-surface-variant hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
                       title="Delete Pet"
                     >
-                      <span className="material-symbols-outlined text-[18px]">delete</span>
+                      <span className="material-symbols-outlined text-[14px]">delete</span>
                     </button>
                   </div>
                 </div>
@@ -511,14 +513,14 @@ const MyPets = () => {
       {/* ========================================================================= */}
       {(isAddModalOpen || isEditModalOpen) && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-surface-container-lowest rounded-2xl max-w-2xl w-full max-h-[95vh] flex flex-col border border-outline-variant/40 shadow-2xl overflow-hidden">
+          <div className="bg-surface-container-lowest rounded-xl max-w-2xl w-full max-h-[95vh] flex flex-col border border-outline-variant/40 shadow-2xl overflow-hidden">
             {/* Modal Header */}
-            <div className="p-5 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low shrink-0">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-2xl">
+            <div className="px-4 py-3 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low shrink-0">
+              <div className="flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-primary text-lg">
                   {isEditModalOpen ? 'edit_note' : 'add_circle'}
                 </span>
-                <h2 className="text-xl font-black text-on-surface">
+                <h2 className="text-sm font-black text-on-surface">
                   {isEditModalOpen ? `Edit ${selectedPet?.name}'s Profile` : 'Add New Pet Companion'}
                 </h2>
               </div>
@@ -527,23 +529,23 @@ const MyPets = () => {
                   setIsAddModalOpen(false);
                   setIsEditModalOpen(false);
                 }}
-                className="text-on-surface-variant hover:text-on-surface p-1 rounded-lg"
+                className="text-on-surface-variant hover:text-on-surface p-0.5 rounded-lg"
               >
-                <span className="material-symbols-outlined text-2xl">close</span>
+                <span className="material-symbols-outlined text-lg">close</span>
               </button>
             </div>
 
             {/* Modal Form */}
-            <form onSubmit={isEditModalOpen ? handleEditPetSubmit : handleAddPetSubmit} className="p-6 space-y-8 overflow-y-auto">
+            <form onSubmit={isEditModalOpen ? handleEditPetSubmit : handleAddPetSubmit} className="p-4 space-y-4 overflow-y-auto">
               
               {/* Photo Upload Section */}
-              <div className="space-y-3">
-                <h3 className="text-sm font-black text-on-surface flex items-center gap-2 border-b border-outline-variant/30 pb-2">
-                  <span className="material-symbols-outlined text-primary text-[18px]">add_a_photo</span>
+              <div className="space-y-2">
+                <h3 className="text-xs font-black text-on-surface flex items-center gap-1.5 border-b border-outline-variant/30 pb-1.5">
+                  <span className="material-symbols-outlined text-primary text-[14px]">add_a_photo</span>
                   Pet Photo
                 </h3>
-                <div className="flex flex-col sm:flex-row items-center gap-6 bg-surface-container-low p-4 rounded-2xl border border-outline-variant/30">
-                  <div className="w-24 h-24 rounded-full bg-surface-container overflow-hidden border-4 border-surface shadow-md relative shrink-0 group">
+                <div className="flex flex-col sm:flex-row items-center gap-3 bg-surface-container-low p-3 rounded-xl border border-outline-variant/30">
+                  <div className="w-16 h-16 rounded-full bg-surface-container overflow-hidden border-2 border-surface shadow-sm relative shrink-0 group">
                     <img
                       src={
                         formData.image ||
@@ -559,9 +561,9 @@ const MyPets = () => {
                       </div>
                     )}
                   </div>
-                  <div className="space-y-3 flex-1 w-full text-center sm:text-left">
-                    <label className="cursor-pointer bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold px-5 py-2.5 rounded-xl inline-flex items-center justify-center sm:justify-start gap-2 transition-all border border-primary/20 w-full sm:w-auto">
-                      <span className="material-symbols-outlined text-[20px]">cloud_upload</span>
+                  <div className="space-y-2 flex-1 w-full text-center sm:text-left">
+                    <label className="cursor-pointer bg-primary/10 hover:bg-primary/20 text-primary text-[11px] font-bold px-3 py-1.5 rounded-lg inline-flex items-center justify-center sm:justify-start gap-1.5 transition-all border border-primary/20 w-full sm:w-auto">
+                      <span className="material-symbols-outlined text-[14px]">cloud_upload</span>
                       {uploadingImage ? 'Uploading...' : 'Upload Photo'}
                       <input
                         type="file"
@@ -586,12 +588,12 @@ const MyPets = () => {
               </div>
 
               {/* Basic Information */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-black text-on-surface flex items-center gap-2 border-b border-outline-variant/30 pb-2">
-                  <span className="material-symbols-outlined text-primary text-[18px]">info</span>
+              <div className="space-y-2">
+                <h3 className="text-xs font-black text-on-surface flex items-center gap-1.5 border-b border-outline-variant/30 pb-1.5">
+                  <span className="material-symbols-outlined text-primary text-[14px]">info</span>
                   Basic Information
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {/* Name */}
                   <div className="space-y-1.5">
                     <label className="form-label">
@@ -663,12 +665,12 @@ const MyPets = () => {
               </div>
 
               {/* Physical Traits */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-black text-on-surface flex items-center gap-2 border-b border-outline-variant/30 pb-2">
-                  <span className="material-symbols-outlined text-primary text-[18px]">straighten</span>
+              <div className="space-y-2">
+                <h3 className="text-xs font-black text-on-surface flex items-center gap-1.5 border-b border-outline-variant/30 pb-1.5">
+                  <span className="material-symbols-outlined text-primary text-[14px]">straighten</span>
                   Physical Traits
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   {/* Age */}
                   <div className="space-y-1.5">
                     <label className="form-label">Age</label>
@@ -730,12 +732,12 @@ const MyPets = () => {
               </div>
 
               {/* Health & Status */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-black text-on-surface flex items-center gap-2 border-b border-outline-variant/30 pb-2">
-                  <span className="material-symbols-outlined text-primary text-[18px]">medical_services</span>
+              <div className="space-y-2">
+                <h3 className="text-xs font-black text-on-surface flex items-center gap-1.5 border-b border-outline-variant/30 pb-1.5">
+                  <span className="material-symbols-outlined text-primary text-[14px]">medical_services</span>
                   Health & Status
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {/* Health Status */}
                   <div className="space-y-1.5">
                     <label className="form-label">Health Status</label>
@@ -774,8 +776,8 @@ const MyPets = () => {
                 </div>
 
                 {/* Vaccination Status & Date */}
-                <div className="bg-primary/5 p-4 rounded-xl border border-primary/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all">
-                  <label className="flex items-center gap-3 text-sm font-bold text-on-surface cursor-pointer group">
+                <div className="bg-primary/5 p-3 rounded-lg border border-primary/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 transition-all">
+                  <label className="flex items-center gap-2 text-xs font-bold text-on-surface cursor-pointer group">
                     <div className={`w-5 h-5 rounded flex items-center justify-center transition-colors border ${formData.vaccinated ? 'bg-primary border-primary' : 'bg-surface-container border-outline-variant group-hover:border-primary'}`}>
                       {formData.vaccinated && <span className="material-symbols-outlined text-white text-[16px]">check</span>}
                     </div>
@@ -805,7 +807,7 @@ const MyPets = () => {
                 <div className="space-y-1.5">
                   <label className="block text-xs font-bold text-on-surface-variant">Medical History & Notes (Optional)</label>
                   <textarea
-                    rows="3"
+                    rows="2"
                     value={formData.description}
                     onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
                     placeholder="Enter any allergies, medical notes, or special care instructions..."
@@ -815,29 +817,29 @@ const MyPets = () => {
               </div>
 
               {/* Form Action Buttons */}
-              <div className="pt-6 mt-6 border-t border-outline-variant/30 flex justify-end gap-4">
+              <div className="pt-3 mt-3 border-t border-outline-variant/30 flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => {
                     setIsAddModalOpen(false);
                     setIsEditModalOpen(false);
                   }}
-                  className="px-6 py-2.5 bg-surface-container text-on-surface font-bold text-sm rounded-xl hover:bg-surface-container-high transition-all"
+                  className="px-4 py-1.5 bg-surface-container text-on-surface font-bold text-xs rounded-lg hover:bg-surface-container-high transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={formSubmitting || uploadingImage}
-                  className="px-8 py-2.5 bg-primary text-white font-bold text-sm rounded-xl shadow-[0_4px_14px_0_rgba(var(--color-primary-rgb),0.39)] hover:shadow-[0_6px_20px_rgba(var(--color-primary-rgb),0.23)] hover:-translate-y-0.5 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  className="px-5 py-1.5 bg-primary text-white font-bold text-xs rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 >
                   {formSubmitting ? (
                     <>
-                      <span className="material-symbols-outlined animate-spin text-[18px]">sync</span> Saving...
+                      <span className="material-symbols-outlined animate-spin text-[14px]">sync</span> Saving...
                     </>
                   ) : (
                     <>
-                      <span className="material-symbols-outlined text-[18px]">check_circle</span>
+                      <span className="material-symbols-outlined text-[14px]">check_circle</span>
                       {isEditModalOpen ? 'Save Changes' : 'Register Pet'}
                     </>
                   )}
@@ -853,8 +855,8 @@ const MyPets = () => {
       {/* ========================================================================= */}
       {isViewModalOpen && selectedPet && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-surface-container-lowest rounded-2xl max-w-lg w-full max-h-[95vh] flex flex-col border border-outline-variant/40 shadow-2xl overflow-hidden">
-            <div className="relative h-56 bg-surface-container shrink-0">
+          <div className="bg-surface-container-lowest rounded-xl max-w-lg w-full max-h-[95vh] flex flex-col border border-outline-variant/40 shadow-2xl overflow-hidden">
+            <div className="relative h-40 bg-surface-container shrink-0">
               <img
                 src={selectedPet.image || DEFAULT_PET_IMAGES[selectedPet.species || selectedPet.type] || DEFAULT_PET_IMAGES.Other}
                 alt={selectedPet.name}
@@ -868,11 +870,11 @@ const MyPets = () => {
               </button>
             </div>
 
-            <div className="p-6 space-y-4 overflow-y-auto">
+            <div className="p-4 space-y-3 overflow-y-auto">
               <div>
                 <div className="flex justify-between items-center">
-                  <h2 className="text-2xl font-black text-on-surface">{selectedPet.name}</h2>
-                  <span className="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full">
+                  <h2 className="text-lg font-black text-on-surface">{selectedPet.name}</h2>
+                  <span className="bg-primary/10 text-primary text-[11px] font-bold px-2 py-0.5 rounded-full">
                     {selectedPet.species || selectedPet.type} • {selectedPet.gender}
                   </span>
                 </div>
@@ -881,7 +883,7 @@ const MyPets = () => {
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 text-xs bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
+              <div className="grid grid-cols-2 gap-2 text-[11px] bg-surface-container-low p-3 rounded-lg border border-outline-variant/20">
                 <div>
                   <span className="text-[10px] text-on-surface-variant uppercase font-bold block">Age</span>
                   <span className="font-bold text-on-surface">{selectedPet.age} {selectedPet.ageUnit || 'Years'}</span>
@@ -921,7 +923,7 @@ const MyPets = () => {
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 
