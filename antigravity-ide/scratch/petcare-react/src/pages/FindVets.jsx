@@ -61,49 +61,49 @@ const FindVets = () => {
   }, [isEmergency]);
 
   return (
-    <main className="p-4 md:p-8 pb-24 md:pb-8 flex flex-col gap-6 max-w-[1280px] mx-auto w-full transition-opacity duration-300">
+    <main className="p-3 md:p-4 pb-20 md:pb-4 flex flex-col gap-3 max-w-[1280px] mx-auto w-full transition-opacity duration-300">
         <TopNav title={isEmergency ? "Emergency On-Call Doctors" : "Find a Veterinarian"} subtitle={isEmergency ? "These doctors are available for urgent 24/7 emergency consultations." : "Search and book appointments with top verified vets across India."} />
 
-        <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-surface-container-low/80 backdrop-blur-md p-4 md:p-5 rounded-2xl border border-outline-variant/30 shadow-sm sticky top-20 z-20">
+        <div className="flex flex-col md:flex-row gap-2 justify-between items-center bg-surface-container-low/80 backdrop-blur-md p-2.5 md:p-3 rounded-xl border border-outline-variant/30 shadow-sm sticky top-14 z-20">
           <div className="relative w-full md:w-1/2 group">
-            <span className="material-symbols-outlined absolute left-4 top-1/2 transform -translate-y-1/2 text-outline-variant group-focus-within:text-primary transition-colors">search</span>
+            <span className="material-symbols-outlined absolute left-2.5 top-1/2 transform -translate-y-1/2 text-outline-variant text-[18px] group-focus-within:text-primary transition-colors">search</span>
             <input 
               type="text" 
-              className="w-full pl-12 pr-4 py-3.5 bg-surface-container-lowest border-2 border-outline-variant/40 rounded-xl font-bold text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 hover:border-outline-variant transition-all shadow-sm text-on-surface" 
+              className="w-full pl-8 pr-3 py-1.5 bg-surface-container-lowest border border-outline-variant/40 rounded-lg font-bold text-xs focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 hover:border-outline-variant transition-all shadow-sm text-on-surface" 
               placeholder="Search by name, specialization, or city..." 
             />
           </div>
-          <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 custom-scrollbar">
-            <button className="whitespace-nowrap px-5 py-2.5 bg-primary text-on-primary rounded-xl font-bold text-sm shadow-md hover:bg-primary-container hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px]">auto_awesome</span> All Vets
+          <div className="flex gap-1.5 w-full md:w-auto overflow-x-auto pb-1 md:pb-0 custom-scrollbar">
+            <button className="whitespace-nowrap px-3 py-1.5 bg-primary text-on-primary rounded-lg font-bold text-[11px] shadow-sm hover:bg-primary-container hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-1">
+              <span className="material-symbols-outlined text-[14px]">auto_awesome</span> All Vets
             </button>
-            <button className="whitespace-nowrap px-5 py-2.5 bg-surface-container-lowest border-2 border-outline-variant/40 text-on-surface-variant rounded-xl text-sm hover:bg-surface-container-low hover:border-outline-variant transition-all font-bold flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px]">videocam</span> Telehealth
+            <button className="whitespace-nowrap px-3 py-1.5 bg-surface-container-lowest border border-outline-variant/40 text-on-surface-variant rounded-lg text-[11px] hover:bg-surface-container-low hover:border-outline-variant transition-all font-bold flex items-center gap-1">
+              <span className="material-symbols-outlined text-[14px]">videocam</span> Telehealth
             </button>
-            <button className="whitespace-nowrap px-5 py-2.5 bg-surface-container-lowest border-2 border-outline-variant/40 text-on-surface-variant rounded-xl text-sm hover:bg-surface-container-low hover:border-outline-variant transition-all font-bold flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px]">content_cut</span> Surgeons
+            <button className="whitespace-nowrap px-3 py-1.5 bg-surface-container-lowest border border-outline-variant/40 text-on-surface-variant rounded-lg text-[11px] hover:bg-surface-container-low hover:border-outline-variant transition-all font-bold flex items-center gap-1">
+              <span className="material-symbols-outlined text-[14px]">content_cut</span> Surgeons
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
           {loading ? (
             Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl overflow-hidden shadow-sm flex flex-col h-full animate-pulse">
-                <div className="h-48 bg-surface-container-high/50 w-full"></div>
-                <div className="p-5 flex-grow flex flex-col gap-3">
+              <div key={i} className="bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm flex flex-col h-full animate-pulse">
+                <div className="h-28 bg-surface-container-high/50 w-full"></div>
+                <div className="p-3 flex-grow flex flex-col gap-2">
                   <div className="flex justify-between items-start">
-                    <div className="h-6 w-1/2 bg-surface-container-high/50 rounded-md"></div>
-                    <div className="h-5 w-12 bg-surface-container-high/50 rounded-md"></div>
+                    <div className="h-4 w-1/2 bg-surface-container-high/50 rounded"></div>
+                    <div className="h-4 w-10 bg-surface-container-high/50 rounded"></div>
                   </div>
-                  <div className="h-4 w-1/3 bg-surface-container-high/50 rounded-md mb-2"></div>
-                  <div className="flex gap-2 mb-4">
-                    <div className="h-6 w-16 bg-surface-container-high/50 rounded-md"></div>
-                    <div className="h-6 w-20 bg-surface-container-high/50 rounded-md"></div>
+                  <div className="h-3 w-1/3 bg-surface-container-high/50 rounded"></div>
+                  <div className="flex gap-1.5">
+                    <div className="h-5 w-14 bg-surface-container-high/50 rounded"></div>
+                    <div className="h-5 w-16 bg-surface-container-high/50 rounded"></div>
                   </div>
-                  <div className="mt-auto pt-4 border-t border-outline-variant/30 flex justify-between items-center">
-                    <div className="h-8 w-16 bg-surface-container-high/50 rounded-md"></div>
-                    <div className="h-10 w-24 bg-surface-container-high/50 rounded-xl"></div>
+                  <div className="mt-auto pt-2 border-t border-outline-variant/30 flex justify-between items-center">
+                    <div className="h-5 w-12 bg-surface-container-high/50 rounded"></div>
+                    <div className="h-7 w-20 bg-surface-container-high/50 rounded-lg"></div>
                   </div>
                 </div>
               </div>
@@ -112,61 +112,61 @@ const FindVets = () => {
             vets.map(vet => {
               const isOnline = checkVetOnlineStatus(vet);
               return (
-              <div key={vet._id} className="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group h-full">
-                <div className="relative h-48 overflow-hidden bg-surface-container">
-                  <img src={vet.photoUrl || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=500&auto=format&fit=crop"} alt={vet.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <div key={vet._id} className="bg-surface-container-lowest border border-outline-variant/40 rounded-xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex flex-col group h-full">
+                <div className="relative h-28 overflow-hidden bg-surface-container">
+                  <img src={vet.photoUrl || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=500&auto=format&fit=crop"} alt={vet.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   {isOnline ? (
-                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-black text-emerald-700 flex items-center gap-1.5 shadow-sm uppercase tracking-wider">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Online
+                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-md px-2 py-0.5 rounded-full text-[9px] font-black text-emerald-700 flex items-center gap-1 shadow-sm uppercase tracking-wider">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Online
                     </div>
                   ) : (
-                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-black text-on-surface-variant flex items-center gap-1.5 shadow-sm uppercase tracking-wider">
-                      <span className="w-2 h-2 rounded-full bg-outline-variant"></span> Offline
+                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-md px-2 py-0.5 rounded-full text-[9px] font-black text-on-surface-variant flex items-center gap-1 shadow-sm uppercase tracking-wider">
+                      <span className="w-1.5 h-1.5 rounded-full bg-outline-variant"></span> Offline
                     </div>
                   )}
                 </div>
-                <div className="p-5 flex-grow flex flex-col">
-                  <div className="flex justify-between items-start mb-2">
+                <div className="p-3 flex-grow flex flex-col">
+                  <div className="flex justify-between items-start mb-1">
                     <div>
-                      <h3 className="font-headline-sm font-black text-lg text-on-surface line-clamp-1 group-hover:text-primary transition-colors">{vet.name}</h3>
-                      <p className="text-[10px] font-bold text-on-surface-variant bg-surface-container-low border border-outline-variant/30 px-2 py-0.5 rounded inline-block mt-1 uppercase tracking-wider">{vet.vciNumber || 'VCI Verified'}</p>
+                      <h3 className="font-headline-sm font-black text-xs text-on-surface line-clamp-1 group-hover:text-primary transition-colors">{vet.name}</h3>
+                      <p className="text-[9px] font-bold text-on-surface-variant bg-surface-container-low border border-outline-variant/30 px-1.5 py-0.5 rounded inline-block mt-0.5 uppercase tracking-wider">{vet.vciNumber || 'VCI Verified'}</p>
                     </div>
-                    <div className="flex items-center gap-1 bg-amber-100 text-amber-800 px-2 py-1 rounded font-black text-[11px] border border-amber-200 shadow-sm">
-                      <span className="material-symbols-outlined text-[14px] filled-icon">star</span> 4.9
+                    <div className="flex items-center gap-0.5 bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-black text-[10px] border border-amber-200 shrink-0">
+                      <span className="material-symbols-outlined text-[12px] filled-icon">star</span> 4.9
                     </div>
                   </div>
-                  <p className="text-sm text-primary font-bold mb-3 line-clamp-1">{vet.qualification}</p>
+                  <p className="text-[11px] text-primary font-bold mb-1.5 line-clamp-1">{vet.qualification}</p>
                   
-                  <div className="flex flex-wrap gap-2 mb-3">
+                  <div className="flex flex-wrap gap-1 mb-1.5">
                     {vet.specialization && vet.specialization.slice(0, 2).map((spec, idx) => (
-                      <span key={idx} className="text-[10px] uppercase tracking-wider font-bold bg-secondary-container/30 text-on-secondary-container px-2.5 py-1 rounded-md border border-secondary-container/50">
+                      <span key={idx} className="text-[9px] uppercase tracking-wider font-bold bg-secondary-container/30 text-on-secondary-container px-1.5 py-0.5 rounded border border-secondary-container/50">
                         {spec}
                       </span>
                     ))}
                     {vet.specialization && vet.specialization.length > 2 && (
-                      <span className="text-[10px] uppercase tracking-wider font-bold bg-surface-container text-on-surface-variant px-2.5 py-1 rounded-md border border-outline-variant/40">
+                      <span className="text-[9px] uppercase tracking-wider font-bold bg-surface-container text-on-surface-variant px-1.5 py-0.5 rounded border border-outline-variant/40">
                         +{vet.specialization.length - 2}
                       </span>
                     )}
                   </div>
 
-                  <div className="flex items-center gap-1.5 text-xs text-on-surface-variant font-bold bg-surface-container-low border border-outline-variant/30 rounded-lg p-2 mb-4">
-                    <span className="material-symbols-outlined text-[16px] text-primary">calendar_clock</span>
+                  <div className="flex items-center gap-1 text-[11px] text-on-surface-variant font-bold bg-surface-container-low border border-outline-variant/30 rounded-md px-1.5 py-1 mb-2">
+                    <span className="material-symbols-outlined text-[14px] text-primary">calendar_clock</span>
                     {getAvailabilitySummary(vet.availability)}
                   </div>
 
-                  <div className="mt-auto pt-4 border-t border-outline-variant/30 flex items-center justify-between">
+                  <div className="mt-auto pt-2 border-t border-outline-variant/30 flex items-center justify-between">
                     <div className="flex flex-col">
-                      <span className="text-[10px] text-on-surface-variant uppercase font-bold tracking-wider mb-0.5">Consult Fee</span>
-                      <span className="font-black text-primary text-lg">₹{vet.consultationFee || 499}</span>
+                      <span className="text-[9px] text-on-surface-variant uppercase font-bold tracking-wider">Fee</span>
+                      <span className="font-black text-primary text-sm">₹{vet.consultationFee || 499}</span>
                     </div>
                     {isOnline ? (
-                      <Link to={`/owner-dashboard/vet-profile?id=${vet._id}`} className="bg-primary text-on-primary px-5 py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-primary-container transition-colors flex items-center gap-1 group/btn">
-                        Book Visit <span className="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+                      <Link to={`/owner-dashboard/vet-profile?id=${vet._id}`} className="bg-primary text-on-primary px-3 py-1.5 rounded-lg text-[11px] font-bold shadow-sm hover:bg-primary-container transition-all hover:shadow-md flex items-center gap-0.5 group/btn">
+                        Book <span className="material-symbols-outlined text-[14px] group-hover/btn:translate-x-0.5 transition-transform">arrow_forward</span>
                       </Link>
                     ) : (
-                      <span className="bg-surface-container-high text-on-surface-variant px-5 py-2.5 rounded-xl text-xs font-bold cursor-not-allowed flex items-center gap-1">
-                        Currently Offline
+                      <span className="bg-surface-container-high text-on-surface-variant px-3 py-1.5 rounded-lg text-[11px] font-bold cursor-not-allowed flex items-center gap-0.5">
+                        Offline
                       </span>
                     )}
                   </div>
@@ -174,12 +174,12 @@ const FindVets = () => {
               </div>
             )})
           ) : (
-            <div className="col-span-full py-20 text-center bg-surface-container-lowest border border-dashed border-outline-variant/50 rounded-3xl flex flex-col items-center justify-center">
-               <div className="w-20 h-20 bg-surface-container-low rounded-full flex items-center justify-center mb-4">
-                 <span className="material-symbols-outlined text-5xl opacity-40">search_off</span>
+            <div className="col-span-full py-10 text-center bg-surface-container-lowest border border-dashed border-outline-variant/50 rounded-2xl flex flex-col items-center justify-center">
+               <div className="w-14 h-14 bg-surface-container-low rounded-full flex items-center justify-center mb-3">
+                 <span className="material-symbols-outlined text-3xl opacity-40">search_off</span>
                </div>
-               <p className="font-black text-xl text-on-surface mb-1">No veterinarians found</p>
-               <p className="text-sm text-on-surface-variant">Try adjusting your search filters to find more results.</p>
+               <p className="font-black text-sm text-on-surface mb-0.5">No veterinarians found</p>
+               <p className="text-xs text-on-surface-variant">Try adjusting your search filters to find more results.</p>
             </div>
           )}
         </div>
