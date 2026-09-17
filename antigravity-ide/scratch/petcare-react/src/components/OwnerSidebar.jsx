@@ -1,9 +1,11 @@
+import React, { useState } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
 import Logo from './Logo';
 
 const OwnerSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -73,31 +75,48 @@ const OwnerSidebar = () => {
 
       {/* Mobile Bottom Navigation */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant z-50 px-1 flex justify-between items-center shadow-[0_-4px_24px_rgba(0,0,0,0.05)] pb-safe">
-        <NavLink to="/owner-dashboard" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+        <NavLink to="/owner-dashboard" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg flex-1 ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
           <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/owner-dashboard' ? 'filled-icon' : ''}`}>dashboard</span>
           <span className="text-[9px] font-bold mt-1">Home</span>
         </NavLink>
-        <NavLink to="/find-vets" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+        <NavLink to="/find-vets" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg flex-1 ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
           <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/find-vets' ? 'filled-icon' : ''}`}>search</span>
           <span className="text-[9px] font-bold mt-1">Search</span>
         </NavLink>
-        <NavLink to="/my-pets" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+        <NavLink to="/my-pets" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg flex-1 ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
           <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/my-pets' ? 'filled-icon' : ''}`}>pets</span>
           <span className="text-[9px] font-bold mt-1">Pets</span>
         </NavLink>
-        <NavLink to="/appointments" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+        <NavLink to="/appointments" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg flex-1 ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
           <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/appointments' ? 'filled-icon' : ''}`}>calendar_today</span>
           <span className="text-[9px] font-bold mt-1">Visits</span>
         </NavLink>
-        <NavLink to="/prescription" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
-          <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/prescription' ? 'filled-icon' : ''}`}>medical_services</span>
-          <span className="text-[9px] font-bold mt-1">Rx</span>
-        </NavLink>
-        <button onClick={handleLogout} className="flex flex-col items-center py-2 px-2 rounded-lg text-error hover:bg-error-container/20 transition-colors">
-          <span className="material-symbols-outlined text-[22px]">logout</span>
-          <span className="text-[9px] font-bold mt-1">Logout</span>
+        
+        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className={`flex flex-col items-center py-2 px-2 rounded-lg flex-1 ${mobileMenuOpen ? 'text-primary' : 'text-on-surface-variant'}`}>
+          <span className={`material-symbols-outlined text-[22px] ${mobileMenuOpen ? 'filled-icon' : ''}`}>menu</span>
+          <span className="text-[9px] font-bold mt-1">More</span>
         </button>
       </div>
+
+      {/* Mobile More Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity" onClick={() => setMobileMenuOpen(false)}>
+          <div className="absolute bottom-[60px] right-2 bg-surface-container-lowest border border-outline-variant/30 rounded-2xl shadow-xl w-48 overflow-hidden animate-fade-in-up" onClick={e => e.stopPropagation()}>
+            <div className="flex flex-col py-1">
+              <NavLink to="/prescription" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => `flex items-center gap-3 px-4 py-3 text-sm font-bold ${isActive ? 'text-primary bg-primary/10' : 'text-on-surface hover:bg-surface-container'}`}>
+                <span className="material-symbols-outlined text-[20px]">medical_services</span> Rx
+              </NavLink>
+              <button className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-on-surface hover:bg-surface-container w-full text-left transition-colors">
+                <span className="material-symbols-outlined text-[20px]">help</span> Help
+              </button>
+              <div className="h-px bg-outline-variant/30 my-1 mx-2"></div>
+              <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-error hover:bg-error-container/20 w-full text-left transition-colors">
+                <span className="material-symbols-outlined text-[20px]">logout</span> Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
