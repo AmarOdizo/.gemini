@@ -54,7 +54,7 @@ const AdminOwners = () => {
           <h1 className="font-['Manrope'] text-xl sm:text-2xl font-bold text-on-surface tracking-tight flex flex-wrap items-center gap-2">
             <span>Pet Owner & Patient Directory</span>
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-surface-container text-primary">
-              14,820 Registered
+              {ownersList.length} Registered
             </span>
           </h1>
           <p className="text-xs text-on-surface-variant mt-1">
@@ -70,7 +70,7 @@ const AdminOwners = () => {
         <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
           <div>
             <span className="text-[0.6875rem] sm:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Total Owners</span>
-            <div className="text-xl sm:text-2xl font-bold font-['Manrope'] text-on-surface mt-0.5 sm:mt-1">14,820</div>
+            <div className="text-xl sm:text-2xl font-bold font-['Manrope'] text-on-surface mt-0.5 sm:mt-1">{ownersList.length}</div>
             <span className="text-xs text-secondary font-semibold">+312 this week</span>
           </div>
           <div className="w-10 h-10 rounded-xl bg-surface-container text-primary flex items-center justify-center shrink-0">
@@ -81,7 +81,7 @@ const AdminOwners = () => {
         <div className="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-outline-variant/20 flex items-center justify-between">
           <div>
             <span className="text-[0.6875rem] sm:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Registered Patients</span>
-            <div className="text-xl sm:text-2xl font-bold font-['Manrope'] text-primary mt-0.5 sm:mt-1">19,410</div>
+            <div className="text-xl sm:text-2xl font-bold font-['Manrope'] text-primary mt-0.5 sm:mt-1">{ownersList.reduce((acc, owner) => acc + (owner.pets ? owner.pets.length : 0), 0)}</div>
             <span className="text-xs text-on-surface-variant">Dogs, Cats, Exotic</span>
           </div>
           <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
