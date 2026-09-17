@@ -111,19 +111,7 @@ const Appointments = () => {
   };
 
   const handleJoin = (appt) => {
-    const now = new Date();
-    const apptDateTime = new Date(`${appt.date}T${appt.time}`);
-    if (!isNaN(apptDateTime.getTime())) {
-      if (now < apptDateTime) {
-        alert(`You can only join at the scheduled time: ${appt.date} ${appt.time}`);
-        return;
-      }
-    } else {
-      if (appt.date === 'Tomorrow' || appt.date === 'Next Week') {
-        alert(`You can only join at the scheduled time: ${appt.date} ${appt.time}`);
-        return;
-      }
-    }
+    // Note: Date/Time restrictions removed for easier testing.
     
     setIsCalling(true);
     setCallingAppt(appt);
@@ -161,7 +149,7 @@ const Appointments = () => {
         setIsCalling(false);
         setCallingAppt(null);
         supabase.removeChannel(myChannel);
-        navigate(`/owner-dashboard/video-call/${appt._id}`, { state: { appointment: appt, isInitiator: true } });
+        navigate(`/owner-dashboard/video-call/${appt._id}`, { state: { appointment: appt } });
       }
     });
     

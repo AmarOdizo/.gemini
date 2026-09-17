@@ -74,7 +74,7 @@ const OwnerVideoCall = () => {
   }
 
   return (
-    <VideoCallWrapper callData={callData} isInitiator={location.state?.isInitiator ?? false} />
+    <VideoCallWrapper callData={callData} isInitiator={false} />
   );
 };
 
