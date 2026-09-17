@@ -63,8 +63,8 @@ const OwnerSidebar = () => {
             Book Appointment
           </Link>
           <button className="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all rounded-xl w-full text-left font-bold text-sm">
-            <span className="material-symbols-outlined text-[20px]">help</span>
-            Help & Support
+            <span className="material-symbols-outlined text-[20px]">feedback</span>
+            Feedback
           </button>
           <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-2.5 text-error hover:bg-error-container/30 transition-all rounded-xl cursor-pointer w-full text-left font-bold text-sm group">
             <span className="material-symbols-outlined text-[20px] group-hover:-translate-x-1 transition-transform">logout</span>
@@ -107,7 +107,7 @@ const OwnerSidebar = () => {
                 <span className="material-symbols-outlined text-[20px]">medical_services</span> Rx
               </NavLink>
               <button className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-on-surface hover:bg-surface-container w-full text-left transition-colors">
-                <span className="material-symbols-outlined text-[20px]">help</span> Help
+                <span className="material-symbols-outlined text-[20px]">feedback</span> Feedback
               </button>
               <div className="h-px bg-outline-variant/30 my-1 mx-2"></div>
               <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-error hover:bg-error-container/20 w-full text-left transition-colors">
