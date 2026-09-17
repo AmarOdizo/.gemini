@@ -35,10 +35,13 @@ import AdminPrescriptions from './pages/admin/AdminPrescriptions'
 import AdminNotifications from './pages/admin/AdminNotifications'
 import AdminSettings from './pages/admin/AdminSettings'
 import AdminReviews from './pages/admin/AdminReviews'
+import GlobalCallListener from './components/video-call/GlobalCallListener'
 
 function App() {
   return (
-    <Routes>
+    <>
+      <GlobalCallListener />
+      <Routes>
       {/* Public Routes */}
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
@@ -101,6 +104,7 @@ function App() {
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </>
   )
 }
 

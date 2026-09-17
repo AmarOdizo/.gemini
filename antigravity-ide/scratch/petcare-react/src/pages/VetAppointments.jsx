@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 import supabase from '../supabaseClient';
@@ -8,6 +8,8 @@ const VetAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all'); // 'all', 'upcoming', 'completed'
+  const [isCalling, setIsCalling] = useState(false);
+  const [callingAppt, setCallingAppt] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -86,25 +88,76 @@ const VetAppointments = () => {
 
   const handleJoin = (appt) => {
     const now = new Date();
-    // Try to parse the date and time. If it's valid, compare.
     const apptDateTime = new Date(`${appt.date} ${appt.time}`);
     
-    // Check if the parsed date is valid before comparing
     if (!isNaN(apptDateTime.getTime())) {
       if (now < apptDateTime) {
         alert(`You can only join at the scheduled time: ${appt.date} ${appt.time}`);
         return;
       }
     } else {
-      // Basic fallback if seed string like "Tomorrow" is used
       if (appt.date === 'Tomorrow' || appt.date === 'Next Week') {
         alert(`You can only join at the scheduled time: ${appt.date} ${appt.time}`);
         return;
       }
     }
     
-    // Navigate to the WebRTC video call page
-    navigate(`/doctor-dashboard/video-call/${appt._id}`, { state: { appointment: appt } });
+    setIsCalling(true);
+    setCallingAppt(appt);
+
+    const callerId = user.id || user._id;
+    const callerName = `Dr. ${user.name}`;
+    const otherPartyId = appt.ownerId;
+
+    const ownerChannel = supabase.channel(`global-call-${otherPartyId}`);
+    ownerChannel.subscribe((status) => {
+      if (status === 'SUBSCRIBED') {
+        ownerChannel.send({
+          type: 'broadcast',
+          event: 'incoming_call',
+          payload: {
+            callerId: callerId,
+            callerName: callerName,
+            appointmentId: appt._id,
+            appointmentDetails: appt,
+            role: 'doctor'
+          }
+        });
+        setTimeout(() => supabase.removeChannel(ownerChannel), 500);
+      }
+    });
+
+    let timeoutId;
+    const myChannel = supabase.channel(`global-call-${callerId}`);
+    
+    myChannel.on('broadcast', { event: 'call_accepted' }, (payload) => {
+      if (payload.payload.appointmentId === appt._id) {
+        clearTimeout(timeoutId);
+        setIsCalling(false);
+        setCallingAppt(null);
+        supabase.removeChannel(myChannel);
+        navigate(`/doctor-dashboard/video-call/${appt._id}`, { state: { appointment: appt, isInitiator: true } });
+      }
+    });
+    
+    myChannel.on('broadcast', { event: 'call_rejected' }, (payload) => {
+      if (payload.payload.appointmentId === appt._id) {
+        clearTimeout(timeoutId);
+        setIsCalling(false);
+        setCallingAppt(null);
+        supabase.removeChannel(myChannel);
+        alert('Call was declined by the pet parent.');
+      }
+    });
+    
+    myChannel.subscribe();
+    
+    timeoutId = setTimeout(() => {
+        setIsCalling(false);
+        setCallingAppt(null);
+        supabase.removeChannel(myChannel);
+        alert('No answer from the pet parent.');
+    }, 30000);
   };
 
   if (!user) return null;
@@ -219,6 +272,23 @@ const VetAppointments = () => {
             ); })()}
           </div>
         </div>
+
+      {/* Calling Modal */}
+      {isCalling && callingAppt && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex flex-col items-center justify-center p-4">
+          <div className="relative mb-6">
+            <div className="absolute inset-0 bg-primary/20 rounded-full animate-ping opacity-75" />
+            <div className="w-24 h-24 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center relative z-10">
+              <span className="material-symbols-outlined text-5xl text-primary animate-pulse">ring_volume</span>
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-2">Calling {callingAppt.ownerName}...</h2>
+          <p className="text-white/70 mb-8">Waiting for them to accept...</p>
+          <button onClick={() => { setIsCalling(false); setCallingAppt(null); }} className="bg-error hover:bg-error/90 text-white font-bold py-3 px-8 rounded-full flex items-center justify-center gap-2 transition-colors">
+            <span className="material-symbols-outlined">call_end</span> Cancel Call
+          </button>
+        </div>
+      )}
     </main>
   );
 };

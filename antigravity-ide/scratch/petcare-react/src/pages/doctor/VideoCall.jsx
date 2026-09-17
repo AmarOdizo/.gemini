@@ -80,7 +80,7 @@ const DoctorVideoCall = () => {
   }
 
   return (
-    <VideoCallWrapper callData={callData} isInitiator={true} />
+    <VideoCallWrapper callData={callData} isInitiator={location.state?.isInitiator ?? true} />
   );
 };
 

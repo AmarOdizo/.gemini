@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import VideoCallWrapper from '../../components/video-call/VideoCall';
 import { getVideoCallByAppointment } from '../../services/videoCallApi';
 
 const OwnerVideoCall = () => {
   const { appointmentId } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const [callData, setCallData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -73,7 +74,7 @@ const OwnerVideoCall = () => {
   }
 
   return (
-    <VideoCallWrapper callData={callData} isInitiator={false} />
+    <VideoCallWrapper callData={callData} isInitiator={location.state?.isInitiator ?? false} />
   );
 };
 
