@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
+import supabase from '../supabaseClient';
 import { isVetSuspended, isVetApproved } from '../utils/suspensionUtils';
 import { checkVetOnlineStatus } from '../utils/availabilityUtils';
 
@@ -11,6 +12,8 @@ const OwnerDashboard = () => {
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [bookingLoading, setBookingLoading] = useState(false);
+  const [isCalling, setIsCalling] = useState(false);
+  const [callingAppt, setCallingAppt] = useState(null);
 
   // Quick Book State
   const [selectedPetId, setSelectedPetId] = useState('');
@@ -166,6 +169,53 @@ const OwnerDashboard = () => {
     } finally {
       setBookingLoading(false);
     }
+  };
+
+  const handleJoin = (appt) => {
+    setIsCalling(true);
+    setCallingAppt(appt);
+
+    const callerId = user.id || user._id;
+    const callerName = user.name || 'Pet Parent';
+    const otherPartyId = appt.vetId;
+
+    const doctorChannel = supabase.channel(`global-call-${otherPartyId}`);
+    doctorChannel.subscribe((status) => {
+      if (status === 'SUBSCRIBED') {
+        doctorChannel.send({
+          type: 'broadcast',
+          event: 'incoming_call',
+          payload: {
+            callerId: callerId,
+            callerName: callerName,
+            appointmentId: appt._id,
+            appointmentDetails: appt,
+            role: 'owner'
+          }
+        });
+        setTimeout(() => supabase.removeChannel(doctorChannel), 500);
+      }
+    });
+
+    const myChannel = supabase.channel(`global-call-${callerId}`);
+    myChannel.on('broadcast', { event: 'call_accepted' }, (payload) => {
+      if (payload.payload.appointmentId === appt._id) {
+        setIsCalling(false);
+        setCallingAppt(null);
+        supabase.removeChannel(myChannel);
+        navigate(`/owner-dashboard/video-call/${appt._id}`, { state: { appointment: appt } });
+      }
+    });
+    myChannel.subscribe();
+
+    setTimeout(() => {
+      if (isCalling) {
+        setIsCalling(false);
+        setCallingAppt(null);
+        supabase.removeChannel(myChannel);
+        alert("The doctor is not answering. Please try again later.");
+      }
+    }, 30000);
   };
 
   if (!user) return null;
@@ -439,7 +489,7 @@ const OwnerDashboard = () => {
                             </button>
                             {appt.consultationType === 'video' && (
                               <button 
-                                onClick={(e) => { e.stopPropagation(); navigate(`/owner-dashboard/video-call/${appt._id}`); }}
+                                onClick={(e) => { e.stopPropagation(); handleJoin(appt); }}
                                 className="flex-1 bg-primary text-white text-[10px] font-bold py-1.5 px-1.5 rounded-lg hover:bg-surface-tint transition-colors flex items-center justify-center gap-0.5"
                               >
                                 <span className="material-symbols-outlined text-[12px]">videocam</span> Video Call
@@ -460,6 +510,33 @@ const OwnerDashboard = () => {
             </div>
           </div>
         </div>
+
+        {/* Calling Modal */}
+        {isCalling && callingAppt && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center animate-fade-in">
+            <div className="bg-surface-container-lowest rounded-3xl p-8 max-w-sm w-full mx-4 flex flex-col items-center text-center shadow-2xl scale-in">
+              <div className="relative mb-6">
+                <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center animate-pulse">
+                  <span className="material-symbols-outlined text-5xl text-primary">videocam</span>
+                </div>
+                <div className="absolute inset-0 rounded-full border-4 border-primary/30 animate-ping"></div>
+              </div>
+              <h2 className="text-2xl font-bold text-on-surface mb-2">Calling...</h2>
+              <p className="text-on-surface-variant font-medium mb-8">
+                Waiting for {callingAppt.vetName} to accept the call
+              </p>
+              <button 
+                onClick={() => {
+                  setIsCalling(false);
+                  setCallingAppt(null);
+                }}
+                className="bg-error text-white p-4 rounded-full shadow-lg shadow-error/30 hover:scale-110 transition-transform active:scale-95"
+              >
+                <span className="material-symbols-outlined text-2xl">call_end</span>
+              </button>
+            </div>
+          </div>
+        )}
     </main>
   );
 };
