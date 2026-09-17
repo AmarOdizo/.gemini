@@ -39,6 +39,36 @@ const VetEarnings = () => {
   const fee = user.consultationFee || 499;
   const totalEarnings = completedAppts.length * fee;
 
+  const handleDownloadCSV = () => {
+    if (completedAppts.length === 0) return;
+
+    const headers = ['Date', 'Patient / Description', 'Type', 'Amount (INR)', 'Status'];
+    const rows = completedAppts.map(appt => {
+      const type = appt.consultationType === 'video' ? 'Telehealth' : 'Clinic';
+      return [
+        appt.date,
+        `"Consultation - ${appt.petName}"`,
+        type,
+        fee,
+        'Credited'
+      ];
+    });
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(e => e.join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `earnings_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <main className="p-3 md:p-4 pb-20 md:pb-4 flex flex-col gap-3 max-w-[1280px] mx-auto w-full">
         <TopNav title="Earnings & Payouts" subtitle="Track your financial performance and withdrawal history." />
@@ -83,7 +113,7 @@ const VetEarnings = () => {
         <div className="bg-surface-container-lowest border border-outline-variant/40 rounded-xl shadow-sm overflow-hidden mt-1 flex-grow flex flex-col">
           <div className="p-3 border-b border-outline-variant/40 flex justify-between items-center bg-surface-container-low/50">
             <h3 className="font-headline-sm text-sm font-bold text-on-surface">Recent Transactions</h3>
-            <button className="text-[10px] font-bold text-primary flex items-center gap-1 hover:bg-primary/10 px-2 py-1 rounded transition-colors">
+            <button onClick={handleDownloadCSV} className="text-[10px] font-bold text-primary flex items-center gap-1 hover:bg-primary/10 px-2 py-1 rounded transition-colors">
               Download CSV <span className="material-symbols-outlined text-[14px]">download</span>
             </button>
           </div>
