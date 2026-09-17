@@ -26,6 +26,7 @@ const getAvailabilitySummary = (availability) => {
 const FindVets = () => {
   const [vets, setVets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
   
   const location = useLocation();
   const isEmergency = new URLSearchParams(location.search).get('emergency') === 'true';
@@ -60,6 +61,15 @@ const FindVets = () => {
     return () => window.removeEventListener('petcare_vets_updated', handleSync);
   }, [isEmergency]);
 
+  const filteredVets = vets.filter(vet => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    const nameMatch = vet.name?.toLowerCase().includes(query);
+    const specMatch = vet.specialization?.some(spec => spec.toLowerCase().includes(query));
+    const cityMatch = vet.city?.toLowerCase().includes(query) || vet.clinicAddress?.toLowerCase().includes(query);
+    return nameMatch || specMatch || cityMatch;
+  });
+
   return (
     <main className="p-3 md:p-4 pb-20 md:pb-4 flex flex-col gap-3 max-w-[1280px] mx-auto w-full transition-opacity duration-300">
         <TopNav title={isEmergency ? "Emergency On-Call Doctors" : "Find a Veterinarian"} subtitle={isEmergency ? "These doctors are available for urgent 24/7 emergency consultations." : "Search and book appointments with top verified vets across India."} />
@@ -71,6 +81,8 @@ const FindVets = () => {
               type="text" 
               className="w-full pl-8 pr-3 py-1.5 bg-surface-container-lowest border border-outline-variant/40 rounded-lg font-bold text-xs focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 hover:border-outline-variant transition-all shadow-sm text-on-surface" 
               placeholder="Search by name, specialization, or city..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
           <div className="flex gap-1.5 w-full md:w-auto overflow-x-auto pb-1 md:pb-0 custom-scrollbar">
@@ -108,8 +120,8 @@ const FindVets = () => {
                 </div>
               </div>
             ))
-          ) : vets.length > 0 ? (
-            vets.map(vet => {
+          ) : filteredVets.length > 0 ? (
+            filteredVets.map(vet => {
               const isOnline = checkVetOnlineStatus(vet);
               return (
               <div key={vet._id} className="bg-surface-container-lowest border border-outline-variant/40 rounded-xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex flex-col group h-full">
