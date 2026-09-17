@@ -6,6 +6,7 @@ const VetSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [vet, setVet] = useState({ name: 'Doctor', vciNumber: 'VCI-0000' });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('currentUser');
@@ -95,28 +96,49 @@ const VetSidebar = () => {
       </nav>
 
       {/* Mobile Bottom Navigation */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant z-50 px-2 flex justify-between items-center shadow-[0_-4px_24px_rgba(0,0,0,0.05)] pb-safe">
-        <NavLink to="/doctor-dashboard" className={({ isActive }) => `flex flex-col items-center py-2 px-3 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant z-50 px-1 flex justify-between items-center shadow-[0_-4px_24px_rgba(0,0,0,0.05)] pb-safe">
+        <NavLink to="/doctor-dashboard" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg flex-1 ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
           <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/doctor-dashboard' ? 'filled-icon' : ''}`}>dashboard</span>
-          <span className="text-[10px] font-bold mt-1">Dashboard</span>
+          <span className="text-[9px] font-bold mt-1">Home</span>
         </NavLink>
-        <NavLink to="/vet-appointments" className={({ isActive }) => `flex flex-col items-center py-2 px-3 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+        <NavLink to="/vet-appointments" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg flex-1 ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
           <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/vet-appointments' ? 'filled-icon' : ''}`}>calendar_today</span>
-          <span className="text-[10px] font-bold mt-1">Visits</span>
+          <span className="text-[9px] font-bold mt-1">Visits</span>
         </NavLink>
-        <NavLink to="/prescribe" className={({ isActive }) => `flex flex-col items-center py-2 px-3 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
-          <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/prescribe' ? 'filled-icon' : ''}`}>medical_services</span>
-          <span className="text-[10px] font-bold mt-1">Rx</span>
+        <NavLink to="/vet-availability" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg flex-1 ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+          <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/vet-availability' ? 'filled-icon' : ''}`}>schedule</span>
+          <span className="text-[9px] font-bold mt-1">Slots</span>
         </NavLink>
-        <NavLink to="/doctor-profile" className={({ isActive }) => `flex flex-col items-center py-2 px-3 rounded-lg ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
-          <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/doctor-profile' ? 'filled-icon' : ''}`}>badge</span>
-          <span className="text-[10px] font-bold mt-1">Profile</span>
+        <NavLink to="/vet-earnings" className={({ isActive }) => `flex flex-col items-center py-2 px-2 rounded-lg flex-1 ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+          <span className={`material-symbols-outlined text-[22px] ${location.pathname === '/vet-earnings' ? 'filled-icon' : ''}`}>account_balance_wallet</span>
+          <span className="text-[9px] font-bold mt-1">Earn</span>
         </NavLink>
-        <button onClick={handleLogout} className="flex flex-col items-center py-2 px-3 rounded-lg text-error hover:bg-error-container/20 transition-colors">
-          <span className="material-symbols-outlined text-[22px]">logout</span>
-          <span className="text-[10px] font-bold mt-1">Logout</span>
+        
+        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className={`flex flex-col items-center py-2 px-2 rounded-lg flex-1 ${mobileMenuOpen ? 'text-primary' : 'text-on-surface-variant'}`}>
+          <span className={`material-symbols-outlined text-[22px] ${mobileMenuOpen ? 'filled-icon' : ''}`}>menu</span>
+          <span className="text-[9px] font-bold mt-1">More</span>
         </button>
       </div>
+
+      {/* Mobile More Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity" onClick={() => setMobileMenuOpen(false)}>
+          <div className="absolute bottom-[60px] right-2 bg-surface-container-lowest border border-outline-variant/30 rounded-2xl shadow-xl w-48 overflow-hidden animate-fade-in-up" onClick={e => e.stopPropagation()}>
+            <div className="flex flex-col py-1">
+              <NavLink to="/prescribe" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => `flex items-center gap-3 px-4 py-3 text-sm font-bold ${isActive ? 'text-primary bg-primary/10' : 'text-on-surface hover:bg-surface-container'}`}>
+                <span className="material-symbols-outlined text-[20px]">medical_services</span> Rx
+              </NavLink>
+              <NavLink to="/doctor-profile" onClick={() => setMobileMenuOpen(false)} className={({isActive}) => `flex items-center gap-3 px-4 py-3 text-sm font-bold ${isActive ? 'text-primary bg-primary/10' : 'text-on-surface hover:bg-surface-container'}`}>
+                <span className="material-symbols-outlined text-[20px]">badge</span> Profile
+              </NavLink>
+              <div className="h-px bg-outline-variant/30 my-1 mx-2"></div>
+              <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-error hover:bg-error-container/20 w-full text-left transition-colors">
+                <span className="material-symbols-outlined text-[20px]">logout</span> Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
