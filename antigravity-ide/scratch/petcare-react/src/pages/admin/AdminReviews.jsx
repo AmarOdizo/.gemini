@@ -42,24 +42,33 @@ const AdminReviews = () => {
               {loading ? "Loading review table records from MongoDB..." : "No reviews found in database."}
             </div>
           ) : (
-            reviews.map((r) => (
-              <div key={r._id} className="p-3.5 sm:p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 space-y-2 text-xs">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2">
-                  <div className="flex flex-wrap items-center gap-1.5 font-bold text-on-surface">
-                    <span>{r.ownerName} (Role: {r.role ? r.role.charAt(0).toUpperCase() + r.role.slice(1) : 'Owner'})</span>
-                    <span className="text-on-surface-variant font-normal">reviewed</span>
-                    <span className="text-primary font-semibold">{r.vetName}</span>
+            reviews.map((r) => {
+              const isDoctorReview = r.ownerId === 'platform-feedback' || r.ownerName === 'Vet Platform Feedback';
+              const role = isDoctorReview ? 'Doctor' : 'Owner';
+              const reviewerName = isDoctorReview ? r.vetName : r.ownerName;
+              const targetName = isDoctorReview 
+                ? 'Platform' 
+                : (r.vetId === 'platform-feedback' || r.vetName === 'Platform / General Feedback' ? 'Platform' : r.vetName);
+
+              return (
+                <div key={r._id} className="p-3.5 sm:p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 space-y-2 text-xs">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2">
+                    <div className="flex flex-wrap items-center gap-1.5 font-bold text-on-surface">
+                      <span>{reviewerName} (Role: {role})</span>
+                      <span className="text-on-surface-variant font-normal">reviewed</span>
+                      <span className="text-primary font-semibold">{targetName}</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-amber-500 font-bold self-start sm:self-auto">
+                      {'★'.repeat(r.rating || 5)}
+                      <span className="text-on-surface-variant text-[0.6875rem] font-normal ml-1">
+                        {new Date(r.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1 text-amber-500 font-bold self-start sm:self-auto">
-                    {'★'.repeat(r.rating || 5)}
-                    <span className="text-on-surface-variant text-[0.6875rem] font-normal ml-1">
-                      {new Date(r.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
+                  <p className="text-on-surface-variant italic">"{r.comment}"</p>
                 </div>
-                <p className="text-on-surface-variant italic">"{r.comment}"</p>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
       </div>
