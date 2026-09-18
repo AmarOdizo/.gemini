@@ -11,6 +11,8 @@ const Register = () => {
     terms: false
   });
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -196,15 +198,24 @@ const Register = () => {
                 <div className="relative">
                   <span className="material-symbols-outlined absolute left-2.5 top-1/2 transform -translate-y-1/2 text-outline-variant text-[16px]">lock</span>
                   <input 
-                    type="password" 
+                    type={showPassword ? "text" : "password"} 
                     name="password" 
                     value={formData.password} 
                     onChange={handleChange} 
-                    className="input-standard pl-8 pr-8" 
+                    className="input-standard pl-8 pr-10" 
                     placeholder="••••••••" 
                     required 
                     minLength="8" 
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2.5 top-1/2 transform -translate-y-1/2 text-outline-variant hover:text-on-surface-variant flex items-center justify-center"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">
+                      {showPassword ? "visibility_off" : "visibility"}
+                    </span>
+                  </button>
                 </div>
               </div>
 
@@ -213,14 +224,23 @@ const Register = () => {
                 <div className="relative">
                   <span className="material-symbols-outlined absolute left-2.5 top-1/2 transform -translate-y-1/2 text-outline-variant text-[16px]">lock_reset</span>
                   <input 
-                    type="password" 
+                    type={showConfirmPassword ? "text" : "password"} 
                     name="confirmPassword" 
                     value={formData.confirmPassword} 
                     onChange={handleChange} 
-                    className="input-standard pl-8 pr-8" 
+                    className="input-standard pl-8 pr-10" 
                     placeholder="••••••••" 
                     required 
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-2.5 top-1/2 transform -translate-y-1/2 text-outline-variant hover:text-on-surface-variant flex items-center justify-center"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">
+                      {showConfirmPassword ? "visibility_off" : "visibility"}
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>

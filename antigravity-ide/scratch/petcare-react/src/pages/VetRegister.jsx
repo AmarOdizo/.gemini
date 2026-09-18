@@ -32,6 +32,7 @@ const VetRegister = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const navigate = useNavigate();
 
@@ -204,7 +205,18 @@ const VetRegister = () => {
                 </div>
                 <div>
                   <label className="form-label">Account Password *</label>
-                  <input type="password" name="password" value={formData.password} onChange={handleChange} required placeholder="••••••••" className="input-standard" />
+                  <div className="relative">
+                    <input type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} required placeholder="••••••••" className="input-standard pr-10" />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-2.5 top-1/2 transform -translate-y-1/2 text-outline-variant hover:text-on-surface-variant flex items-center justify-center"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">
+                        {showPassword ? "visibility_off" : "visibility"}
+                      </span>
+                    </button>
+                  </div>
                 </div>
                 <div>
                   <label className="form-label">Profile Photo (Optional)</label>

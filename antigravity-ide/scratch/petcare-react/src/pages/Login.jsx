@@ -5,6 +5,7 @@ const Login = () => {
   const [role, setRole] = useState('owner');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -142,13 +143,22 @@ const Login = () => {
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-2.5 top-1/2 transform -translate-y-1/2 text-outline-variant text-[16px]">lock</span>
                 <input 
-                  type="password" 
+                  type={showPassword ? "text" : "password"} 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="input-standard pl-8" 
+                  className="input-standard pl-8 pr-10" 
                   placeholder="Enter your password" 
                   required 
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-2.5 top-1/2 transform -translate-y-1/2 text-outline-variant hover:text-on-surface-variant flex items-center justify-center"
+                >
+                  <span className="material-symbols-outlined text-[16px]">
+                    {showPassword ? "visibility_off" : "visibility"}
+                  </span>
+                </button>
               </div>
             </div>
 
