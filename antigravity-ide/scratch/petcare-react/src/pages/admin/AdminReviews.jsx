@@ -46,7 +46,7 @@ const AdminReviews = () => {
               <div key={r._id} className="p-3.5 sm:p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 space-y-2 text-xs">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2">
                   <div className="flex flex-wrap items-center gap-1.5 font-bold text-on-surface">
-                    <span>{r.ownerName} (Pet: {r.petName})</span>
+                    <span>{r.ownerName} (Role: {r.role ? r.role.charAt(0).toUpperCase() + r.role.slice(1) : 'Owner'})</span>
                     <span className="text-on-surface-variant font-normal">reviewed</span>
                     <span className="text-primary font-semibold">{r.vetName}</span>
                   </div>
