@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const Vet = require("../models/Vet");
+const Admin = require("../models/Admin");
 
 // Helper function for Vet Login
 async function handleVetLogin(req, res, identifier, password) {
@@ -118,24 +119,26 @@ router.post("/login", async function (req, res) {
       return handleVetLogin(req, res, normalizedEmail, password);
     }
 
-    // Direct Master Admin Authentication for Clinical Governance
-    const masterAdminEmails = ["admin@odizo.com", "admin@petcare.org", "admin@petcare.com", "admin"];
-    const masterAdminPasswords = ["admin123", "admin@123", "odizo123", "admin"];
-    if (
-      masterAdminEmails.includes(normalizedEmail) &&
-      masterAdminPasswords.includes(password)
-    ) {
-      return res.json({
-        success: true,
-        message: "Clinical Admin Master Login Successful!",
-        token: "admin_token_" + Date.now(),
-        user: {
-          id: "admin_master_001",
-          name: normalizedEmail.includes("odizo") ? "Dr. Sarah Jenkins (Odizo Admin)" : "Chief Clinical Administrator",
-          email: normalizedEmail === "admin" ? "admin@odizo.com" : normalizedEmail,
-          role: "admin",
-          phone: "+91 98765 43210"
-        }
+    // Admin Authentication via DB
+    if (role === "admin") {
+      const dbAdmin = await Admin.findOne({ email: normalizedEmail });
+      if (dbAdmin && await dbAdmin.matchPassword(password)) {
+        return res.json({
+          success: true,
+          message: "Clinical Admin Master Login Successful!",
+          token: "admin_token_" + Date.now(),
+          user: {
+            id: dbAdmin._id,
+            name: "Clinical Administrator",
+            email: dbAdmin.email,
+            role: "admin",
+            phone: "+91 98765 43210"
+          }
+        });
+      }
+      return res.status(401).json({
+        success: false,
+        message: "Invalid admin email or password."
       });
     }
 
