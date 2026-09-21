@@ -86,32 +86,6 @@ const AdminLogin = () => {
         console.warn('API authentication fetch warning:', networkErr.message);
       }
 
-      // 2. Master / Demo Fallback validation (guarantees local & server never lock out admin)
-      const validMasterEmails = [
-        'admin@odizo.com',
-        'admin@petcare.org',
-        'admin@petcare.com',
-        'admin'
-      ];
-      const validMasterPasswords = ['admin123', 'admin@123', 'odizo123', 'admin'];
-
-      const isMasterAdmin =
-        validMasterEmails.includes(cleanIdentifier.toLowerCase()) &&
-        validMasterPasswords.includes(cleanPassword);
-
-      if (!loginSuccess && isMasterAdmin) {
-        loginSuccess = true;
-        token = 'admin_master_session_' + Date.now();
-        adminPayload = {
-          id: 'admin_master_001',
-          name: cleanIdentifier.includes('odizo') ? 'Dr. Sarah Jenkins (Odizo Admin)' : 'Chief Clinical Administrator',
-          email: cleanIdentifier === 'admin' ? 'admin@odizo.com' : cleanIdentifier,
-          role: 'admin',
-          title: 'Chief Clinical Operations Admin',
-          department: 'Executive Governance & Regulatory Audit'
-        };
-      }
-
       if (loginSuccess && adminPayload) {
         setSuccessMsg('Authentication verified. Redirecting to Clinical Admin Dashboard...');
         
@@ -123,7 +97,7 @@ const AdminLogin = () => {
           navigate('/admin/dashboard', { replace: true });
         }, 600);
       } else {
-        setErrorMsg('Invalid administrative credentials. Please verify your Admin Email / Password or click a Quick Demo account below.');
+        setErrorMsg('Invalid administrative credentials. Please verify your Admin Email / Password.');
       }
     } catch (err) {
       setErrorMsg('Authentication error: ' + (err.message || 'Unknown network error'));
@@ -292,40 +266,7 @@ const AdminLogin = () => {
           </button>
         </form>
 
-        {/* Quick Fill Demo Accounts */}
-        <div className="mt-4 pt-3 border-t border-slate-800/80">
-          <p className="text-[0.625rem] uppercase font-bold tracking-wider text-slate-400 text-center mb-2">
-            Quick 1-Click Demo Login
-          </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
-            <button
-              type="button"
-              onClick={() => handleQuickFill('admin@odizo.com', 'admin123')}
-              className="px-2.5 py-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-800 text-left border border-slate-700/60 transition-all group"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-[0.6875rem] font-bold text-emerald-400">Odizo Admin</span>
-                <span className="material-symbols-outlined text-[0.875rem] text-slate-500 group-hover:text-emerald-400">bolt</span>
-              </div>
-              <p className="text-[0.6875rem] text-slate-300 font-mono">admin@odizo.com</p>
-              <p className="text-[0.625rem] text-slate-500">pass: admin123</p>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleQuickFill('admin@petcare.org', 'admin123')}
-              className="px-2.5 py-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-800 text-left border border-slate-700/60 transition-all group"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-[0.6875rem] font-bold text-teal-400">Chief Clinical</span>
-                <span className="material-symbols-outlined text-[0.875rem] text-slate-500 group-hover:text-teal-400">bolt</span>
-              </div>
-              <p className="text-[0.6875rem] text-slate-300 font-mono">admin@petcare.org</p>
-              <p className="text-[0.625rem] text-slate-500">pass: admin123</p>
-            </button>
-          </div>
-        </div>
 
         {/* Security Notice */}
         <div className="mt-3 text-center">
