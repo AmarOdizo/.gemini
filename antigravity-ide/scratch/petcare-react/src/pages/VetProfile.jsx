@@ -545,7 +545,7 @@ const VetProfile = () => {
                       )}
                     </button>
                     <p className="text-[9px] text-center text-on-surface-variant font-medium mt-[-6px]">
-                      By booking, you agree to PawsIndia&apos;s Telehealth Terms of Service.
+                      By booking, you agree to PetCare&apos;s Telehealth Terms of Service.
                     </p>
                   </form>
                   )}

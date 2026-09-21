@@ -7,8 +7,8 @@ const Logo = ({ className = "", iconSize = "text-3xl", textSize = "text-2xl", pa
         pets
       </span>
       <span className={`font-headline-md font-black tracking-tight ${textSize} flex items-center`}>
-        <span className={pawsColor}>Paws</span>
-        <span className="text-[#FF9933]">India</span>
+        <span className={pawsColor}>Pet</span>
+        <span className="text-[#FF9933]">Care</span>
         <span className="ml-1.5 drop-shadow-sm">🇮🇳</span>
       </span>
     </div>

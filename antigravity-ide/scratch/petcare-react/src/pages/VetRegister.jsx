@@ -180,7 +180,7 @@ const VetRegister = () => {
             </span>
             <h1 className="font-headline-lg text-lg md:text-xl font-extrabold text-primary mb-1">Veterinarian Partner Registration</h1>
             <p className="font-body-md text-[11px] text-on-surface-variant max-w-lg mx-auto">
-              Join PawsIndia's veterinary network. Complete your professional profile and upload your VCI Registration Certificate for instant verification.
+              Join PetCare's veterinary network. Complete your professional profile and upload your VCI Registration Certificate for instant verification.
             </p>
           </div>
 

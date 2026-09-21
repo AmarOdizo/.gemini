@@ -105,7 +105,7 @@ const Home = () => {
         {/* How It Works */}
         <section className="max-w-container-max mx-auto px-4 md:px-8 py-16 flex flex-col items-center text-center gap-8">
           <div className="max-w-2xl">
-            <h2 className="font-headline-lg text-3xl font-bold text-on-surface mb-4">How PawsIndia Works</h2>
+            <h2 className="font-headline-lg text-3xl font-bold text-on-surface mb-4">How PetCare Works</h2>
             <p className="font-body-md text-on-surface-variant">Simple, secure, and stress-free pet care across India in three steps.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6 w-full mt-6">
@@ -137,7 +137,7 @@ const Home = () => {
         <section className="bg-primary text-on-primary py-16 px-4 md:px-8 text-center">
           <div className="max-w-3xl mx-auto flex flex-col gap-6 items-center">
             <h2 className="font-display-lg text-3xl font-bold text-on-primary">Your pet deserves the best care in India.</h2>
-            <p className="font-body-lg text-primary-fixed-dim">Join thousands of pet parents who trust PawsIndia for their dogs, cats, and birds.</p>
+            <p className="font-body-lg text-primary-fixed-dim">Join thousands of pet parents who trust PetCare for their dogs, cats, and birds.</p>
             <Link to="/register" className="bg-surface-container-lowest text-primary font-label-md px-8 py-4 rounded-lg hover:bg-surface-container-low transition-colors mt-4 shadow-md inline-block font-bold">
               Get Started Now
             </Link>
@@ -156,7 +156,7 @@ const Home = () => {
           </div>
         </div>
         <div className="w-full text-center mt-4 border-t border-outline-variant pt-4">
-          <p className="font-body-sm text-on-surface-variant">© 2026 PawsIndia Veterinary Healthcare Pvt. Ltd. All rights reserved.</p>
+          <p className="font-body-sm text-on-surface-variant">© 2026 PetCare Veterinary Healthcare Pvt. Ltd. All rights reserved.</p>
         </div>
       </footer>
     </div>

@@ -76,7 +76,7 @@ const Prescribe = () => {
         vetName: user.name || user.fullName || 'Dr. Unknown',
         vetQualification: user.qualification || '',
         vetSpecialization: Array.isArray(user.specialization) ? user.specialization.join(', ') : (user.specialization || ''),
-        vetClinic: user.clinicName || 'PawsIndia Pet Hospital',
+        vetClinic: user.clinicName || 'PetCare Hospital',
         vetPhone: user.phone || user.clinicPhone || '',
         vetImage: user.photoUrl || 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&auto=format&fit=crop',
         vetSignature: user.name || 'Doctor',
