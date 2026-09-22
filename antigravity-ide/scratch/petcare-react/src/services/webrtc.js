@@ -9,6 +9,7 @@ export class WebRTCManager {
     this.localStream = null;
     this.peerConnection = null;
     this.channel = null;
+    this.iceCandidateQueue = [];
 
     // Configuration with public Google STUN server
     this.configuration = {
@@ -86,6 +87,7 @@ export class WebRTCManager {
         this.createOffer();
       } else if (data.type === 'offer' && !this.isInitiator) {
         await this.peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
+        await this.processIceCandidateQueue();
         const answer = await this.peerConnection.createAnswer();
         await this.peerConnection.setLocalDescription(answer);
         this.sendSignalingData({
@@ -94,14 +96,30 @@ export class WebRTCManager {
         });
       } else if (data.type === 'answer' && this.isInitiator) {
         await this.peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
+        await this.processIceCandidateQueue();
       } else if (data.type === 'ice-candidate') {
-        await this.peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
+        if (this.peerConnection.remoteDescription) {
+          await this.peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
+        } else {
+          this.iceCandidateQueue.push(data.candidate);
+        }
       } else if (data.type === 'end-call') {
         this.endCall(false); // End call without broadcasting since we received it
       }
     } catch (error) {
       console.error("Error handling signaling data:", error);
     }
+  }
+
+  async processIceCandidateQueue() {
+    for (const candidate of this.iceCandidateQueue) {
+      try {
+        await this.peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+      } catch (e) {
+        console.error("Error adding queued ICE candidate:", e);
+      }
+    }
+    this.iceCandidateQueue = [];
   }
 
   async createOffer() {
