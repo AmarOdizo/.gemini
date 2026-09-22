@@ -138,7 +138,7 @@ const OwnerDashboard = () => {
         reason: 'Quick booking from Dashboard',
         reasonForVisit: 'Quick booking from Dashboard',
         fee: selectedVet.consultationFee || 499,
-        status: 'upcoming'
+        status: 'pending'
       };
 
       const token = localStorage.getItem('userToken') || '';
@@ -159,7 +159,23 @@ const OwnerDashboard = () => {
       });
       
       if (res.ok) {
-        alert("Quick consultation booked successfully!");
+        // Send real-time notification to doctor
+        const channel = supabase.channel(`notifications-${selectedVet._id}`);
+        channel.subscribe((status) => {
+          if (status === 'SUBSCRIBED') {
+            channel.send({
+              type: 'broadcast',
+              event: 'notification',
+              payload: {
+                title: 'New Booking Request',
+                message: `${user.name} requested a quick consultation for ${selectedPet.name}.`
+              }
+            });
+            setTimeout(() => supabase.removeChannel(channel), 1000);
+          }
+        });
+        
+        alert("Booking request sent! Waiting for Doctor's approval.");
         navigate('/appointments');
       } else {
         throw new Error("Failed to book consultation");
@@ -490,7 +506,8 @@ const OwnerDashboard = () => {
                             {appt.consultationType === 'video' && (
                               <button 
                                 onClick={(e) => { e.stopPropagation(); handleJoin(appt); }}
-                                className="flex-1 bg-primary text-white text-[10px] font-bold py-1.5 px-1.5 rounded-lg hover:bg-surface-tint transition-colors flex items-center justify-center gap-0.5"
+                                disabled={appt.status === 'pending'}
+                                className={`flex-1 text-white text-[10px] font-bold py-1.5 px-1.5 rounded-lg flex items-center justify-center gap-0.5 transition-colors ${appt.status === 'pending' ? 'bg-outline-variant cursor-not-allowed opacity-50' : 'bg-primary hover:bg-surface-tint'}`}
                               >
                                 <span className="material-symbols-outlined text-[12px]">videocam</span> Video Call
                               </button>
