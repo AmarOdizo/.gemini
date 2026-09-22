@@ -52,10 +52,10 @@ export class WebRTCManager {
       })
       .subscribe((status) => {
         if (status === 'SUBSCRIBED') {
-          if (this.isInitiator) {
-            this.createOffer();
-          } else {
+          if (!this.isInitiator) {
             this.sendSignalingData({ type: 'peer-joined' });
+          } else {
+            this.sendSignalingData({ type: 'initiator-waiting' });
           }
         }
       });
@@ -85,6 +85,8 @@ export class WebRTCManager {
     try {
       if (data.type === 'peer-joined' && this.isInitiator) {
         this.createOffer();
+      } else if (data.type === 'initiator-waiting' && !this.isInitiator) {
+        this.sendSignalingData({ type: 'peer-joined' });
       } else if (data.type === 'offer' && !this.isInitiator) {
         await this.peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
         await this.processIceCandidateQueue();
