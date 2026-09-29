@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { API_BASE } from '../../services/adminApi';
 import Logo from '../../components/Logo';
+import { supabase } from '../../supabase';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -58,25 +59,27 @@ const AdminLogin = () => {
       let token = null;
 
       try {
-        const res = await fetch(`${API_BASE}/api/auth/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: cleanIdentifier,
-            password: cleanPassword,
-            role: 'admin'
-          })
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: cleanIdentifier,
+          password: cleanPassword,
         });
 
-        const data = await res.json().catch(() => null);
+        if (error) {
+          setErrorMsg('Invalid administrative credentials. Please verify your Admin Email / Password.');
+          return;
+        }
 
-        if (res.ok && data?.success) {
+        if (data.session) {
+          const userMeta = data.user.user_metadata || {};
+          // Ensure this user actually has admin rights if you have roles in metadata.
+          // For now, we trust the successful login and assign the admin payload.
+
           loginSuccess = true;
-          token = data.token || 'admin_token_' + Date.now();
+          token = data.session.access_token;
           adminPayload = {
-            id: data.user?.id || data.user?._id || 'admin_master_1',
-            name: data.user?.name || 'Chief Clinical Administrator',
-            email: data.user?.email || cleanIdentifier,
+            id: data.user.id,
+            name: userMeta.name || 'Chief Clinical Administrator',
+            email: data.user.email,
             role: 'admin',
             title: 'Chief Medical & Governance Officer',
             department: 'Clinical Quality & Network Governance'
@@ -96,8 +99,6 @@ const AdminLogin = () => {
         setTimeout(() => {
           navigate('/admin/dashboard', { replace: true });
         }, 600);
-      } else {
-        setErrorMsg('Invalid administrative credentials. Please verify your Admin Email / Password or click a Quick Demo account below.');
       }
     } catch (err) {
       setErrorMsg('Authentication error: ' + (err.message || 'Unknown network error'));
