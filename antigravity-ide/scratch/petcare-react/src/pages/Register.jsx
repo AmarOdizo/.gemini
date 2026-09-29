@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
+import { supabase } from '../supabase';
 const Register = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -51,25 +52,38 @@ const Register = () => {
     
     setLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          password: formData.password
-        })
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            name: formData.name,
+            phone: formData.phone,
+            role: 'owner'
+          }
+        }
       });
-      const data = await res.json();
-      
-      if (res.ok && data.success) {
-        localStorage.setItem('userToken', data.token);
-        localStorage.setItem('currentUser', JSON.stringify(data.user));
-        alert('Registration successful!');
-        navigate('/owner-dashboard');
+
+      if (error) {
+        alert('Registration Error: ' + error.message);
       } else {
-        alert(data.message || 'Registration failed');
+        const currentUser = {
+          id: data.user.id,
+          name: data.user.user_metadata?.name || formData.name,
+          email: data.user.email,
+          phone: data.user.user_metadata?.phone || formData.phone,
+          role: 'owner'
+        };
+
+        if (data.session) {
+          localStorage.setItem('userToken', data.session.access_token);
+          localStorage.setItem('currentUser', JSON.stringify(currentUser));
+          alert('Registration successful!');
+          navigate('/owner-dashboard');
+        } else {
+          alert('Registration successful! Please check your email to confirm your account.');
+          navigate('/login');
+        }
       }
     } catch (err) {
       alert('Registration Error: ' + err.message);

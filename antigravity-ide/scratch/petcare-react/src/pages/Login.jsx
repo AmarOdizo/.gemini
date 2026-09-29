@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
+import { supabase } from '../supabase';
 const Login = () => {
   const [role, setRole] = useState('owner');
   const [email, setEmail] = useState('');
@@ -18,33 +19,33 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const endpoint = role === 'owner' ? '/api/auth/login' : '/api/auth/vets/login';
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
-      
-      let data;
-      const textResponse = await res.text();
-      try {
-        data = JSON.parse(textResponse);
-      } catch (parseError) {
-        throw new Error("Server returned an empty or invalid response. Please ensure VITE_API_URL is configured in your production hosting settings.");
-      }
-      
-      if (res.ok && data.success) {
-        const userData = data.user || data.vet;
-        localStorage.setItem('userToken', data.token);
-        localStorage.setItem('currentUser', JSON.stringify(userData));
+
+      if (error) {
+        alert(error.message || 'Invalid credentials');
+      } else if (data.session) {
+        const userMeta = data.user.user_metadata || {};
+        const userRole = userMeta.role || role; // Fallback if missing
         
-        if (role === 'owner') {
+        const currentUser = {
+          id: data.user.id,
+          name: userMeta.name || (userRole === 'owner' ? 'Pet Parent' : 'Doctor'),
+          email: data.user.email,
+          phone: userMeta.phone || '',
+          role: userRole
+        };
+
+        localStorage.setItem('userToken', data.session.access_token);
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+        if (userRole === 'owner') {
           navigate('/owner-dashboard');
         } else {
           navigate('/doctor-dashboard');
         }
-      } else {
-        alert(data.message || 'Invalid credentials');
       }
     } catch (err) {
       alert('Login Error: ' + err.message);
