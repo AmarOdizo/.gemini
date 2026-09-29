@@ -28,20 +28,28 @@ const Login = () => {
         alert(error.message || 'Invalid credentials');
       } else if (data.session) {
         const userMeta = data.user.user_metadata || {};
-        const userRole = userMeta.role || role; // Fallback if missing
+        const actualRole = userMeta.role || 'owner'; // fallback if no role is set
         
+        // Strict Role Check
+        if (actualRole !== role) {
+          alert(`Access Denied: This account is registered as a ${actualRole}. Please use the correct login tab.`);
+          await supabase.auth.signOut();
+          setLoading(false);
+          return;
+        }
+
         const currentUser = {
           id: data.user.id,
-          name: userMeta.name || (userRole === 'owner' ? 'Pet Parent' : 'Doctor'),
+          name: userMeta.name || (actualRole === 'owner' ? 'Pet Parent' : 'Doctor'),
           email: data.user.email,
           phone: userMeta.phone || '',
-          role: userRole
+          role: actualRole
         };
 
         localStorage.setItem('userToken', data.session.access_token);
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
         
-        if (userRole === 'owner') {
+        if (actualRole === 'owner') {
           navigate('/owner-dashboard');
         } else {
           navigate('/doctor-dashboard');

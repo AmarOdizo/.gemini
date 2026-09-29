@@ -71,8 +71,13 @@ const AdminLogin = () => {
 
         if (data.session) {
           const userMeta = data.user.user_metadata || {};
-          // Ensure this user actually has admin rights if you have roles in metadata.
-          // For now, we trust the successful login and assign the admin payload.
+          
+          if (userMeta.role !== 'admin') {
+            setErrorMsg('Access Denied: You do not have Administrative privileges. Please use the normal portal.');
+            await supabase.auth.signOut();
+            setLoading(false);
+            return;
+          }
 
           loginSuccess = true;
           token = data.session.access_token;
