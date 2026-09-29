@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Logo from '../components/Logo';
-import { supabase } from '../supabase';
 const VetRegister = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -108,33 +107,32 @@ const VetRegister = () => {
     const specs = Object.keys(specializations).filter(k => specializations[k]);
 
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          data: {
-            name: formData.name,
-            phone: formData.phone,
-            role: 'doctor',
-            vciNumber: formData.vciNumber,
-            qualification: formData.qualification,
-            university: formData.university,
-            experienceYears: formData.experience,
-            specialization: specs,
-            clinicName: formData.clinicName,
-            city: formData.city,
-            consultationFee: formData.consultationFee,
-            clinicPhone: formData.clinicPhone,
-            about: formData.about,
-            photoUrl: formData.photoUrl,
-            licenseCertUrl: formData.licenseCertUrl
-          }
-        }
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/vets/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password,
+          vciNumber: formData.vciNumber,
+          qualification: formData.qualification,
+          university: formData.university,
+          experienceYears: formData.experience,
+          specialization: specs,
+          clinicName: formData.clinicName,
+          city: formData.city,
+          consultationFee: formData.consultationFee,
+          clinicPhone: formData.clinicPhone,
+          about: formData.about,
+          photoUrl: formData.photoUrl,
+          licenseCertUrl: formData.licenseCertUrl
+        })
       });
       
-      if (error) {
-        alert('Registration Error: ' + error.message);
-      } else {
+      const data = await res.json();
+      
+      if (res.ok && data.success) {
         // Broadcast custom notification event to alert Admin dashboard in real time
         try {
           window.dispatchEvent(new CustomEvent('petcare_admin_notification', {
@@ -146,6 +144,8 @@ const VetRegister = () => {
           }));
         } catch (_) {}
         setSuccessModal(true);
+      } else {
+        alert(data.message || 'Registration failed');
       }
     } catch (err) {
       alert('Registration Error: ' + err.message);

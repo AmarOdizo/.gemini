@@ -57,13 +57,15 @@ router.post("/register", async function (req, res) {
 
     const normalizedEmail = String(email).toLowerCase().trim();
 
-    // Check existing
+    // Check existing across ALL collections to prevent cross-role duplicates
     const existingUser = await User.findOne({ email: normalizedEmail });
+    const existingVet = await Vet.findOne({ email: normalizedEmail });
+    const existingAdmin = await Admin.findOne({ email: normalizedEmail });
 
-    if (existingUser) {
+    if (existingUser || existingVet || existingAdmin) {
       return res.status(400).json({
         success: false,
-        message: "An account with this email already exists."
+        message: "An account with this email already exists in the system. Please use a different email or log into your existing portal."
       });
     }
 
@@ -219,15 +221,17 @@ router.post("/vets/register", async function (req, res) {
       role: "doctor"
     };
 
-    // Check existing
+    // Check existing across ALL collections
     const existingDbVet = await Vet.findOne({
         $or: [{ email: normEmail }, { vciNumber: normVci }]
     });
+    const existingUser = await User.findOne({ email: normEmail });
+    const existingAdmin = await Admin.findOne({ email: normEmail });
 
-    if (existingDbVet) {
+    if (existingDbVet || existingUser || existingAdmin) {
       return res.status(400).json({
         success: false,
-        message: "A veterinarian with this email or VCI License number already exists."
+        message: "An account with this email or VCI License number already exists in the system."
       });
     }
 

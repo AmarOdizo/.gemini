@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { API_BASE } from '../../services/adminApi';
 import Logo from '../../components/Logo';
-import { supabase } from '../../supabase';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -59,32 +58,25 @@ const AdminLogin = () => {
       let token = null;
 
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: cleanIdentifier,
-          password: cleanPassword,
+        const res = await fetch(`${API_BASE}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: cleanIdentifier,
+            password: cleanPassword,
+            role: 'admin'
+          })
         });
 
-        if (error) {
-          setErrorMsg('Invalid administrative credentials. Please verify your Admin Email / Password.');
-          return;
-        }
+        const data = await res.json().catch(() => null);
 
-        if (data.session) {
-          const userMeta = data.user.user_metadata || {};
-          
-          if (userMeta.role !== 'admin') {
-            setErrorMsg('Access Denied: You do not have Administrative privileges. Please use the normal portal.');
-            await supabase.auth.signOut();
-            setLoading(false);
-            return;
-          }
-
+        if (res.ok && data?.success) {
           loginSuccess = true;
-          token = data.session.access_token;
+          token = data.token || 'admin_token_' + Date.now();
           adminPayload = {
-            id: data.user.id,
-            name: userMeta.name || 'Chief Clinical Administrator',
-            email: data.user.email,
+            id: data.user?.id || data.user?._id || 'admin_master_1',
+            name: data.user?.name || 'Chief Clinical Administrator',
+            email: data.user?.email || cleanIdentifier,
             role: 'admin',
             title: 'Chief Medical & Governance Officer',
             department: 'Clinical Quality & Network Governance'
@@ -104,6 +96,8 @@ const AdminLogin = () => {
         setTimeout(() => {
           navigate('/admin/dashboard', { replace: true });
         }, 600);
+      } else {
+        setErrorMsg('Invalid administrative credentials. Please verify your Admin Email / Password or click a Quick Demo account below.');
       }
     } catch (err) {
       setErrorMsg('Authentication error: ' + (err.message || 'Unknown network error'));
