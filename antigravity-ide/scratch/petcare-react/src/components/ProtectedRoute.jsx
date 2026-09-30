@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { resetPostHog } from '../posthog';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const storedUser = localStorage.getItem('currentUser');
@@ -23,6 +24,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     
     return children;
   } catch (err) {
+    resetPostHog();
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userToken');
     return <Navigate to="/login" replace />;

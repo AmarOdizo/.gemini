@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
+import posthog, { isPostHogEnabled } from '../posthog';
 
 const Prescribe = () => {
   const [user, setUser] = useState(null);
@@ -98,6 +99,9 @@ const Prescribe = () => {
       const data = await res.json();
       
       if (res.ok && data.success) {
+        if (isPostHogEnabled) {
+          posthog.capture('prescription_created', { medication_count: formData.medicines.length });
+        }
         alert('Prescription created successfully!');
         navigate('/doctor-dashboard');
       } else {

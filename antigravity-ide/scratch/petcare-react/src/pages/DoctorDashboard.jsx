@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 import supabase from '../supabaseClient';
 import { isVetSuspended } from '../utils/suspensionUtils';
+import posthog, { isPostHogEnabled, posthogLog } from '../posthog';
 
 const DoctorDashboard = () => {
   const [user, setUser] = useState(null);
@@ -90,6 +91,13 @@ const DoctorDashboard = () => {
       });
       if (res.ok) {
         setAppointments(appointments.map(a => a._id === id ? { ...a, status } : a));
+        if (isPostHogEnabled) {
+          posthog.capture('appointment_status_updated', { status });
+          posthogLog.info('appointment status update completed', {
+            actor_role: 'veterinarian',
+            status,
+          });
+        }
         
         // Notify the owner
         const appt = appointments.find(a => a._id === id);
@@ -122,6 +130,9 @@ const DoctorDashboard = () => {
   };
 
   const handleJoin = (appt) => {
+    if (isPostHogEnabled) {
+      posthog.capture('video_call_started', { initiator_role: 'veterinarian' });
+    }
     setIsCalling(true);
     setCallingAppt(appt);
 

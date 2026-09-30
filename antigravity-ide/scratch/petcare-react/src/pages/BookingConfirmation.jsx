@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 import supabase from '../supabaseClient';
+import posthog, { isPostHogEnabled, posthogLog } from '../posthog';
 
 const BookingConfirmation = () => {
   const location = useLocation();
@@ -57,6 +58,16 @@ const BookingConfirmation = () => {
 
       if (res.ok && json.success) {
         setIsSaved(true);
+        if (isPostHogEnabled) {
+          posthog.capture('appointment_booked', {
+            consultation_type: data.consultationType,
+            booking_source: source
+          });
+          posthogLog.info('appointment booking completed', {
+            consultation_type: data.consultationType,
+            booking_source: source,
+          });
+        }
         // Send real-time notification to doctor
         const channel = supabase.channel(`notifications-${data.vetId}`);
         channel.subscribe((status) => {

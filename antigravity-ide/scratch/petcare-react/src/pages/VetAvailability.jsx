@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
+import posthog, { isPostHogEnabled } from '../posthog';
 
 const DEFAULT_AVAILABILITY = [
   { day: "Monday", active: true, slots: ["09:00 AM", "05:00 PM"] },
@@ -98,6 +99,13 @@ const VetAvailability = () => {
       const data = await res.json();
       if (res.ok && data.success) {
         const updatedUser = { ...user, ...payload };
+        if (isPostHogEnabled) {
+          posthog.capture('availability_saved', {
+            active_day_count: availability.filter((day) => day.active).length,
+            emergency_duty_enabled: emergencyDuty,
+            telehealth_enabled: telehealthMode
+          });
+        }
         setUser(updatedUser);
         localStorage.setItem('currentUser', JSON.stringify(updatedUser));
         alert('Availability schedule saved successfully!');

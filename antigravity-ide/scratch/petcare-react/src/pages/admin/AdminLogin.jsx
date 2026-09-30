@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { API_BASE } from '../../services/adminApi';
 import Logo from '../../components/Logo';
+import { identifyUser, resetPostHog } from '../../posthog';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -89,9 +90,17 @@ const AdminLogin = () => {
       if (loginSuccess && adminPayload) {
         setSuccessMsg('Authentication verified. Redirecting to Clinical Admin Dashboard...');
 
+        const previousUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        const previousUserId = previousUser?._id || previousUser?.id;
+
+        if (previousUserId && String(previousUserId) !== String(adminPayload.id)) {
+          resetPostHog();
+        }
+
         localStorage.setItem('userToken', token);
         localStorage.setItem('userRole', 'admin');
         localStorage.setItem('currentUser', JSON.stringify(adminPayload));
+        identifyUser(adminPayload);
 
         setTimeout(() => {
           navigate('/admin/dashboard', { replace: true });

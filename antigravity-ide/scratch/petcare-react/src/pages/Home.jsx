@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
+import { resetPostHog } from '../posthog';
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -14,6 +15,7 @@ const Home = () => {
   }, []);
 
   const handleLogout = () => {
+    resetPostHog();
     localStorage.removeItem('userToken');
     localStorage.removeItem('currentUser');
     setUser(null);

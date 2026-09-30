@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { adminApi } from '../../services/adminApi';
+import { resetPostHog } from '../../posthog';
 
 const AdminHeader = ({ onToggleSidebar }) => {
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ const AdminHeader = ({ onToggleSidebar }) => {
   const adminAvatar = storedUser.avatar;
 
   const handleLogout = () => {
+    resetPostHog();
     localStorage.removeItem('userToken');
     localStorage.removeItem('userRole');
     localStorage.removeItem('currentUser');

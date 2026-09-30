@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
 import Logo from './Logo';
+import { resetPostHog } from '../posthog';
 
 const VetSidebar = () => {
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ const VetSidebar = () => {
 
   const handleLogout = (e) => {
     e.preventDefault();
+    resetPostHog();
     localStorage.removeItem('userToken');
     localStorage.removeItem('currentUser');
     navigate('/');

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import VetVerificationModal from '../../components/admin/VetVerificationModal';
 import { adminApi } from '../../services/adminApi';
 import { isVetSuspended, setVetSuspendedStatus, notifyDoctorStatusChange } from '../../utils/suspensionUtils';
+import posthog, { isPostHogEnabled } from '../../posthog';
 
 const AdminVeterinarians = () => {
   const [activeTab, setActiveTab] = useState('all');
@@ -65,6 +66,9 @@ const AdminVeterinarians = () => {
       notifyDoctorStatusChange(vetId, vetName || 'Doctor', 'approve');
       await fetchVetsFromDatabase();
       setSelectedVetForReview(null);
+      if (isPostHogEnabled) {
+        posthog.capture('veterinarian_verification_updated', { action: 'approved' });
+      }
       alert(`Dr. ${vetName || 'Doctor'} credential verified and activated in MongoDB.`);
     } catch (err) {
       alert("Error saving approval: " + err.message);
@@ -77,6 +81,9 @@ const AdminVeterinarians = () => {
       notifyDoctorStatusChange(vetId, vetName || 'Doctor', 'reject', reason);
       await fetchVetsFromDatabase();
       setSelectedVetForReview(null);
+      if (isPostHogEnabled) {
+        posthog.capture('veterinarian_verification_updated', { action: 'rejected' });
+      }
       alert(`Dr. ${vetName || 'Doctor'} status updated to Disapproved.`);
     } catch (err) {
       alert("Error saving rejection: " + err.message);
@@ -107,6 +114,9 @@ const AdminVeterinarians = () => {
 
       // 4. Update React state
       setVetsList(prev => prev.map(item => item.id === vet.id ? { ...item, status: nextStatus } : item));
+      if (isPostHogEnabled) {
+        posthog.capture('veterinarian_verification_updated', { action });
+      }
       if (selectedVetForReview && selectedVetForReview.id === vet.id) {
         setSelectedVetForReview(prev => ({ ...prev, status: nextStatus }));
       }

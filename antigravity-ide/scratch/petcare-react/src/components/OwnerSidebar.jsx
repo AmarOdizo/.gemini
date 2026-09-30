@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
 import Logo from './Logo';
+import posthog, { isPostHogEnabled, resetPostHog } from '../posthog';
 
 const OwnerSidebar = () => {
   const navigate = useNavigate();
@@ -34,6 +35,9 @@ const OwnerSidebar = () => {
       });
       
       if (res.ok) {
+        if (isPostHogEnabled) {
+          posthog.capture('feedback_submitted', { rating: feedbackRating });
+        }
         alert('Thank you for your feedback! It has been submitted successfully.');
         setShowFeedbackModal(false);
         setFeedbackComment('');
@@ -51,6 +55,7 @@ const OwnerSidebar = () => {
 
   const handleLogout = (e) => {
     e.preventDefault();
+    resetPostHog();
     localStorage.removeItem('userToken');
     localStorage.removeItem('currentUser');
     navigate('/');

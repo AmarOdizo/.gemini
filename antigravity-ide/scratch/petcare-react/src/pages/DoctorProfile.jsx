@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 import { isVetSuspended } from '../utils/suspensionUtils';
+import posthog, { isPostHogEnabled } from '../posthog';
 
 const DoctorProfile = () => {
   const [user, setUser] = useState(null);
@@ -131,6 +132,9 @@ const DoctorProfile = () => {
         setUser(updatedUser);
         localStorage.setItem('currentUser', JSON.stringify(updatedUser));
         setIsEditing(false);
+        if (isPostHogEnabled) {
+          posthog.capture('vet_profile_updated');
+        }
         alert('Profile updated successfully!');
       } else {
         alert(data.message || 'Update failed');

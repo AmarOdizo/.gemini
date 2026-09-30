@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
+import posthog, { isPostHogEnabled } from '../posthog';
 
 const DEFAULT_PET_IMAGES = {
   Dog: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=500&auto=format&fit=crop',
@@ -183,6 +184,9 @@ const MyPets = () => {
 
       const data = await res.json();
       if (res.ok && data.success) {
+        if (isPostHogEnabled) {
+          posthog.capture('pet_created', { species: formData.species, vaccinated: formData.vaccinated });
+        }
         showToast('Pet registered successfully!');
         setIsAddModalOpen(false);
         setFormData(INITIAL_FORM_STATE);
@@ -222,6 +226,9 @@ const MyPets = () => {
 
       const data = await res.json();
       if (res.ok && data.success) {
+        if (isPostHogEnabled) {
+          posthog.capture('pet_updated', { species: formData.species, vaccinated: formData.vaccinated });
+        }
         showToast('Pet details updated successfully!');
         setIsEditModalOpen(false);
         setSelectedPet(null);
@@ -250,6 +257,9 @@ const MyPets = () => {
       });
       const data = await res.json();
       if (res.ok && data.success) {
+        if (isPostHogEnabled) {
+          posthog.capture('pet_deleted', { species: pet.species || pet.type || 'unknown' });
+        }
         showToast(`${pet.name} has been removed.`);
         fetchPets(user);
       } else {

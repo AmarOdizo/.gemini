@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
 import { supabase } from '../supabaseClient';
+import { identifyUser, resetPostHog } from '../posthog';
 
 const Login = () => {
   const [role, setRole] = useState('owner');
@@ -90,8 +91,17 @@ const Login = () => {
           return;
         }
 
+        const previousUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        const previousUserId = previousUser?._id || previousUser?.id;
+        const userId = userData._id || userData.id;
+
+        if (previousUserId && userId && String(previousUserId) !== String(userId)) {
+          resetPostHog();
+        }
+
         localStorage.setItem('userToken', data.token);
         localStorage.setItem('currentUser', JSON.stringify(userData));
+        identifyUser(userData);
         
         if (actualRole === 'owner') {
           navigate('/owner-dashboard');

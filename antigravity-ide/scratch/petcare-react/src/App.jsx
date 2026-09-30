@@ -36,8 +36,21 @@ import AdminNotifications from './pages/admin/AdminNotifications'
 import AdminSettings from './pages/admin/AdminSettings'
 import AdminReviews from './pages/admin/AdminReviews'
 import GlobalCallListener from './components/video-call/GlobalCallListener'
+import { identifyUser } from './posthog'
 
 function App() {
+  React.useEffect(() => {
+    try {
+      const storedUser = localStorage.getItem('currentUser')
+
+      if (storedUser) {
+        identifyUser(JSON.parse(storedUser))
+      }
+    } catch {
+      // Invalid persisted auth data is handled by the protected routes.
+    }
+  }, [])
+
   return (
     <>
       <GlobalCallListener />

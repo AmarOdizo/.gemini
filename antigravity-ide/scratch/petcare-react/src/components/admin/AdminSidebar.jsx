@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { adminApi } from '../../services/adminApi';
 import Logo from '../Logo';
+import { resetPostHog } from '../../posthog';
 
 const AdminSidebar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const AdminSidebar = ({ isOpen, onClose }) => {
   }, []);
 
   const handleLogout = () => {
+    resetPostHog();
     localStorage.removeItem('userToken');
     localStorage.removeItem('userRole');
     localStorage.removeItem('userData');

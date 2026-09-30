@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+import { resetPostHog } from '../../posthog';
 
 /**
  * AdminProtectedRoute
@@ -26,6 +27,7 @@ const AdminProtectedRoute = ({ children }) => {
 
     return children;
   } catch (err) {
+    resetPostHog();
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userRole');
     return <Navigate to="/admin" state={{ from: location }} replace />;

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import TopNav from '../components/TopNav';
 import { isVetSuspended, isVetApproved } from '../utils/suspensionUtils';
 import supabase from '../supabaseClient';
+import posthog, { isPostHogEnabled, posthogLog } from '../posthog';
 
 const Appointments = () => {
   const [user, setUser] = useState(null);
@@ -104,6 +105,12 @@ const Appointments = () => {
       });
       if (res.ok) {
         setAppointments(appointments.filter(a => a._id !== id));
+        if (isPostHogEnabled) {
+          posthog.capture('appointment_cancelled');
+          posthogLog.info('appointment cancellation completed', {
+            actor_role: 'owner',
+          });
+        }
       }
     } catch (err) {
       console.error("Error cancelling appointment", err);
@@ -112,7 +119,10 @@ const Appointments = () => {
 
   const handleJoin = (appt) => {
     // Note: Date/Time restrictions removed for easier testing.
-    
+    if (isPostHogEnabled) {
+      posthog.capture('video_call_started', { initiator_role: 'owner' });
+    }
+
     setIsCalling(true);
     setCallingAppt(appt);
 
