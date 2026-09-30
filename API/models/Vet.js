@@ -148,6 +148,10 @@ if (mongoose) {
             { day: "Saturday", active: true, slots: ["10:00 AM", "11:30 AM"] },
             { day: "Sunday", active: false, slots: [] }
           ]
+        },
+        supabaseUserId: {
+          type: String,
+          default: ""
         }
       },
       {

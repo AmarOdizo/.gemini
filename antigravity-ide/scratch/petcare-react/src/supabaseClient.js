@@ -1,7 +1,7 @@
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+import { createClient } from '@supabase/supabase-js';
 
-// We rely on the global supabase object from the CDN script in index.html
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export default supabase;

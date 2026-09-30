@@ -35,6 +35,10 @@ if (mongoose) {
         phone: {
           type: String,
           default: ""
+        },
+        supabaseUserId: {
+          type: String,
+          default: ""
         }
       },
       {

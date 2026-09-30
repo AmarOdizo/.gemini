@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
+import { supabase } from '../supabaseClient';
+
 const Register = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -51,25 +53,44 @@ const Register = () => {
     
     setLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/auth/register`, {
+      // 1. Supabase Signup
+      const { data: supaData, error: supaError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: { name: formData.name, role: 'owner' }
+        }
+      });
+
+      if (supaError) {
+        throw new Error(supaError.message);
+      }
+
+      if (!supaData.user) {
+        throw new Error("Signup failed. Please try again.");
+      }
+
+      // 2. Register in MongoDB
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/auth/register-supabase`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
-          password: formData.password
+          role: 'owner',
+          supabaseUserId: supaData.user.id
         })
       });
       const data = await res.json();
       
       if (res.ok && data.success) {
-        localStorage.setItem('userToken', data.token);
-        localStorage.setItem('currentUser', JSON.stringify(data.user));
-        alert('Registration successful!');
-        navigate('/owner-dashboard');
+        alert('Registration successful! Please check your email inbox for a verification link before logging in.');
+        navigate('/login');
       } else {
-        alert(data.message || 'Registration failed');
+        // If MongoDB fails but Supabase succeeded, the user will still have to verify, but MongoDB profile is missing.
+        // For production, we'd want a webhook. For now, alert them.
+        alert(data.message || 'Database registration failed, but auth was created.');
       }
     } catch (err) {
       alert('Registration Error: ' + err.message);

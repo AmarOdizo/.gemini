@@ -3,6 +3,11 @@ const router = express.Router();
 const User = require("../models/User");
 const Vet = require("../models/Vet");
 const Admin = require("../models/Admin");
+const { createClient } = require('@supabase/supabase-js');
+const supabaseUrl = process.env.SUPABASE_URL || '';
+const supabaseKey = process.env.SUPABASE_KEY || '';
+const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
+
 
 // Helper function for Vet Login
 async function handleVetLogin(req, res, identifier, password) {
@@ -38,6 +43,55 @@ async function handleVetLogin(req, res, identifier, password) {
 /* =========================================================
    USER (PET OWNER) AUTHENTICATION ROUTES
    ========================================================= */
+
+// POST /api/auth/register-supabase
+router.post("/register-supabase", async function (req, res) {
+  try {
+    const { name, email, phone, role, supabaseUserId } = req.body;
+    if (!name || !email || !supabaseUserId) {
+      return res.status(400).json({ success: false, message: "Missing required fields." });
+    }
+    
+    const normalizedEmail = String(email).toLowerCase().trim();
+
+    // Check existing across ALL collections to prevent cross-role duplicates
+    const existingUser = await User.findOne({ email: normalizedEmail });
+    const existingVet = await Vet.findOne({ email: normalizedEmail });
+    const existingAdmin = await Admin.findOne({ email: normalizedEmail });
+
+    if (existingUser || existingVet || existingAdmin) {
+      return res.status(400).json({
+        success: false,
+        message: "An account with this email already exists in the system. Please log into your existing portal."
+      });
+    }
+
+    const newUser = new User({
+        name: name,
+        email: normalizedEmail,
+        password: "SUPABASE_AUTH_USER", // Dummy password since auth is via Supabase
+        phone: phone || "",
+        role: role || "owner",
+        supabaseUserId: supabaseUserId
+    });
+    
+    await newUser.save();
+
+    return res.status(201).json({
+      success: true,
+      message: "Profile created successfully.",
+      user: {
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Server error: " + error.message });
+  }
+});
+
 
 // POST /api/auth/register (Create Owner Account)
 router.post("/register", async function (req, res) {
@@ -98,6 +152,61 @@ router.post("/register", async function (req, res) {
       success: false,
       message: "Server error during registration: " + error.message
     });
+  }
+});
+
+// POST /api/auth/login-supabase
+router.post("/login-supabase", async function (req, res) {
+  try {
+    const { token, role } = req.body;
+    if (!token) return res.status(400).json({ success: false, message: "No token provided." });
+    if (!supabase) return res.status(500).json({ success: false, message: "Supabase not configured on backend." });
+
+    // Validate token with Supabase
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    if (error || !user) {
+      return res.status(401).json({ success: false, message: "Invalid Supabase token." });
+    }
+
+    // Usually Supabase confirms email before issuing valid tokens (if email confirm is enabled), 
+    // but we can enforce it here as well.
+    // if (!user.email_confirmed_at) {
+    //   return res.status(403).json({ success: false, message: "Please verify your email before logging in." });
+    // }
+
+    const email = String(user.email).toLowerCase().trim();
+    const targetRole = role || "owner";
+
+    if (targetRole === "doctor" || targetRole === "vet") {
+       let dbVet = await Vet.findOne({ email });
+       if (!dbVet) return res.status(404).json({ success: false, message: "Doctor profile not found in system." });
+       if (!dbVet.supabaseUserId) {
+         dbVet.supabaseUserId = user.id;
+         await dbVet.save();
+       }
+       const safeVet = dbVet.toObject(); delete safeVet.password;
+       return res.json({ success: true, token, vet: safeVet });
+    } else {
+       let dbUser = await User.findOne({ email });
+       if (!dbUser) return res.status(404).json({ success: false, message: "User profile not found in system." });
+       if (!dbUser.supabaseUserId) {
+         dbUser.supabaseUserId = user.id;
+         await dbUser.save();
+       }
+       return res.json({
+         success: true,
+         token,
+         user: {
+           id: dbUser._id,
+           name: dbUser.name,
+           email: dbUser.email,
+           role: dbUser.role,
+           phone: dbUser.phone
+         }
+       });
+    }
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
   }
 });
 
@@ -178,6 +287,100 @@ router.post("/login", async function (req, res) {
 /* =========================================================
    VETERINARIAN (DOCTOR) AUTHENTICATION & MANAGEMENT API
    ========================================================= */
+
+// POST /api/auth/vets/register-supabase
+router.post("/vets/register-supabase", async function (req, res) {
+  try {
+    const body = req.body || {};
+    const name = body.name || body.fullName;
+    const email = body.email;
+    const vciNumber = body.vciNumber || body.regNumber || body.licenseNumber;
+    const supabaseUserId = body.supabaseUserId;
+
+    if (!name || !email || !vciNumber || !supabaseUserId) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide Name, Email, VCI Registration Number, and Supabase ID."
+      });
+    }
+
+    const normEmail = String(email).toLowerCase().trim();
+    const normVci = String(vciNumber).toUpperCase().trim();
+
+    const vetData = {
+      name: name,
+      email: normEmail,
+      vciNumber: normVci,
+      password: "SUPABASE_AUTH_VET", // Dummy password
+      supabaseUserId: supabaseUserId,
+      phone: body.phone || "+91 98765 43210",
+      qualification: body.qualification || "B.V.Sc & A.H.",
+      university: body.university || "Veterinary College",
+      experienceYears: Number(body.experienceYears || body.experience) || 5,
+      specialization: Array.isArray(body.specialization) ? body.specialization : (body.specialization ? [body.specialization] : ["General Practice"]),
+      clinicName: body.clinicName || "PawsCare Pet Hospital",
+      city: body.city || "Bengaluru",
+      clinicAddress: body.clinicAddress || (body.clinicName ? body.clinicName + ", " : "") + (body.city || "Bengaluru"),
+      consultationFee: Number(body.consultationFee || body.consultFee || body.fee) || 499,
+      clinicPhone: body.clinicPhone || "080-25501234",
+      about: body.about || "Dedicated veterinarian registered with VCI.",
+      photoUrl: body.photoUrl || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&auto=format&fit=crop",
+      licenseCertUrl: body.licenseCertUrl || "",
+      isVerified: false,
+      status: "pending",
+      role: "doctor"
+    };
+
+    // Check existing across ALL collections
+    const existingDbVet = await Vet.findOne({
+        $or: [{ email: normEmail }, { vciNumber: normVci }]
+    });
+    const existingUser = await User.findOne({ email: normEmail });
+    const existingAdmin = await Admin.findOne({ email: normEmail });
+
+    if (existingDbVet || existingUser || existingAdmin) {
+      return res.status(400).json({
+        success: false,
+        message: "An account with this email or VCI License number already exists in the system."
+      });
+    }
+
+    const newDbVet = new Vet(vetData);
+    await newDbVet.save();
+
+    // Notify Admin via AdminNotification collection in MongoDB
+    try {
+      const AdminNotification = require("../models/AdminNotification");
+      await AdminNotification.create({
+        title: "New Veterinarian Verification Required",
+        description: `Dr. ${name} (${newDbVet.qualification || "B.V.Sc & A.H."}) registered with VCI #${normVci}. Account is in the Verification Queue pending document review.`,
+        type: "warning",
+        urgency: "urgent",
+        link: "/admin/dashboard",
+        relatedId: newDbVet._id.toString(),
+        relatedModel: "Vet"
+      });
+    } catch (notifErr) {
+      console.error("Failed to create admin notification for new vet:", notifErr.message);
+    }
+
+    const safeVet = newDbVet.toObject();
+    delete safeVet.password;
+
+    return res.status(201).json({
+      success: true,
+      message: "Veterinarian Profile created successfully.",
+      vet: safeVet
+    });
+  } catch (error) {
+    console.error("Vet Registration Error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error during vet registration: " + error.message
+    });
+  }
+});
+
 
 // POST /api/auth/vets/register (Register New Vet / Doctor with all fields)
 router.post("/vets/register", async function (req, res) {

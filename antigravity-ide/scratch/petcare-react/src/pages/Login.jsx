@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo';
+import { supabase } from '../supabaseClient';
+
 const Login = () => {
   const [role, setRole] = useState('owner');
   const [email, setEmail] = useState('');
@@ -18,22 +20,63 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const endpoint = role === 'owner' ? '/api/auth/login' : '/api/auth/vets/login';
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+      // 1. Try Supabase Login
+      let supaToken = null;
+      let data = null;
+      let isLegacy = false;
+
+      const { data: supaData, error: supaError } = await supabase.auth.signInWithPassword({
+        email,
+        password
       });
-      
-      let data;
-      const textResponse = await res.text();
-      try {
-        data = JSON.parse(textResponse);
-      } catch (parseError) {
-        throw new Error("Server returned an empty or invalid response. Please ensure VITE_API_URL is configured in your production hosting settings.");
+
+      if (supaError) {
+        if (supaError.message.includes('Invalid login credentials') || supaError.message.toLowerCase().includes('email not confirmed')) {
+          // Fallback to legacy backend for existing users
+          const endpoint = role === 'owner' ? '/api/auth/login' : '/api/auth/vets/login';
+          const fallbackRes = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}${endpoint}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+          
+          data = await fallbackRes.json();
+          if (fallbackRes.ok && data.success) {
+             isLegacy = true;
+             // Optional background migration for legacy users
+             supabase.auth.signUp({
+               email,
+               password,
+               options: { data: { name: data.user?.name || data.vet?.name || 'Migrated User', role: role } }
+             }).catch(console.error);
+          } else {
+             alert(supaError.message.toLowerCase().includes('email not confirmed') 
+               ? "Please verify your email before logging in. Check your inbox for the verification link." 
+               : "Invalid credentials.");
+             setLoading(false);
+             return;
+          }
+        } else {
+          throw new Error(supaError.message);
+        }
+      } else {
+        // Supabase login success
+        supaToken = supaData.session.access_token;
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/auth/login-supabase`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: supaToken, role })
+        });
+        
+        data = await res.json();
+        if (!res.ok || !data.success) {
+          alert(data.message || 'Supabase backend sync failed.');
+          setLoading(false);
+          return;
+        }
       }
-      
-      if (res.ok && data.success) {
+
+      if (data && data.success) {
         const userData = data.user || data.vet;
         const actualRole = userData.role || 'owner';
         
@@ -56,7 +99,7 @@ const Login = () => {
           navigate('/doctor-dashboard');
         }
       } else {
-        alert(data.message || 'Invalid credentials');
+        alert(data?.message || 'Invalid credentials');
       }
     } catch (err) {
       alert('Login Error: ' + err.message);

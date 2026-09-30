@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Logo from '../components/Logo';
+import { supabase } from '../supabaseClient';
+
 const VetRegister = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -107,14 +109,31 @@ const VetRegister = () => {
     const specs = Object.keys(specializations).filter(k => specializations[k]);
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/vets/register`, {
+      // 1. Supabase Signup
+      const { data: supaData, error: supaError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: { name: formData.name, role: 'doctor' }
+        }
+      });
+
+      if (supaError) {
+        throw new Error(supaError.message);
+      }
+
+      if (!supaData.user) {
+        throw new Error("Signup failed. Please try again.");
+      }
+
+      // 2. Register in MongoDB
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://odizopetcare.onrender.com'}/api/auth/vets/register-supabase`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
-          password: formData.password,
           vciNumber: formData.vciNumber,
           qualification: formData.qualification,
           university: formData.university,
@@ -126,7 +145,8 @@ const VetRegister = () => {
           clinicPhone: formData.clinicPhone,
           about: formData.about,
           photoUrl: formData.photoUrl,
-          licenseCertUrl: formData.licenseCertUrl
+          licenseCertUrl: formData.licenseCertUrl,
+          supabaseUserId: supaData.user.id
         })
       });
       
@@ -145,7 +165,7 @@ const VetRegister = () => {
         } catch (_) {}
         setSuccessModal(true);
       } else {
-        alert(data.message || 'Registration failed');
+        alert(data.message || 'Database registration failed, but auth was created. Please contact support.');
       }
     } catch (err) {
       alert('Registration Error: ' + err.message);
@@ -324,7 +344,7 @@ const VetRegister = () => {
             </div>
             <h3 className="font-headline-md text-xl font-extrabold text-primary">Registration Submitted!</h3>
             <p className="font-body-md text-xs text-on-surface-variant leading-relaxed">
-              Thank you for applying. Your VCI Registration Certificate has been submitted for fast-track credentialing. Our medical board will review your credentials within 2 hours.
+              Thank you for applying. Please check your email to verify your account. Your VCI Registration Certificate has been submitted for fast-track credentialing. Our medical board will review your credentials within 2 hours.
             </p>
             <div className="pt-2 space-y-2">
               <Link to="/login" className="w-full bg-primary text-white rounded-xl py-2.5 font-bold text-xs block text-center shadow-sm hover:bg-tertiary transition-colors">
