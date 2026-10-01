@@ -1,8 +1,16 @@
+const dotenv = require("dotenv");
+dotenv.config(); // Load environment variables first
+
+const Sentry = require("@sentry/node");
+if (process.env.SENTRY_DSN) {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    tracesSampleRate: 1.0,
+  });
+}
+
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv");
-
-dotenv.config(); // Load environment variables first
 
 const connectDB = require("./config/db");
 connectDB(); // Establish MongoDB connection
@@ -42,6 +50,13 @@ app.use(function (req, res, next) {
 });
 
 // Database connection now handled via MongoDB and Mongoose
+
+// Temporary Sentry Test Route
+app.get("/api/test-sentry", function mainHandler(req, res) {
+  const error = new Error("PetCare Sentry Backend Test");
+  Sentry.captureException(error);
+  res.status(500).json({ success: false, message: "Error sent to Sentry" });
+});
 
 // Register API Routes
 app.use("/api/auth", authRoutes);
@@ -94,6 +109,11 @@ app.get("/", function (req, res) {
     },
   });
 });
+
+// Sentry Error Handler
+if (process.env.SENTRY_DSN) {
+  Sentry.setupExpressErrorHandler(app);
+}
 
 // 404 Route Handler
 app.use(function (req, res) {
